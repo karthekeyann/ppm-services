@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://MessageView/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://MessageView/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://MessageView">			
+			<xsd:include schemaLocation="CeleritiPcdSrv.xsd" />			
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="PcdXmlRqMsg">
+		<wsdl:part element="tns:PcdXmlRq" name="PcdXmlRq"/>
+	</wsdl:message>
+
+	<wsdl:message name="PcdXmlRsMsg">
+		<wsdl:part element="tns:PcdXmlRs" name="PcdXmlRs"/>
+	</wsdl:message>
+	
+	<wsdl:message name="UpdatePcdRqMsg">
+		<wsdl:part element="tns:UpdatePcdRq" name="UpdatePcdRq"/>
+	</wsdl:message>
+
+	<wsdl:message name="UpdatePcdRsMsg">
+		<wsdl:part element="tns:UpdatePcdRs" name="UpdatePcdRs"/>
+	</wsdl:message>
+	
+	<wsdl:message name="PcdCacheRqMsg">
+		<wsdl:part element="tns:PcdCacheRq" name="PcdCacheRq"/>
+	</wsdl:message>
+
+	<wsdl:message name="PcdCacheRsMsg">
+		<wsdl:part element="tns:PcdCacheRs" name="PcdCacheRs"/>
+	</wsdl:message>
+
+	<wsdl:portType name="CeleritiPcd">
+		<wsdl:operation name="ProcessPcd">
+			<wsdl:input message="tns:PcdXmlRqMsg" />
+			<wsdl:output message="tns:PcdXmlRsMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="UpdatePcd">
+			<wsdl:input message="tns:UpdatePcdRqMsg" />
+			<wsdl:output message="tns:UpdatePcdRsMsg" />
+		</wsdl:operation>
+
+		<wsdl:operation name="PcdCache">
+			<wsdl:input message="tns:PcdCacheRqMsg" />
+			<wsdl:output message="tns:PcdCacheRsMsg" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<wsdl:binding name="CeleritiPcd" type="tns:CeleritiPcd">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		<wsdl:operation name="ProcessPcd">
+			<soap:operation soapAction="http://www.csc.com/Celeriti/ProcessPcd"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdatePcd">
+			<soap:operation soapAction="http://www.csc.com/Celeriti/UpdatePcd"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="PcdCache">
+			<soap:operation soapAction="http://www.csc.com/Celeriti/PcdCache"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+				
+	</wsdl:binding>
+	
+	<wsdl:service name="CeleritiPcd">
+		<wsdl:port binding="tns:CeleritiPcd" name="CeleritiPcd">
+			<soap:address location="http://20.17.189.77:3035/Celeriti/CeleritiPcd" />
+		</wsdl:port>
+	</wsdl:service>
+	
+</wsdl:definitions>

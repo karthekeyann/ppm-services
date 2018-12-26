@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://MessageView/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://MessageView/"
+	xmlns:xsd_1="http://MessageView/">
+
+	<xsd:element name="PcdXmlRq" type="xsd_1:PcdXmlRq_Type" />
+	<xsd:element name="PcdXmlRs" type="xsd_1:PcdXmlRs_Type" />
+	<xsd:element name="PcdCacheRq" type="xsd_1:PcdCacheRq_Type" />
+	<xsd:element name="PcdCacheRs" type="xsd_1:PcdCacheRs_Type" />
+	<xsd:element name="UpdatePcdRq" type="xsd_1:UpdatePcdRq_Type" />
+	<xsd:element name="UpdatePcdRs" type="xsd_1:UpdatePcdRs_Type" />
+
+	<xsd:complexType name="PcdXmlRq_Type">
+		<xsd:sequence>
+			<xsd:element name="CdmfKeyInfo"	type="xsd_1:CdmfKeyInfo_Type" />
+			<xsd:element name="PcdData" type="xsd_1:PcdData_Type"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PcdXmlRs_Type">
+		<xsd:sequence>
+			<xsd:element name="XStatus" type="xsd_1:Status_Type" />
+			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type" minOccurs="0" />
+			<xsd:choice minOccurs="0">
+				<xsd:element name="PcdEntry"	type="xsd_1:PcdEntry"  minOccurs="0" />
+				<xsd:element name="PcdKeyList"	type="xsd_1:PcdKeyList_Type"  minOccurs="0" />
+				<xsd:element name="PcdItemList"	type="xsd_1:PcdItemList_Type"  minOccurs="0" />
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PcdCacheRq_Type">
+		<xsd:sequence>
+			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type"/>
+			<xsd:element name="PcdData" type="xsd_1:PcdData_Type" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PcdCacheRs_Type">
+		<xsd:sequence>
+			<xsd:element name="XStatus" type="xsd_1:Status_Type"/>
+			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type" minOccurs="0"/>
+			<xsd:element name="PcdItemList" type="xsd_1:PcdItemList_Type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UpdatePcdRq_Type">
+	<xsd:sequence>
+		<xsd:element name="ActionType" type="xsd:string" minOccurs="0" />
+		<xsd:element name="UpdPcdRecRq" type="xsd_1:UpdPcdRecRq_Type" minOccurs="0" maxOccurs="unbounded" />
+	</xsd:sequence>
+	</xsd:complexType>  
+
+	<xsd:complexType name="UpdatePcdRs_Type">
+		<xsd:sequence>
+		<xsd:element name="UpdPcdRecRs" type="xsd_1:UpdPcdRecRs_Type" minOccurs="0" maxOccurs="unbounded" />
+	</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="UpdPcdRecRq_Type">
+		<xsd:sequence>
+			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type"/>
+			<xsd:element name="PcdEntry" type="xsd_1:PcdEntry" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+				
+	<xsd:complexType name="UpdPcdRecRs_Type">
+		<xsd:sequence>
+			<xsd:element name="XStatus" type="xsd_1:Status_Type"/>
+			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type" minOccurs="0"/>
+			<xsd:element name="PcdEntry" type="xsd_1:PcdEntry" minOccurs="0"/>
+	</xsd:sequence>
+	</xsd:complexType>	
+
+
+	<xsd:complexType name="PcdEntry">
+		<xsd:sequence>
+			<xsd:any processContents="lax" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PcdWorkArea">
+		<xsd:sequence>
+			<xsd:any processContents="lax" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="PcdKeyList_Type">
+		<xsd:sequence>
+			<xsd:element name="PcdItemKey" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="CdmfFmtCoId"
+							type="xsd_1:CdmfFmtCoId_Type" />
+						<xsd:element name="CdmfFmtEffDt"
+							type="xsd_1:CdmfFmtEffDt_Type" />
+						<xsd:choice>
+							<xsd:element name="CdmfRegKey"
+								type="xsd_1:CdmfRegKey_Type" />
+							<xsd:element name="CdmfCdkKey"
+								type="xsd_1:CdmfCdkKey_Type" />
+							<xsd:element name="CdmfSimKey"
+								type="xsd_1:CdmfSimKey_Type" />
+						</xsd:choice>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+   <xsd:complexType name="PcdItemList_Type">
+      <xsd:sequence>
+         <xsd:element name="PcdItem" maxOccurs="unbounded">
+         	<xsd:complexType>
+         		<xsd:sequence>
+				<xsd:choice>
+					<xsd:sequence>
+						<xsd:element name="PcdItemKey" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="CdmfFmt" type="xsd_1:Long_Type"/>
+								<xsd:element name="CdmfFmtCoId" type="xsd_1:CdmfFmtCoId_Type" minOccurs="0"/>
+								<xsd:element name="CdmfFmtEffDt" type="xsd_1:CdmfFmtEffDt_Type" minOccurs="0"/>
+								<xsd:element name="CdmfFmtExpDt" type="xsd_1:Date_Type" minOccurs="0"/>
+								<xsd:element name="CdmfFmtHighUse" type="xsd_1:CdmfFmtHighUse_Type" minOccurs="0"/>
+					            <xsd:element name="CdmfChgTm" type="xsd:string" minOccurs="0"/>
+					            <xsd:element name="CdmfChgDt" type="xsd_1:Date_Type" minOccurs="0"/>
+					            <xsd:element name="CdmfChgBy" type="xsd_1:CdmfChgBy_Type" minOccurs="0"/>            
+								<xsd:element name="CdmfCCNum" type="xsd_1:Long_Type" minOccurs="0"/>
+								<xsd:element name="CdmfOwnerApp" type="xsd_1:CdmfOwnerApp_Type" minOccurs="0"/>
+								<xsd:element name="CdmfAction" type="xsd_1:CdmfAction_Type" minOccurs="0"/>
+								<xsd:element name="CdmfAltKeyId" type="xsd_1:CdmfAltKeyId_Type" minOccurs="0"/>
+							<xsd:choice>
+								<xsd:element name="CdmfRegKey" type="xsd_1:CdmfRegKey_Type"/>
+								<xsd:element name="CdmfCdkKey" type="xsd_1:CdmfCdkKey_Type"/>
+								<xsd:element name="CdmfSimKey" type="xsd_1:CdmfSimKey_Type"/>
+							</xsd:choice>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				    <xsd:element name="PcdData" type="xsd_1:PcdData_Type" minOccurs="0"/>
+				    <xsd:element name="PcdWorkArea"	type="xsd_1:PcdWorkArea"  minOccurs="0" />
+					</xsd:sequence>
+					
+					<xsd:sequence>
+						<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type"/>
+						<xsd:element name="CdmfRegKey" type="xsd_1:CdmfRegKey_Type"/>
+						<xsd:element name="CdmfCdkKey" type="xsd_1:CdmfCdkKey_Type"/>
+						<xsd:element name="CdmfSimKey" type="xsd_1:CdmfSimKey_Type"/>
+						<xsd:element name="PcdEntry" type="xsd_1:PcdEntry" />
+					</xsd:sequence>
+				</xsd:choice>
+				</xsd:sequence>
+         	</xsd:complexType>
+         </xsd:element>
+		 <xsd:element name="MoreItem" type="xsd:string" minOccurs="0"/>
+		 <xsd:element name="ItemCnt" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+   </xsd:complexType>
+
+	<xsd:complexType name="CdmfKeyInfo_Type">
+		<xsd:sequence>
+			<xsd:element name="CdmfFmt" type="xsd_1:Long_Type"/>
+			<xsd:element name="CdmfFmtCoId" type="xsd_1:CdmfFmtCoId_Type" minOccurs="0"/>
+			<xsd:element name="CdmfFmtEffDt" type="xsd_1:CdmfFmtEffDt_Type" minOccurs="0"/>
+			<xsd:element name="CdmfFmtExpDt" type="xsd_1:Date_Type" minOccurs="0"/>
+			<xsd:element name="CdmfFmtHighUse" type="xsd_1:CdmfFmtHighUse_Type" minOccurs="0"/>
+            <xsd:element name="CdmfChgTm" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CdmfChgDt" type="xsd_1:Date_Type" minOccurs="0"/>
+            <xsd:element name="CdmfChgBy" type="xsd_1:CdmfChgBy_Type" minOccurs="0"/>            
+			<xsd:element name="CdmfCCNum" type="xsd_1:Long_Type" minOccurs="0"/>
+			<xsd:element name="CdmfOwnerApp" type="xsd_1:CdmfOwnerApp_Type" minOccurs="0"/>
+			<xsd:element name="CdmfAction" type="xsd_1:CdmfAction_Type" minOccurs="0"/>
+			<xsd:element name="CdmfAltKeyId" type="xsd_1:CdmfAltKeyId_Type" minOccurs="0"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="CdmfRegKey" type="xsd_1:CdmfRegKey_Type"/>
+				<xsd:element name="CdmfCdkKey" type="xsd_1:CdmfCdkKey_Type"/>
+				<xsd:element name="CdmfSimKey" type="xsd_1:CdmfSimKey_Type"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CdmfCdkKey_Type">
+		<xsd:sequence>
+			<xsd:any processContents="lax" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CdmfSimKey_Type">
+		<xsd:sequence>
+			<xsd:any processContents="lax" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="CdmfRegKey_Type">
+		<xsd:sequence>
+			<xsd:any processContents="lax" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="CdmfFmtEffDt_Type">
+		<xsd:restriction base="xsd_1:Date_Type" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CdmfFmtCoId_Type">
+		<xsd:restriction base="xsd_1:Long_Type" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="UserKey_Type">
+		<xsd:restriction base="xsd_1:C" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CdmfFmtHighUse_Type">
+		<xsd:restriction base="xsd_1:C" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CdmfChgBy_Type">
+		<xsd:restriction base="xsd_1:C" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CdmfOwnerApp_Type">
+		<xsd:restriction base="xsd_1:C" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CdmfAction_Type">
+		<xsd:restriction base="xsd_1:C" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="CdmfAltKeyId_Type">
+		<xsd:restriction base="xsd_1:C" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ClosedEnum_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="80" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DayOfMonth_Type">
+		<xsd:restriction base="xsd_1:ClosedEnum_Type">
+			<xsd:enumeration value="1" />
+			<xsd:enumeration value="2" />
+			<xsd:enumeration value="3" />
+			<xsd:enumeration value="4" />
+			<xsd:enumeration value="5" />
+			<xsd:enumeration value="6" />
+			<xsd:enumeration value="7" />
+			<xsd:enumeration value="8" />
+			<xsd:enumeration value="9" />
+			<xsd:enumeration value="10" />
+			<xsd:enumeration value="11" />
+			<xsd:enumeration value="12" />
+			<xsd:enumeration value="13" />
+			<xsd:enumeration value="14" />
+			<xsd:enumeration value="15" />
+			<xsd:enumeration value="16" />
+			<xsd:enumeration value="17" />
+			<xsd:enumeration value="18" />
+			<xsd:enumeration value="19" />
+			<xsd:enumeration value="20" />
+			<xsd:enumeration value="21" />
+			<xsd:enumeration value="22" />
+			<xsd:enumeration value="23" />
+			<xsd:enumeration value="24" />
+			<xsd:enumeration value="25" />
+			<xsd:enumeration value="26" />
+			<xsd:enumeration value="27" />
+			<xsd:enumeration value="28" />
+			<xsd:enumeration value="29" />
+			<xsd:enumeration value="30" />
+			<xsd:enumeration value="31" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DayOfWeek_Type">
+		<xsd:restriction base="xsd_1:ClosedEnum_Type">
+			<xsd:enumeration value="Monday" />
+			<xsd:enumeration value="Tuesday" />
+			<xsd:enumeration value="Wednesday" />
+			<xsd:enumeration value="Thursday" />
+			<xsd:enumeration value="Friday" />
+			<xsd:enumeration value="Saturday" />
+			<xsd:enumeration value="Sunday" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="URL_Type">
+		<xsd:restriction base="xsd_1:NC">
+			<xsd:maxLength value="1024" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Language_Type">
+		<xsd:restriction base="xsd_1:NC">
+			<xsd:maxLength value="17" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Identifier_Type">
+		<xsd:restriction base="xsd_1:NC">
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="UUID_Type">
+
+		<xsd:restriction base="xsd_1:NC">
+			<xsd:maxLength value="36" />
+			<xsd:pattern
+				value="([0-9]|[a-f]|[A-F]){8}(-([0-9]|[a-f]|[A-F]){4})(-([0-9]|[a-f]|[A-F]){4})(-([0-9]|[a-f]|[A-F]){4})(-([0-9]|[a-f]|[A-F]){12})" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="IfxPath_Type">
+		<xsd:restriction base="xsd:string"></xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Binary_Type">
+		<xsd:sequence>
+			<xsd:element minOccurs="0" name="ContentType"
+				type="xsd_1:OpenEnum_Type" />
+
+			<xsd:element name="BinLength" type="xsd_1:Long_Type" />
+			<xsd:element name="BinData" type="xsd_1:BinData_Type" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="BinData_Type">
+		<xsd:restriction base="xsd:base64Binary" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Token_Type">
+		<xsd:restriction base="xsd_1:NC">
+			<xsd:maxLength value="1024" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="Cursor_Type">
+		<xsd:complexContent>
+			<xsd:extension base="xsd_1:Binary_Type">
+				<xsd:sequence />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<xsd:simpleType name="Year_Type">
+		<xsd:restriction base="xsd:long">
+			<xsd:pattern value="\d{4}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="gMonthDay_Type">
+		<xsd:restriction base="xsd:gMonthDay" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="gYearMonth_Type">
+		<xsd:restriction base="xsd:gYearMonth" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Date_Type">
+		<xsd:restriction base="xsd:string" />
+	</xsd:simpleType>
+	<xsd:simpleType name="C">
+		<xsd:restriction base="xsd:string" />
+	</xsd:simpleType>
+	<xsd:simpleType name="Long_Type">
+		<xsd:restriction base="xsd:long" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="DateTime_Type">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern
+				value="[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2}(\.[0-9]{6})?((-|\+)[0-9]{2}:[0-9]{2})?)?)?" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="NC">
+		<xsd:annotation>
+			<xsd:documentation>Elements of type Narrow Character are
+				elements of
+				character data type with the additional restriction that
+				the only
+				allowable characters are those contained within the ISO
+				Latin-1
+				character set.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Boolean_Type">
+		<xsd:annotation>
+			<xsd:documentation>Boolean indicates a logical True or False
+				condition.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:boolean" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="OpenEnum_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="80" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Decimal_Type">
+		<xsd:restriction base="xsd:decimal">
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="HexBinary">
+		<xsd:restriction base="xsd:hexBinary">
+			<xsd:pattern value="[0-9A-Fa-f]+" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Time_Type">
+		<xsd:restriction base="xsd:time" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Occur_Type">
+		<xsd:restriction base="xsd_1:NC">
+			<xsd:maxLength value="4" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="COID_Type">
+		<xsd:restriction base="xsd_1:NC">
+			<xsd:maxLength value="5"></xsd:maxLength>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="PcdData_Type">
+		<xsd:sequence>
+			<xsd:any processContents="lax" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="ServerStatusCode_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="20" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+
+	<xsd:complexType name="Status_Type">
+		<xsd:sequence>
+			<xsd:element name="StatusCode" type="xsd:long" />
+			<xsd:element name="ServerStatusCode" minOccurs="0"
+				type="xsd_1:ServerStatusCode_Type" />
+			<xsd:element name="Severity" type="xsd_1:Severity_Type" />
+			<xsd:element name="StatusDesc" minOccurs="0"
+				type="xsd_1:StatusDesc_Type" />
+			<xsd:element name="SubjectElement" minOccurs="0"
+				maxOccurs="unbounded" type="xsd_1:SubjectElement_Type" />
+			<xsd:element name="AdditionalStatus" minOccurs="0"
+				maxOccurs="unbounded" type="xsd_1:AdditionalStatus_Type" />
+			<xsd:element name="AsyncRsData" minOccurs="0"
+				type="xsd_1:AsyncRsData_Type" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="Severity_Type">
+		<xsd:restriction base="xsd_1:ClosedEnum_Type">
+			<xsd:enumeration value="Error" />
+			<xsd:enumeration value="Warning" />
+			<xsd:enumeration value="Info" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="AsyncRsData_Type">
+		<xsd:sequence>
+			<xsd:element name="AvailDt" minOccurs="0"
+				type="xsd_1:DateTime_Type" />
+			<xsd:element name="ExpDt" minOccurs="0"
+				type="xsd_1:DateTime_Type" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AdditionalStatus_Type">
+		<xsd:sequence>
+			<xsd:element name="StatusCode" minOccurs="0"
+				type="xsd:long" />
+			<xsd:element name="ServerStatusCode" minOccurs="0"
+				type="xsd_1:ServerStatusCode_Type" />
+			<xsd:element name="Severity" type="xsd_1:Severity_Type" />
+			<xsd:element name="StatusDesc" minOccurs="0"
+				type="xsd_1:StatusDesc_Type" />
+			<xsd:element name="SubjectElement" minOccurs="0"
+				maxOccurs="unbounded" type="xsd_1:SubjectElement_Type" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="SubjectElement_Type">
+		<xsd:sequence>
+			<xsd:element name="Path" type="xsd_1:IfxPath_Type" />
+			<xsd:element name="XValue" minOccurs="0"
+				type="xsd_1:Value_Type" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="StatusValue_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="256" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Desc_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="80" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="StatusDesc_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="255"></xsd:maxLength>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="LongDesc_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="255" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ReasonDesc_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="255" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ShortDesc_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="15"></xsd:maxLength>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Value_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="36" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="Source_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="80" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+</xsd:schema>
