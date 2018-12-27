@@ -13,7 +13,7 @@ import javax.persistence.NoResultException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.util.StringUtils;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.BadRequestException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.BusinessException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.ItemNotFoundException;

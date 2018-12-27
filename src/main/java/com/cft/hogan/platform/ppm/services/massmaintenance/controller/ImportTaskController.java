@@ -28,7 +28,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.service.ImportTaskService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/v1/parameter/mass-maintenance/imports")
 public class ImportTaskController {
 

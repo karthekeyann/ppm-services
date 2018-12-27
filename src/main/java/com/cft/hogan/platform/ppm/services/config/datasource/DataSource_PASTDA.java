@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.services.massmaintenance.datasource;
+package com.cft.hogan.platform.ppm.services.config.datasource;
 
 import java.util.HashMap;
 import java.util.Properties;
@@ -16,7 +16,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
 
 @Configuration

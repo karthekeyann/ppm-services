@@ -1,6 +1,6 @@
 package com.cft.hogan.platform.ppm.services.massmaintenance.exception;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 
 import lombok.extern.slf4j.Slf4j;
 

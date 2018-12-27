@@ -26,7 +26,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.service.TemplateService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class TemplateController {
 
 	@Autowired

@@ -1,2 +1,2 @@
-cd C:\Users\karthikeyan_n\OneDrive - HCL Technologies Ltd\workspace\ppm-services
+cd C:\workspace\ppm-services
 mvn package

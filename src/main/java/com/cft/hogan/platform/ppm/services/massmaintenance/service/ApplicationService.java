@@ -11,7 +11,7 @@ import java.util.Properties;
 
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ApplicationBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;

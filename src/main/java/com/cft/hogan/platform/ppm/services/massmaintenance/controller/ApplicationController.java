@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cft.hogan.platform.ppm.services.massmaintenance.service.ApplicationService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/v1/parameter/mass-maintenance/applications")
 public class ApplicationController {
 	

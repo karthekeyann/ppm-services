@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.ImportTaskReviewDetailsDAO_I;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.cor.ImportTaskReviewDetailsDAO_COR;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.pascor.ImportTaskReviewDetailsDAO_PASCOR;

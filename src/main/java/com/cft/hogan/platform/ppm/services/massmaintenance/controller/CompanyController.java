@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cft.hogan.platform.ppm.services.massmaintenance.service.CompanyService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/v1/parameter/mass-maintenance/parameters/{id}/companies")
 public class CompanyController {
 

@@ -32,7 +32,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.service.ScheduleServi
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 public class ScheduleController {
 
 	@Autowired

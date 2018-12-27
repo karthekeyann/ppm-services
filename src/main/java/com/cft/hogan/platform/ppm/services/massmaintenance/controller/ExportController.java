@@ -18,7 +18,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ExportTaskBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/v1/parameter/mass-maintenance/exports")
 public class ExportController {
 	

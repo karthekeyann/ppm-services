@@ -12,6 +12,7 @@
 
 	<xsd:complexType name="PcdXmlRq_Type">
 		<xsd:sequence>
+			<xsd:element name="MsgRqHdr" type="xsd_1:MsgRqHdr_Type" minOccurs="0" />
 			<xsd:element name="CdmfKeyInfo"	type="xsd_1:CdmfKeyInfo_Type" />
 			<xsd:element name="PcdData" type="xsd_1:PcdData_Type"
 				minOccurs="0" />
@@ -32,6 +33,7 @@
 	
 	<xsd:complexType name="PcdCacheRq_Type">
 		<xsd:sequence>
+			<xsd:element name="MsgRqHdr" type="xsd_1:MsgRqHdr_Type" minOccurs="0" />
 			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type"/>
 			<xsd:element name="PcdData" type="xsd_1:PcdData_Type" minOccurs="0"/>
 		</xsd:sequence>
@@ -60,6 +62,7 @@
 	
 	<xsd:complexType name="UpdPcdRecRq_Type">
 		<xsd:sequence>
+			<xsd:element name="MsgRqHdr" type="xsd_1:MsgRqHdr_Type" minOccurs="0" />
 			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type"/>
 			<xsd:element name="PcdEntry" type="xsd_1:PcdEntry" minOccurs="0"/>
 		</xsd:sequence>
@@ -70,9 +73,40 @@
 			<xsd:element name="XStatus" type="xsd_1:Status_Type"/>
 			<xsd:element name="CdmfKeyInfo" type="xsd_1:CdmfKeyInfo_Type" minOccurs="0"/>
 			<xsd:element name="PcdEntry" type="xsd_1:PcdEntry" minOccurs="0"/>
-	</xsd:sequence>
+		</xsd:sequence>
 	</xsd:complexType>	
 
+	<xsd:complexType name="MsgRqHdr_Type">
+		<xsd:sequence>
+			<xsd:element name="CredentialsRqHdr" minOccurs="0"
+				maxOccurs="unbounded" type="xsd_1:CredentialsRqHdr_Type" />
+		</xsd:sequence>			
+	</xsd:complexType>
+	
+	<xsd:complexType name="CredentialsRqHdr_Type">
+		<xsd:sequence>
+			<xsd:element name="PartyRef" minOccurs="0"
+				type="xsd_1:PartyRef_Type" />
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="PartyRef_Type">
+		<xsd:sequence>
+			<xsd:element name="LoginIdent" type="xsd_1:LoginIdent_Type"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	 <xsd:complexType name="LoginIdent_Type">
+	 	<xsd:sequence>
+      		<xsd:element name="LoginName" type="xsd_1:LoginName_Type"/>
+      	</xsd:sequence>
+	 </xsd:complexType>
+	  
+	<xsd:simpleType name="LoginName_Type">
+		<xsd:restriction base="xsd_1:C">
+			<xsd:maxLength value="40" />
+		</xsd:restriction>
+	</xsd:simpleType>
 
 	<xsd:complexType name="PcdEntry">
 		<xsd:sequence>

@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.services;
+package com.cft.hogan.platform.ppm.services.cofig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +15,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception { 
-		http.httpBasic().and()
-		.logout().and()
-		.csrf().disable().cors().and().authorizeRequests()
-		.anyRequest().authenticated();
+		http
+		.httpBasic()
+		.and()
+		.csrf().disable()
+		.cors()
+		.and()
+		.authorizeRequests().anyRequest().authenticated();
 	}
 
 	@Bean
@@ -26,13 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/*").
-				allowedOrigins("/*").
-				allowCredentials(true).
-				allowedMethods("*");
+				registry.addMapping("/v1/parameter/mass-maintenance/**").allowedOrigins("http://localhost:3000").allowCredentials(true);
 			}
 		};
 	}
+
+
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {

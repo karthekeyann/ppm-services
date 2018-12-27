@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.services.context;
+package com.cft.hogan.platform.ppm.services.config.context;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -78,12 +78,10 @@ public class SystemContext {
 	public static void loadPropertyContext(String[] args) throws IOException{
 		if(args.length==0 || StringUtils.isEmpty(args[0]) || 
 				!(Constants.ENV_TEST.equalsIgnoreCase(args[0]) || Constants.ENV_QA.equalsIgnoreCase(args[0]) ||Constants.ENV_PROD.equalsIgnoreCase(args[0])) ) {
-			throw new SystemException("Invalid environment :"+args[0]);
+			throw new SystemException("Invalid argument #1(Environment) :"+args[0]);
 		}else {
 			environment = args[0];
 		}
-		log.info("Environment :"+SystemContext.environment);
-
 		readDataSourceProperties();
 		readPCDServiceProperties();
 	}
@@ -158,14 +156,10 @@ public class SystemContext {
 		try {
 			if(file.exists()) {
 				inputStream = new BufferedReader(new FileReader(file));
-
 				datasource.load(inputStream);
-				log.info("Datasource properties file loaded: "+file.getAbsolutePath());
 				if(datasource.getProperty("database.batch.update.size") !=null) {
 					database_batch_update_size = Integer.parseInt(datasource.getProperty("database.batch.update.size"));
 				}
-				log.info("Database batch update size :"+database_batch_update_size);
-
 			}else {
 				throw new SystemException("Datasource properties file does not exists: "+file.getAbsolutePath());
 			}
@@ -206,18 +200,12 @@ public class SystemContext {
 		pcd_service_endpoint_pastda = prop.getProperty("pcd.service.endpoint.pastda");
 		pcd_service_batch_update_size =	Integer.parseInt(prop.getProperty("pcd.service.batch.update.size"));
 		prop.clear();
-		
-		log.info("PCD Service End Points -COR :"+pcd_service_endpoint_cor);
-		log.info("PCD Service End Points -TDA :"+pcd_service_endpoint_tda);
-		log.info("PCD Service End Points -PASCOR :"+pcd_service_endpoint_pascor);
-		log.info("PCD Service End Points -PASTDA :"+pcd_service_endpoint_pastda);
-		log.info("PCD Service End Points -Update records size :"+pcd_service_batch_update_size);
 	}
 	
 	
 	public static void logDetails() {
 		log.info("========================================");
-		log.info(" System property context loader details");
+		log.info(" System context details");
 		log.info("========================================");
 		log.info("Environment :"+SystemContext.environment);
 		log.info("PCD Service End Points -COR :"+pcd_service_endpoint_cor);

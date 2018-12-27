@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.ImportTaskDAO_I;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.cor.ImportTaskDAO_COR;

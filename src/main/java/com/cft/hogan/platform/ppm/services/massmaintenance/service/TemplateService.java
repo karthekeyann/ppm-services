@@ -8,7 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.TemplateDAO_I;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.cor.TemplateDAO_COR;

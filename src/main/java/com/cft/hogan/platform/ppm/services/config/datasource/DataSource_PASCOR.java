@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.services.massmaintenance.datasource;
+package com.cft.hogan.platform.ppm.services.config.datasource;
 
 import java.util.HashMap;
 import java.util.Properties;
@@ -16,12 +16,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.cft.hogan.platform.ppm.services.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
 
 @Configuration
 @EnableTransactionManagement
-public class DataSource_COR {
+public class DataSource_PASCOR {
 
 	private Properties prop = null;
 
@@ -30,19 +30,19 @@ public class DataSource_COR {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(getProperties().getProperty("spring.datasource.driverClassName"));
-		dataSource.setUrl(getProperties().getProperty("spring.datasource.url.cor"));
-		dataSource.setUsername(getProperties().getProperty("spring.datasource.username.cor"));
-		dataSource.setPassword(getProperties().getProperty("spring.datasource.password.cor"));
+		dataSource.setUrl(getProperties().getProperty("spring.datasource.url.pascor"));
+		dataSource.setUsername(getProperties().getProperty("spring.datasource.username.pascor"));
+		dataSource.setPassword(getProperties().getProperty("spring.datasource.password.pascor"));
 
 		return dataSource;
 	}
 
-	@Bean(name = "entityManagerFactoryCOR")
+	@Bean(name = "entityManagerFactoryPASCOR")
 	public LocalContainerEntityManagerFactoryBean corEntityManager() throws Exception {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(corDatasource());
 		em.setPackagesToScan(new String[] { Constants.PACKAGE_ENTITIES});
-		em.setPersistenceUnitName(Constants.DATASOURCE_COR); 
+		em.setPersistenceUnitName(Constants.DATASOURCE_PASCOR); 
 
 		//
 		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -61,8 +61,8 @@ public class DataSource_COR {
 		return em;
 	}
 
-	@Bean(name = "transactionManagerCOR")
-	public PlatformTransactionManager corTransactionManager( @Qualifier("entityManagerFactoryCOR" ) EntityManagerFactory emf ) {
+	@Bean(name = "transactionManagerPASCOR")
+	public PlatformTransactionManager corTransactionManager( @Qualifier("entityManagerFactoryPASCOR" ) EntityManagerFactory emf ) {
 
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);
