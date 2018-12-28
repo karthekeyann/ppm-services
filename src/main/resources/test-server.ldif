@@ -94,6 +94,16 @@ sn: Gupta
 uid: anshika
 userPassword: gupta
 
+dn: uid=pulak,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Pulak Sah
+sn: Sah
+uid: pulak
+userPassword: sah
+
 dn: uid=arun,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
