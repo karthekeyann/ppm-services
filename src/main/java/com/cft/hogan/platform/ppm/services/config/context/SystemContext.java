@@ -8,17 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ApplicationBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ParameterBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
+import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.PcdXmlRs_Type;
 
 import lombok.extern.slf4j.Slf4j;
@@ -101,7 +98,7 @@ public class SystemContext {
 	}
 
 	public static String getEndPoint() throws IOException {
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		String endPoint = null;
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			endPoint = pcd_service_endpoint_cor;
@@ -118,26 +115,6 @@ public class SystemContext {
 		return endPoint;
 	}
 	
-	public static String getRegion() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		String region = request.getHeader("X-region");
-		if(region==null || StringUtils.isEmpty(region) || 
-				!(region.equalsIgnoreCase(Constants.REGION_COR) || region.equalsIgnoreCase(Constants.REGION_TDA) || 
-						region.equalsIgnoreCase(Constants.REGION_PASCOR) || region.equalsIgnoreCase(Constants.REGION_PASTDA))) {
-			throw new SystemException("Invalid request header - X-region :"+region);
-		}
-		return region;
-	}
-	
-	public static String getUser() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		String user = request.getHeader("X-user");
-		if(user==null || StringUtils.isEmpty(user)) {
-			throw new SystemException("Invalid request header - X-user missing");
-		}
-		return user;
-	}
-
 	private static void readDataSourceProperties() throws IOException {
 		if(datasource==null) {
 			datasource = new Properties();

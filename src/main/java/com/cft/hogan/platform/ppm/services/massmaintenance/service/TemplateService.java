@@ -8,7 +8,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.TemplateDAO_I;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.cor.TemplateDAO_COR;
@@ -50,7 +49,7 @@ public class TemplateService {
 		String uuid = null;
 		try {
 			validatePSets(input.getPsets());
-			input.setCreatedBy(SystemContext.getUser());
+			input.setCreatedBy(Utils.getUserIdInRequestHeader());
 			uuid = getDAO().save(beanToEntity(input));
 			final String templateUUID = uuid;
 			input.getPsets().forEach((pset) -> {
@@ -58,7 +57,7 @@ public class TemplateService {
 					throw new BadRequestException("Invalid Effective date. Parameter# -"+pset.getNumber());
 				}
 				pset.setTemplateUUID(templateUUID);
-				pset.setCreatedBy(SystemContext.getUser());
+				pset.setCreatedBy(Utils.getUserIdInRequestHeader());
 			});
 			templatePSetService.save(input.getPsets());
 		} catch (Exception e) {
@@ -97,13 +96,13 @@ public class TemplateService {
 			checkOwner(templateId);
 			validatePSets(input.getPsets());
 			input.setUuid(templateId);
-			input.setModifiedBy(SystemContext.getUser());
+			input.setModifiedBy(Utils.getUserIdInRequestHeader());
 			input.getPsets().forEach((pset) -> {
 				if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())) {
 					throw new BadRequestException("Invalid Effective date. Parameter# -"+pset.getNumber());
 				}
 				pset.setTemplateUUID(templateId);
-				pset.setCreatedBy(SystemContext.getUser());;
+				pset.setCreatedBy(Utils.getUserIdInRequestHeader());;
 			});
 			templatePSetService.deleteByTemplateUUID(input.getUuid());
 			templatePSetService.save(input.getPsets());
@@ -139,7 +138,7 @@ public class TemplateService {
 		if(template == null ) {
 			throw new ItemNotFoundException();
 		}
-		if(!SystemContext.getUser().equalsIgnoreCase(template.getCreatedBy())) {
+		if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(template.getCreatedBy())) {
 			throw new BadRequestException("Template can be edited by template creator/owner");
 		}
 	}
@@ -173,7 +172,7 @@ public class TemplateService {
 	}
 
 	private TemplateDAO_I getDAO(){
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {

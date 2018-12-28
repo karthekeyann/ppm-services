@@ -1,7 +1,5 @@
 package com.cft.hogan.platform.ppm.services.massmaintenance.bean;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,19 +12,14 @@ public class ScheduleBean {
 	
 	private String templateName;
 
-	@NotNull (message = "Invalid name")
 	private String name;
 
-	@NotNull (message = "Invalid type")
 	private String type;
 
-	@NotNull (message = "Invalid effective date")
 	private String effectiveDate;
 
-	@NotNull (message = "Invalid filepath")
 	private String filePath;
 
-	@NotNull (message = "Invalid frequency")
 	private String frequency;
 
 	private String freqPattern;

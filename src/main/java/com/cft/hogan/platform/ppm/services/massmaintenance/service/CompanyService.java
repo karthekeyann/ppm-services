@@ -20,7 +20,7 @@ public class CompanyService {
 		try {
 
 			HashMap<String, HashMap<String, List<CompanyBean>>> companiesMap = SystemContext.getCompaniesMap();
-			String region = SystemContext.getRegion();
+			String region = Utils.getRegion();
 			if(!companiesMap.containsKey(region)) {
 				PCDService service = new PCDService();
 				companiesMap.put(region, service.getCompanyDetails());

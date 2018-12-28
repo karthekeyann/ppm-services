@@ -21,7 +21,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 public class ApplicationService {
 
 	public List<ApplicationBean> getApplications() {
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		List<ApplicationBean> applicationsList = null;
 		try {
 			HashMap<String, List<ApplicationBean>> applicationsMap = SystemContext.getApplicationssMap();

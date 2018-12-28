@@ -71,25 +71,26 @@ public class ImportTaskService {
 	private int errorRow = 0; 
 
 	public ImportTaskBean save(String taskName, String taskType, MultipartFile file){
-		log.debug("Processing Import Task request: TaskName-"+taskName+" Tasktype-"+taskType+" File:"+file.getOriginalFilename());
+		String logMsg =Utils.getLogMsg()+"--";
+		log.debug(logMsg+"Processing Import Task request: TaskName-"+taskName+" Tasktype-"+taskType+" File:"+file.getOriginalFilename());
 		String uuid = null;
 		try {
 			PCDService service = new PCDService();
 			ImportTaskBean bean = new ImportTaskBean();
 			bean.setName(taskName);
 			bean.setType(taskType);
-			bean.setCreatedBy(SystemContext.getUser());		
-			bean.setModifiedBy(SystemContext.getUser());	
+			bean.setCreatedBy(Utils.getUserIdInRequestHeader());		
+			bean.setModifiedBy(Utils.getUserIdInRequestHeader());	
 			bean.setStatus(Constants.INPROGRESS);
 			bean.setInputFileName(file.getOriginalFilename());
 
 			Map<String, String> pcdNameMap = new HashMap<>();
-			List<UpdPcdRecRq_Type> requestList = processWorkBook(file, null, false, pcdNameMap, service);
+			List<UpdPcdRecRq_Type> requestList = processWorkBook(file, null, false, pcdNameMap, service, logMsg);
 			if(requestList.size()<1) {
 				throw new BadRequestException("NO valid PCD records present in the input file to process");
 			}
 			uuid = getDAO().save(beanToEntity(bean));
-			log.debug("Import task created :"+uuid+" --Total num of records to be udpated :"+requestList.size());
+			log.debug(logMsg+"Import task created :"+uuid+" --Total num of records to be udpated :"+requestList.size());
 			int endIndex = 0;
 			int savedItems = 0;
 			int batchSize = SystemContext.getPCDServiceBatchUpdateSize();
@@ -101,8 +102,8 @@ public class ImportTaskService {
 				savedItems += processUpdate(requestList.subList(index, endIndex), service, uuid ,pcdNameMap);
 				index = endIndex;
 			}
-			log.debug("Import task ID :"+uuid+" --Import Task Review Details updated records :"+savedItems);
-			updateImportTaskStatus(uuid);
+			log.debug(logMsg+"Import task ID :"+uuid+" --Import Task Review Details updated records :"+savedItems);
+			updateImportTaskStatus(uuid, logMsg);
 		}catch(Exception e) {
 			Utils.handleException(e);
 		}
@@ -128,7 +129,7 @@ public class ImportTaskService {
 			if(importTask == null ) {
 				throw new ItemNotFoundException();
 			}
-			if(!SystemContext.getUser().equalsIgnoreCase(importTask.getCreatedBy())) {
+			if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(importTask.getCreatedBy())) {
 				throw new BadRequestException("Import task can be deleted by task creator/owner");
 			}
 
@@ -161,15 +162,16 @@ public class ImportTaskService {
 
 	public ImportTaskBean reload(String taskUUID, MultipartFile file, String user) {
 		try {
+			String logMsg = Utils.getLogMsg();
 			List<ImportTaskReviewDetailEntity> resultSet = importTaskReviewDetailsService.findPsetKeyByImportTaskUUIDAndStatus(taskUUID, Constants.FAILED);
-			log.debug("Import task ID :"+taskUUID+" --No of failed records retrieved for import task"+taskUUID +"  :"+ resultSet.size());
+			log.debug(logMsg+"Import task ID :"+taskUUID+" --No of failed records retrieved for import task"+taskUUID +"  :"+ resultSet.size());
 			if(resultSet!=null && resultSet.size()>0) {
 				PCDService service = new PCDService();
 				List<String> failedItems = new ArrayList<>();
 				resultSet.forEach((result)->{
 					failedItems.add(result.getPSetKey());
 				});
-				List<UpdPcdRecRq_Type> requestList = processWorkBook(file, failedItems, true, null, service); 
+				List<UpdPcdRecRq_Type> requestList = processWorkBook(file, failedItems, true, null, service, logMsg); 
 				int endIndex = 0;
 				int updatedItems = 0;
 				int batchSize = SystemContext.getPCDServiceBatchUpdateSize();
@@ -181,9 +183,9 @@ public class ImportTaskService {
 					updatedItems += processReloadUpdate(requestList.subList(index, endIndex), service, taskUUID);
 					index = endIndex;
 				}
-				log.debug("Import task ID :"+taskUUID+" --Import Task Review Details updated records :"+updatedItems);
+				log.debug(logMsg+"Import task ID :"+taskUUID+" --Import Task Review Details updated records :"+updatedItems);
 			}
-			updateImportTaskStatus(taskUUID);
+			updateImportTaskStatus(taskUUID, logMsg);
 		}catch(Exception e) {
 			Utils.handleException(e);
 		}
@@ -228,7 +230,7 @@ public class ImportTaskService {
 					importTaskReviewDetail.setApplicationID(String.valueOf(response.getCdmfKeyInfo().getCdmfOwnerApp()));
 					importTaskReviewDetail.setEffectiveDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtEffDt())));
 					importTaskReviewDetail.setExpiryDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtExpDt())));
-					importTaskReviewDetail.setModifiedBy(SystemContext.getUser());
+					importTaskReviewDetail.setModifiedBy(Utils.getUserIdInRequestHeader());
 					try {
 						importTaskReviewDetailsService.Update(importTaskReviewDetail);
 					} catch (Exception e) {
@@ -237,7 +239,7 @@ public class ImportTaskService {
 						message.append(" --Error in update Import task review details --Key :").append(key);
 						message.append(" StatusDesc :").append(response.getXStatus().getStatusDesc());
 						message.append(" StatusCode :").append(response.getXStatus().getStatusCode());
-						throw new BusinessException(message.toString()); 
+						throw new BusinessException(message.toString(), true); 
 					}
 				}catch(Exception e) {
 					Utils.handleException(e);
@@ -266,19 +268,19 @@ public class ImportTaskService {
 				input.setPSetName(pcdNameMap.get(String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())));
 				input.setPSetNumber(String.valueOf(response.getCdmfKeyInfo().getCdmfFmt()));
 				input.setResult(response.getXStatus().getStatusDesc());
-				input.setCreatedBy(SystemContext.getUser());
+				input.setCreatedBy(Utils.getUserIdInRequestHeader());
 				if(response.getXStatus().getStatusCode() != 0){
 					input.setStatus(Constants.FAILED);	
 				}else {
 					input.setStatus(Constants.SUCCESS);	
 				}
-					
+
 				try {
 					key = constructPCDKey(response.getCdmfKeyInfo());
 					input.setPSetKey(key);
 					reviewList.add(input);
 				}catch(Exception e) {
-					throw new BusinessException("Import task ID :"+uuid+" --Error occured prepare ImportTaskReviewDetailEntity PCD#/KEY :"+String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())+"/"+key);
+					throw new BusinessException("Import task ID :"+uuid+" --Error occured prepare ImportTaskReviewDetailEntity PCD#/KEY :"+String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())+"/"+key, true);
 				}
 			}catch(Exception e) {
 				Utils.handleException(e);
@@ -286,7 +288,7 @@ public class ImportTaskService {
 		});
 		return importTaskReviewDetailsService.save(reviewList);
 	}
-	
+
 	private String constructPCDKey(CdmfKeyInfo_Type  cdmfKeyInfo) {
 		String key = Constants.EMPTY;
 		MessageElement[] elements = getKeyElements(cdmfKeyInfo);
@@ -327,20 +329,20 @@ public class ImportTaskService {
 	}
 
 
-	private List<UpdPcdRecRq_Type>  processWorkBook(MultipartFile file, List<String> failedItems, boolean reload, Map<String, String> pcdNameMap, PCDService service) throws Exception {
+	private List<UpdPcdRecRq_Type>  processWorkBook(MultipartFile file, List<String> failedItems, boolean reload, Map<String, String> pcdNameMap, PCDService service, String logMsg) throws Exception {
 		List<UpdPcdRecRq_Type> requestList = new ArrayList<UpdPcdRecRq_Type>();
 		HSSFWorkbook psetWorkbook = new HSSFWorkbook(file.getInputStream());
 		try {
 			int sheetCount = psetWorkbook.getNumberOfSheets();
 			List<String> pcdKeys = new ArrayList<>();
-			log.debug("Input file :"+file.getOriginalFilename()+" --No of sheets in the workbook: "+sheetCount);
+			log.debug(logMsg+"Input file :"+file.getOriginalFilename()+" --No of sheets in the workbook: "+sheetCount);
 			for(int sheetIndex = 0; sheetIndex<sheetCount; sheetIndex++) { 
 				validationMessgae = new StringBuffer();
 				validationMessgae.append("Workbook: ").append(file.getOriginalFilename());
 				HSSFSheet hssfSheet = psetWorkbook.getSheetAt(sheetIndex);
 				String worksheetName = hssfSheet.getSheetName();
 				validationMessgae.append(", Sheet: ").append(worksheetName);
-				log.debug("Input file :"+file.getOriginalFilename()+" --Processing worksheet: "+worksheetName);
+				log.debug(logMsg+"Input file :"+file.getOriginalFilename()+" --Processing worksheet: "+worksheetName);
 
 				HSSFRow header = hssfSheet.getRow(0);
 				String[] head = String.valueOf(header.getCell(0)).split("-");
@@ -384,7 +386,7 @@ public class ImportTaskService {
 						}
 					}
 				}
-				log.debug("Input file :"+file.getOriginalFilename()+" --Processing worksheet: "+worksheetName+" --Num of records in sheet :"+hssfSheet.getLastRowNum() +" --changed records :"+changedRecords);
+				log.debug(logMsg+"Input file :"+file.getOriginalFilename()+" --Processing worksheet: "+worksheetName+" --Num of records in sheet :"+hssfSheet.getLastRowNum() +" --changed records :"+changedRecords);
 			}
 		}finally {
 			if(psetWorkbook!=null) {
@@ -404,8 +406,8 @@ public class ImportTaskService {
 
 		return false;
 	}
-	
-	
+
+
 	private UpdPcdRecRq_Type prepareUpdateRequest(HashMap<String, String> data , PcdXmlRs_Type template, List<String> failedItems, boolean reload) throws SOAPException{
 		UpdPcdRecRq_Type req = new UpdPcdRecRq_Type();
 		CdmfKeyInfo_Type cdmfKeyInfo = setKeyElements(template.getPcdItemList().getPcdItem(0), data, failedItems, reload);
@@ -510,7 +512,7 @@ public class ImportTaskService {
 		}
 		return key;
 	}
-	
+
 	private void validateKeyElements(HashMap<String, String> data) {
 		if(StringUtils.isEmpty(data.get("CdmfCCNum"))) {
 			throw new BadRequestException("Invalid CC Number  -"+validationMessgae.append(", row#: ").append(errorRow));
@@ -525,7 +527,7 @@ public class ImportTaskService {
 		}
 
 		if(!StringUtils.isEmpty(data.get("CdmfFmtExpDt")) && !Utils.isValidDate(data.get("CdmfFmtExpDt"))) {
-				throw new BadRequestException("Invalid Expiry date - "+validationMessgae.append(", row#: ").append(errorRow));
+			throw new BadRequestException("Invalid Expiry date - "+validationMessgae.append(", row#: ").append(errorRow));
 		}
 
 		if(StringUtils.isEmpty(data.get("CdmfOwnerApp"))) {
@@ -560,16 +562,16 @@ public class ImportTaskService {
 	}
 
 
-	private void updateImportTaskStatus(String taskID) {
+	private void updateImportTaskStatus(String taskID, String logMsg) {
 		List<ImportTaskReviewDetailEntity> reeviewList = importTaskReviewDetailsService.findPsetKeyByImportTaskUUIDAndStatus(String.valueOf(taskID), Constants.FAILED);
-		log.debug("Import task Id :"+taskID+"--Failed records: "+ reeviewList.size());
+		log.debug(logMsg+"Import task Id :"+taskID+"--Failed records: "+ reeviewList.size());
 		if(reeviewList.size()==0) {
 			ImportTaskEntity entity = new ImportTaskEntity();
 			entity.setUuid(taskID);
 			entity.setStatus(Constants.COMPLETE);
-			entity.setModifiedBy(SystemContext.getUser());
+			entity.setModifiedBy(Utils.getUserIdInRequestHeader());
 			getDAO().UpdateStatus(entity);
-			log.debug("Import task Id :"+taskID+"--Status set to Complete: "+taskID);
+			log.debug(logMsg+"Import task Id :"+taskID+"--Status set to Complete: "+taskID);
 		}
 	}
 
@@ -603,7 +605,7 @@ public class ImportTaskService {
 	}
 
 	private ImportTaskDAO_I getDAO(){
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {

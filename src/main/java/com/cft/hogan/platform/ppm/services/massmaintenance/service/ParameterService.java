@@ -22,7 +22,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 public class ParameterService {
 
 	public List<ParameterBean> getParameters(String applicationID) {
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		List<ParameterBean> parametersList = null;
 		try {
 			HashMap<String, List<ParameterBean>> parametersMap = SystemContext.getParametersMap();

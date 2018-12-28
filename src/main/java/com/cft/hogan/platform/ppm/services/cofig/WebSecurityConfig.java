@@ -1,15 +1,12 @@
 package com.cft.hogan.platform.ppm.services.cofig;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+@SuppressWarnings("deprecation")
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -23,19 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.authorizeRequests().anyRequest().authenticated();
 	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/v1/parameter/mass-maintenance/**").allowedOrigins("http://localhost:3000").allowCredentials(true);
-			}
-		};
-	}
-
-
-
+	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth

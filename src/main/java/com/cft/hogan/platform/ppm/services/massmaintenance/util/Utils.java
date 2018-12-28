@@ -9,9 +9,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.BadRequestException;
@@ -34,25 +39,23 @@ public class Utils {
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		return  formatter.format(date);
 	}
-	
+
 	public static Date getCurrentDate() {
 		return new Date(Calendar.getInstance().getTimeInMillis());
 	}
-	
+
 	public static boolean isValidDate(String date) {
 		try {
 			try {
 				if(date.length() != 10) {
-					throw new BusinessException("Invalid date: "+date);
+					throw new BusinessException("Invalid date: "+date, true);
 				}else if(Integer.parseInt(date.substring(5, 7)) >12 || Integer.parseInt(date.substring(5, 7)) <1) {
-
-					throw new BusinessException("Invalid date: "+date);
+					throw new BusinessException("Invalid date: "+date, true);
 				}else if(Integer.parseInt(date.substring(8, 10)) >31 || Integer.parseInt(date.substring(8, 10)) <1) {
-
-					throw new BusinessException("Invalid date: "+date);
+					throw new BusinessException("Invalid date: "+date, true);
 				}
 			}catch(Exception e) {
-				throw new BusinessException("Invalid date: "+date);
+				throw new BusinessException("Invalid date: "+date, true);
 			}
 		}
 		catch(Exception e) {
@@ -127,17 +130,59 @@ public class Utils {
 	public static Timestamp getCurrentTimeStamp() {
 		return new Timestamp(Calendar.getInstance().getTimeInMillis());
 	}
-	
+
+	public static String getLogMsg() {
+		StringBuffer msg = new StringBuffer()
+				.append("SessionID:").append(getSessionID())
+				.append(" -User:").append(getLoggedInUser())
+				.append(" -Environment:").append(SystemContext.getEnvironment())
+				.append(" -Region:").append(Utils.getRegion());
+		return msg.toString();
+	}
+
+	public static String getRegion() {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		String region = request.getHeader("X-region");
+		if(region==null || StringUtils.isEmpty(region) || 
+				!(region.equalsIgnoreCase(Constants.REGION_COR) || region.equalsIgnoreCase(Constants.REGION_TDA) || 
+						region.equalsIgnoreCase(Constants.REGION_PASCOR) || region.equalsIgnoreCase(Constants.REGION_PASTDA))) {
+			throw new SystemException("Invalid request header - X-region :"+region);
+		}
+		return region;
+	}
+
+	public static String getUserIdInRequestHeader() {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		String user = request.getHeader("X-user");
+		if(user==null || StringUtils.isEmpty(user)) {
+			throw new SystemException("Invalid request header - X-user missing");
+		}
+		return user;
+	}
+
+	public static String getSessionID() {
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(false);
+		if(session!=null) {
+			return session.getId();
+		}
+		return Constants.EMPTY;
+	}
+
+	public static String getLoggedInUser() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+
 	public static void handleException(Exception e) {
 		try {
+			log.error(getLogMsg());
+			log.error("Service Endpoint:"+SystemContext.getEndPoint());
 			log.error(e.getMessage(),e );
-			StringBuffer msg = new StringBuffer();
-			msg.append("Environment :").append(SystemContext.getEnvironment())
-				.append(" --Region :").append(SystemContext.getRegion())
-				.append(" --PCD Service :").append(SystemContext.getEndPoint()).append("\n");
-			log.error(msg.toString());
 			if(e instanceof BusinessException) {
-				log.error("Business error occured. Error information logged and continue processing.");
+				if(((BusinessException) e).processFurther) {
+					log.error("Business error occured. Error information logged and continue processing.");
+				}else{
+					throw new BusinessException(e.getMessage(), false);
+				}
 			}else if(e instanceof ItemNotFoundException || e instanceof NoResultException || e instanceof EmptyResultDataAccessException) {
 				throw new ItemNotFoundException();
 			}else if(e instanceof BadRequestException) {
@@ -147,7 +192,7 @@ public class Utils {
 			}else {
 				throw new SystemException();
 			}
-		}catch(IOException ex) {
+		} catch (IOException ex) {
 			handleException(ex);
 		}
 	}

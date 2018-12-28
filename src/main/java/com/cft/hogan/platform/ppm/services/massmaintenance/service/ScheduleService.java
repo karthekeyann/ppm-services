@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBatchBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean;
@@ -100,7 +99,7 @@ public class ScheduleService {
 		String uuid = null;
 		try {
 			validateEffectiveDate(bean.getEffectiveDate());
-			bean.setCreatedBy(SystemContext.getUser());
+			bean.setCreatedBy(Utils.getUserIdInRequestHeader());
 			uuid =  getDAO().save(beanToEntity(bean));
 		} catch (Exception e) {
 			Utils.handleException(e);
@@ -111,9 +110,11 @@ public class ScheduleService {
 
 	public ScheduleBean update(ScheduleBean bean, String scheduleId) {
 		try {
-			Utils.isValidDate(bean.getEffectiveDate());
+			if(!Utils.isValidDate(bean.getEffectiveDate())) {
+				throw new BusinessException("Invalid Start date: "+bean.getEffectiveDate(), false);
+			}
 			bean.setUuid(scheduleId);
-			bean.setModifiedBy(SystemContext.getUser());
+			bean.setModifiedBy(Utils.getUserIdInRequestHeader());
 			getDAO().update(beanToEntity(bean));
 		} catch (Exception e) {
 			Utils.handleException(e);
@@ -128,7 +129,7 @@ public class ScheduleService {
 			if(schedule == null ) {
 				throw new ItemNotFoundException();
 			}
-			if(!SystemContext.getUser().equalsIgnoreCase(schedule.getCreatedBy())) {
+			if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(schedule.getCreatedBy())) {
 				throw new BadRequestException("Schedule Task can be deleted by task creator/owner");
 			}
 			getDAO().delete(scheduleId);
@@ -209,7 +210,7 @@ public class ScheduleService {
 				bean.setTemplateName(templateBean.getName());
 			}
 		} catch (Exception e) {
-			throw new BusinessException("Error setting Template Name in Schedule Task :"+bean.getName());
+			throw new BusinessException("Error setting Template Name in Schedule Task :"+bean.getName(), false);
 		}
 	}
 
@@ -222,7 +223,7 @@ public class ScheduleService {
 				bean.setTemplate(templateBean);
 			}
 		} catch (Exception e) {
-			throw new BusinessException("Error setting Template in Schedule Batch response :"+bean.getName());
+			throw new BusinessException("Error setting Template in Schedule Batch response :"+bean.getName(), true);
 		}
 	}
 
@@ -312,7 +313,7 @@ public class ScheduleService {
 	}
 
 	private ScheduleDAO_I getDAO(){
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {

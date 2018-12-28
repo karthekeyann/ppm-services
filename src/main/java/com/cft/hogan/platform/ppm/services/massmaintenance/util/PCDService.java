@@ -40,12 +40,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PCDService {
 
 	private CeleritiPcd_PortType port = null;
+	
+	private String logMsg =Utils.getLogMsg()+"--";
 
 	public PcdXmlRs_Type getParameterXmlTemplate(String parameterNum) throws Exception {
-		String key = SystemContext.getRegion()+parameterNum;
+		String key = Utils.getRegion()+parameterNum;
 		HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = SystemContext.getXMLTemplatesMap();
 		if(xmlTemplatesMap.containsKey(key)) {
-			log.debug("PCD XML Template retrieved from cache :"+key);
+			log.debug(logMsg+"PCD XML Template retrieved from cache :"+key);
 			return xmlTemplatesMap.get(key);
 		}
 		PcdXmlRq_Type pcdXmlRq = new PcdXmlRq_Type();
@@ -68,12 +70,12 @@ public class PCDService {
 			throw new SystemException("Error in PCD service- XML template not retrieved: PCD#"+parameterNum+" Error-"+response.getXStatus().getStatusDesc());
 		}
 		xmlTemplatesMap.put(key, response);
-		log.debug("PCD XML Template retrieved from service :"+key);
+		log.debug(logMsg+"PCD XML Template retrieved from service :"+key);
 		return response;
 	}
 
 	public PcdXmlRs_Type retrievePCDItems(ParameterBean parameterBean) throws Exception {
-		log.debug("Retrieve PCD details PCD#: "+parameterBean.getNumber() + " CompanyID: "+parameterBean.getCompanyID() +
+		log.debug(logMsg+"Retrieve PCD details PCD#: "+parameterBean.getNumber() + " CompanyID: "+parameterBean.getCompanyID() +
 				" ApplicationID: "+parameterBean.getApplicationID()	+ " EffectiveDate: "+parameterBean.getEffectiveDate());
 		PcdXmlRs_Type response = new PcdXmlRs_Type();
 		List<PcdItemList_TypePcdItem> allRecords = new ArrayList<>();
@@ -91,7 +93,7 @@ public class PCDService {
 		}
 
 		if ("Cards".equals(parameterBean.getApplicationID())) {
-			log.debug("Setting request for Cards");
+			log.debug(logMsg+"Setting request for Cards");
 			CdmfCdkKey_Type cdmfCdkKey = new CdmfCdkKey_Type();
 			MessageElement[] eleArray = new MessageElement[1];
 			MessageElement ele = new MessageElement();
@@ -113,7 +115,7 @@ public class PCDService {
 			if(pcdItemList!=null) {
 				mergePCDItems(allRecords, pcdItemList);
 				while ("Y".equalsIgnoreCase(pcdXmlRs.getPcdItemList().getMoreItem())) {
-					log.debug("Continue for more Items PCD#: "+parameterBean.getNumber() + " CompanyID: "+parameterBean.getCompanyID() +
+					log.debug(logMsg+"Continue for more Items PCD#: "+parameterBean.getNumber() + " CompanyID: "+parameterBean.getCompanyID() +
 							" ApplicationID: "+parameterBean.getApplicationID()	+ " EffectiveDate: "+parameterBean.getEffectiveDate());
 					pcdXmlRs = service.processPcd(getNextItemsRequest(pcdXmlRs, pcdXmlRq));
 					if ("0".equals(String.valueOf(pcdXmlRs.getXStatus().getStatusCode()))) {
@@ -236,7 +238,7 @@ public class PCDService {
 		CredentialsRqHdr_Type credentialsRqHdr = new CredentialsRqHdr_Type();
 		PartyRef_Type partyRef = new PartyRef_Type();
 		LoginIdent_Type loginIdent = new LoginIdent_Type();
-		String loginName = SystemContext.getUser();
+		String loginName = Utils.getUserIdInRequestHeader();
 
 		loginIdent.setLoginName(loginName);
 		partyRef.setLoginIdent(loginIdent);

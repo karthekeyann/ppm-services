@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.ImportTaskReviewDetailsDAO_I;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.cor.ImportTaskReviewDetailsDAO_COR;
 import com.cft.hogan.platform.ppm.services.massmaintenance.dao.pascor.ImportTaskReviewDetailsDAO_PASCOR;
@@ -14,6 +13,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.dao.tda.ImportTaskRev
 import com.cft.hogan.platform.ppm.services.massmaintenance.entity.ImportTaskReviewDetailEntity;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
+import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 
 
 @Service
@@ -57,7 +57,7 @@ public class ImportTaskReviewDetailsService {
 	}
 
 	private ImportTaskReviewDetailsDAO_I getDAO(){
-		String region = SystemContext.getRegion();
+		String region = Utils.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {

@@ -31,7 +31,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.springframework.util.StringUtils;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ExportTaskBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ParameterBean;
@@ -125,14 +124,14 @@ public class ExportService {
 	private HSSFCellStyle oddRowColumnCellStyle = null;
 	private HSSFCellStyle evenRowColumnCellStyle = null;
 	private HSSFCellStyle extendedTierheaderKeyColumnCellStyle = null;
-
-
+	
 	public byte[] save(ExportTaskBean exportTaskBean) {
 		byte[] response =null;
 		try {
-			log.debug("Export Task request "+"--SingleTab :"+exportTaskBean.getSingleTab());
+			String logMsg =Utils.getLogMsg()+"--";
+			log.debug(logMsg+"Export Task request "+"--SingleTab :"+exportTaskBean.getSingleTab());
 			for(ParameterBean pset:exportTaskBean.getPsets()) {
-				log.debug(new StringBuffer().append("--PCD# :").append(pset.getNumber())
+				log.debug(logMsg+new StringBuffer().append("--PCD# :").append(pset.getNumber())
 						.append("--").append(pset.getApplicationID())
 						.append("--").append(pset.getCompanyID())
 						.append("--").append(pset.getEffectiveDate()).toString());
@@ -1206,7 +1205,7 @@ public class ExportService {
 		Properties labels = new Properties();
 		try {
 			StringBuffer path = new StringBuffer(Constants.LABELS_PROP_PATH);
-			path.append(SystemContext.getRegion().toLowerCase()).append("/");
+			path.append(Utils.getRegion().toLowerCase()).append("/");
 			String fileName = "ParameterKeyLabels.properties";
 			File file = new File(path.toString() + fileName);
 
@@ -1216,7 +1215,7 @@ public class ExportService {
 					inputStream = new BufferedReader(new FileReader(file));
 					labels.load(inputStream);
 				}else {
-					throw new BusinessException("Error reading Label properties file in Export Service: "+file.getAbsolutePath());
+					throw new BusinessException("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
 				}
 			}catch(Exception e) {
 				Utils.handleException(e);
@@ -1233,7 +1232,7 @@ public class ExportService {
 					inputStream = new BufferedReader(new FileReader(file));
 					labels.load(inputStream);
 				}else {
-					throw new BusinessException("Error reading Label properties file in Export Service: "+file.getAbsolutePath());
+					throw new BusinessException("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
 				}
 			}catch(Exception e) {
 				Utils.handleException(e);
@@ -1243,7 +1242,7 @@ public class ExportService {
 				}
 			}
 		} catch (Exception e) {
-			throw new BusinessException("Error reading Label properties file in Export Service: "+e.getMessage());
+			throw new BusinessException("Error reading Label properties file in Export Service: "+e.getMessage(), true);
 		}	
 		return labels;
 	}

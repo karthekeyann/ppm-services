@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ExportTaskBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/v1/parameter/mass-maintenance/exports")
 public class ExportController {
 	

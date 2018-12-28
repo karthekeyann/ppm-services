@@ -1,26 +1,16 @@
 package com.cft.hogan.platform.ppm.services.massmaintenance.exception;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
-
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class BusinessException extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public boolean processFurther = false;
 
-	public BusinessException(String message) {
+	public BusinessException(String message, boolean processFurther) {
 		super(message);
-		log.error("Business error occured. Error information logged and continue processing.");
-		log.error(message);
-	}
-	
-	
-	public BusinessException(Exception e) {
-		super(e);
-		SystemContext.logDetails();
+		this.processFurther = processFurther;
 	}
 }
