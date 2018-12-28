@@ -8,6 +8,8 @@
 package com.cft.hogan.platform.ppm.services.pcd.service.client;
 
 public class UpdPcdRecRq_Type  implements java.io.Serializable {
+    private com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type[] msgRqHdr;
+
     private com.cft.hogan.platform.ppm.services.pcd.service.client.CdmfKeyInfo_Type cdmfKeyInfo;
 
     private com.cft.hogan.platform.ppm.services.pcd.service.client.PcdEntry pcdEntry;
@@ -16,10 +18,32 @@ public class UpdPcdRecRq_Type  implements java.io.Serializable {
     }
 
     public UpdPcdRecRq_Type(
+           com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type[] msgRqHdr,
            com.cft.hogan.platform.ppm.services.pcd.service.client.CdmfKeyInfo_Type cdmfKeyInfo,
            com.cft.hogan.platform.ppm.services.pcd.service.client.PcdEntry pcdEntry) {
+           this.msgRqHdr = msgRqHdr;
            this.cdmfKeyInfo = cdmfKeyInfo;
            this.pcdEntry = pcdEntry;
+    }
+
+
+    /**
+     * Gets the msgRqHdr value for this UpdPcdRecRq_Type.
+     * 
+     * @return msgRqHdr
+     */
+    public com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type[] getMsgRqHdr() {
+        return msgRqHdr;
+    }
+
+
+    /**
+     * Sets the msgRqHdr value for this UpdPcdRecRq_Type.
+     * 
+     * @param msgRqHdr
+     */
+    public void setMsgRqHdr(com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type[] msgRqHdr) {
+        this.msgRqHdr = msgRqHdr;
     }
 
 
@@ -74,6 +98,9 @@ public class UpdPcdRecRq_Type  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
+            ((this.msgRqHdr==null && other.getMsgRqHdr()==null) || 
+             (this.msgRqHdr!=null &&
+              java.util.Arrays.equals(this.msgRqHdr, other.getMsgRqHdr()))) &&
             ((this.cdmfKeyInfo==null && other.getCdmfKeyInfo()==null) || 
              (this.cdmfKeyInfo!=null &&
               this.cdmfKeyInfo.equals(other.getCdmfKeyInfo()))) &&
@@ -91,6 +118,17 @@ public class UpdPcdRecRq_Type  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        if (getMsgRqHdr() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getMsgRqHdr());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getMsgRqHdr(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
         if (getCdmfKeyInfo() != null) {
             _hashCode += getCdmfKeyInfo().hashCode();
         }
@@ -108,6 +146,14 @@ public class UpdPcdRecRq_Type  implements java.io.Serializable {
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://MessageView/", "UpdPcdRecRq_Type"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("msgRqHdr");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "MsgRqHdr"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://MessageView/", "CredentialsRqHdr_Type"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        elemField.setItemQName(new javax.xml.namespace.QName("", "CredentialsRqHdr"));
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("cdmfKeyInfo");
         elemField.setXmlName(new javax.xml.namespace.QName("http://MessageView/", "CdmfKeyInfo"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://MessageView/", "CdmfKeyInfo_Type"));

@@ -895,34 +895,36 @@ public class ExportService {
 			} else {
 				dataRow = worksheet.getRow(rowIndex);
 			}
-			for (MessageElement node : pcdDataXml) {
-				if(repeatingElementName.equalsIgnoreCase(node.getName())) {
-					List<MessageElement> repeatingDataXml = node.getChildren();
-					if(repeatingDataXml!=null) {
-						Iterator<MessageElement> repDataIterator = repeatingDataXml.iterator();
-						while (repDataIterator.hasNext()) {
-							List<Text> childs = ((MessageElement) repDataIterator.next()).getChildren();
-							for (Text child : childs) {
 
-								MessageElement element = new MessageElement();
-								element.setName(child.getNodeName());
-								element.setValue(child.getData());
-								populateCell(worksheet, headerToColumnMap, dataRow, element, style, repeatingElementName);
-							}
-							if (repDataIterator.hasNext()) {
-								short aRow = (short) ++repeatingRowIndex;
-								if (worksheet.getRow(aRow) == null) {
-									dataRow = worksheet.createRow(aRow);
-								} else {
-									dataRow = worksheet.getRow(aRow);
+			if(pcdDataXml!=null) {
+				for (MessageElement node : pcdDataXml) {
+					if(repeatingElementName.equalsIgnoreCase(node.getName())) {
+						List<MessageElement> repeatingDataXml = node.getChildren();
+						if(repeatingDataXml!=null) {
+							Iterator<MessageElement> repDataIterator = repeatingDataXml.iterator();
+							while (repDataIterator.hasNext()) {
+								List<Text> childs = ((MessageElement) repDataIterator.next()).getChildren();
+								for (Text child : childs) {
+
+									MessageElement element = new MessageElement();
+									element.setName(child.getNodeName());
+									element.setValue(child.getData());
+									populateCell(worksheet, headerToColumnMap, dataRow, element, style, repeatingElementName);
+								}
+								if (repDataIterator.hasNext()) {
+									short aRow = (short) ++repeatingRowIndex;
+									if (worksheet.getRow(aRow) == null) {
+										dataRow = worksheet.createRow(aRow);
+									} else {
+										dataRow = worksheet.getRow(aRow);
+									}
 								}
 							}
 						}
+						break;
 					}
-					break;
 				}
 			}
-
 			if (changedRowIndex < repeatingRowIndex) {
 				changedRowIndex = repeatingRowIndex;
 			}

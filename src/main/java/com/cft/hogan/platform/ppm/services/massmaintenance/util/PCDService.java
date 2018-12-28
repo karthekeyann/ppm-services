@@ -21,6 +21,9 @@ import com.cft.hogan.platform.ppm.services.pcd.service.client.CdmfKeyInfo_Type;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.CdmfRegKey_Type;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.CeleritiPcd_PortType;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.CeleritiPcd_ServiceLocator;
+import com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type;
+import com.cft.hogan.platform.ppm.services.pcd.service.client.LoginIdent_Type;
+import com.cft.hogan.platform.ppm.services.pcd.service.client.PartyRef_Type;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.PcdItemList_Type;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.PcdItemList_TypePcdItem;
 import com.cft.hogan.platform.ppm.services.pcd.service.client.PcdItemList_TypePcdItemPcdItemKey;
@@ -59,6 +62,7 @@ public class PCDService {
 		cdmfKeyInfo.setCdmfAction("INQXML");
 		cdmfKeyInfo.setCdmfRegKey(cdmfRegKey);
 		pcdXmlRq.setCdmfKeyInfo(cdmfKeyInfo);
+		pcdXmlRq.setMsgRqHdr(getMsgRqHdr());
 		PcdXmlRs_Type response = getPCDService().processPcd(pcdXmlRq);
 		if(!"0".equals(String.valueOf(response.getXStatus().getStatusCode()))) {
 			throw new SystemException("Error in PCD service- XML template not retrieved: PCD#"+parameterNum+" Error-"+response.getXStatus().getStatusDesc());
@@ -81,11 +85,11 @@ public class PCDService {
 		if(parameterBean.getCompanyID()!=null && !StringUtils.isEmpty(parameterBean.getCompanyID())) {
 			cdmfKeyInfo.setCdmfFmtCoId(Long.parseLong(parameterBean.getCompanyID()));
 		}
-		
+
 		if(parameterBean.getEffectiveDate()!=null && Utils.isValidDate(parameterBean.getEffectiveDate())) {
 			cdmfKeyInfo.setCdmfFmtEffDt(parameterBean.getEffectiveDate());
 		}
-		
+
 		if ("Cards".equals(parameterBean.getApplicationID())) {
 			log.debug("Setting request for Cards");
 			CdmfCdkKey_Type cdmfCdkKey = new CdmfCdkKey_Type();
@@ -99,6 +103,7 @@ public class PCDService {
 		}
 
 		pcdXmlRq.setCdmfKeyInfo(cdmfKeyInfo);
+		pcdXmlRq.setMsgRqHdr(getMsgRqHdr());
 
 		CeleritiPcd_PortType service = getPCDService();
 		PcdXmlRs_Type pcdXmlRs = service.processPcd(pcdXmlRq);
@@ -134,6 +139,9 @@ public class PCDService {
 	public UpdPcdRecRs_Type[] updatePcd(List<UpdPcdRecRq_Type> requestList) throws RemoteException, Exception {
 		UpdatePcdRq_Type updatePcdRq = new UpdatePcdRq_Type();
 		UpdPcdRecRs_Type[] response = null;
+		requestList.forEach(req->{
+			req.setMsgRqHdr(getMsgRqHdr());
+		});
 		updatePcdRq.setUpdPcdRecRq(requestList.toArray(new UpdPcdRecRq_Type[requestList.size()]));
 		response = getPCDService().updatePcd(updatePcdRq);
 		return response;
@@ -221,5 +229,19 @@ public class PCDService {
 			port = service.getCeleritiPcd(portAddress);
 		}
 		return port;
+	}
+
+	private CredentialsRqHdr_Type[] getMsgRqHdr() {
+		CredentialsRqHdr_Type[] msgRqHdr = new CredentialsRqHdr_Type[1];
+		CredentialsRqHdr_Type credentialsRqHdr = new CredentialsRqHdr_Type();
+		PartyRef_Type partyRef = new PartyRef_Type();
+		LoginIdent_Type loginIdent = new LoginIdent_Type();
+		String loginName = SystemContext.getUser();
+
+		loginIdent.setLoginName(loginName);
+		partyRef.setLoginIdent(loginIdent);
+		credentialsRqHdr.setPartyRef(partyRef);
+		msgRqHdr[0] = credentialsRqHdr;
+		return msgRqHdr;
 	}
 }

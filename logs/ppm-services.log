@@ -2962,3 +2962,862 @@ com.cft.hogan.platform.ppm.services.massmaintenance.exception.BadRequestExceptio
 2018-12-27 04:47:16 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
 2018-12-27 04:47:16 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
 2018-12-27 04:47:16 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 20:48:10 [main] INFO  c.c.h.p.ppm.services.app.Application - Starting Application on LP-PC0XLGYT with PID 37160 (C:\workspace\ppm-services\target\classes started by karthikeyan_n in C:\workspace\ppm-services)
+2018-12-27 20:48:10 [main] DEBUG c.c.h.p.ppm.services.app.Application - Running with Spring Boot v2.0.5.RELEASE, Spring v5.0.9.RELEASE
+2018-12-27 20:48:10 [main] INFO  c.c.h.p.ppm.services.app.Application - No active profile set, falling back to default profiles: default
+2018-12-27 20:48:10 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@29626d54: startup date [Thu Dec 27 20:48:10 CST 2018]; root of context hierarchy
+2018-12-27 20:48:11 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'corDatasource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_COR; factoryMethodName=corDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_COR.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_PASCOR; factoryMethodName=corDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_PASCOR.class]]
+2018-12-27 20:48:11 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'tdaDatasource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_PASTDA; factoryMethodName=tdaDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_PASTDA.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_TDA; factoryMethodName=tdaDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_TDA.class]]
+2018-12-27 20:48:11 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$9623d74d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-12-27 20:48:11 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$15a4247f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-12-27 20:48:11 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2018-12-27 20:48:12 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2018-12-27 20:48:12 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2018-12-27 20:48:12 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.34
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jre1.8.0_191\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_191/bin/server;C:/Program Files/Java/jre1.8.0_191/bin;C:/Program Files/Java/jre1.8.0_191/lib/amd64;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Windows\CCM;C:\Program Files\Java\jdk1.8.0_191\;C:\Program Files\apache-maven-3.5.4\bin;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\nodejs\;C:\Users\karthikeyan_n\AppData\Local\Microsoft\WindowsApps;C:\Users\karthikeyan_n\AppData\Roaming\npm;C:\Program Files\sts-bundle\sts-4.0.1.RELEASE;;.]
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1511 ms
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.b.w.s.DelegatingFilterProxyRegistrationBean - Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-12-27 20:48:12 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2018-12-27 20:48:12 [main] INFO  o.s.j.d.DriverManagerDataSource - Loaded JDBC driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+2018-12-27 20:48:12 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 20:48:12 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_COR
+	...]
+2018-12-27 20:48:12 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.2.17.Final}
+2018-12-27 20:48:12 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2018-12-27 20:48:12 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-12-27 20:48:13 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:14 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 20:48:14 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 20:48:14 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_COR
+	...]
+2018-12-27 20:48:15 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:15 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 20:48:15 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 20:48:15 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASCOR
+	...]
+2018-12-27 20:48:16 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 20:48:16 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 20:48:16 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASCOR
+	...]
+2018-12-27 20:48:16 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:17 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 20:48:17 [main] INFO  o.s.j.d.DriverManagerDataSource - Loaded JDBC driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+2018-12-27 20:48:17 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 20:48:17 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASTDA
+	...]
+2018-12-27 20:48:17 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:18 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 20:48:18 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 20:48:18 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASTDA
+	...]
+2018-12-27 20:48:18 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:19 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 20:48:19 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 20:48:19 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_TDA
+	...]
+2018-12-27 20:48:19 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:19 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 20:48:19 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 20:48:19 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_TDA
+	...]
+2018-12-27 20:48:20 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 20:48:20 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@29626d54: startup date [Thu Dec 27 20:48:10 CST 2018]; root of context hierarchy
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/applications],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ApplicationController.get()
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/parameters/{id}/companies],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.CompanyController.findByID(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/exports],methods=[POST]}" onto public org.springframework.http.ResponseEntity<byte[]> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(com.cft.hogan.platform.ppm.services.massmaintenance.bean.ExportTaskBean)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports],methods=[POST]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.save(java.lang.String,java.lang.String,org.springframework.web.multipart.MultipartFile)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports/{id}],methods=[PUT]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.reload(java.lang.String,org.springframework.web.multipart.MultipartFile)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports],methods=[GET]}" onto public org.springframework.hateoas.Resources<org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean>> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.findAll(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports/{id}],methods=[GET]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.findByUUID(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports/{id}],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<?> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.deleteTask(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/applications/{applicationID}/parameters],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ParameterController.get(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/{id}],methods=[PUT]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.update(java.lang.String,com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules],methods=[POST]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.save(com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/batch],methods=[GET]}" onto public java.util.List<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBatchBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.batch(java.lang.String,java.sql.Date)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules],methods=[GET]}" onto public org.springframework.hateoas.Resources<org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean>> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.findAll(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/{id}],methods=[GET]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.findByUUID(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/{id}],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<?> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.deleteTask(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates/{id}],methods=[PUT]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.update(java.lang.String,com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates/{id}],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<?> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.delete(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates],methods=[POST]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.save(com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates],methods=[GET]}" onto public org.springframework.hateoas.Resources<org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean>> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.findAll()
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates/{id}],methods=[GET]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.findByUUID(java.lang.String)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/user/token],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TokenController.logOut()
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/user/token],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TokenController.getUser()
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/user/token],methods=[POST]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TokenController.getToken()
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-27 20:48:21 [main] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Detected @ExceptionHandler methods in exceptionAdvice
+2018-12-27 20:48:21 [main] INFO  o.s.l.c.s.AbstractContextSource - Property 'userDn' not set - anonymous context will be used for read-write operations
+2018-12-27 20:48:21 [main] INFO  o.s.s.l.DefaultSpringSecurityContextSource -  URL 'ldap://localhost:8389/dc=springframework,dc=org', root DN is 'dc=springframework,dc=org'
+2018-12-27 20:48:21 [main] INFO  o.s.l.c.s.AbstractContextSource - Property 'userDn' not set - anonymous context will be used for read-write operations
+2018-12-27 20:48:21 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@13e00016, org.springframework.security.web.context.SecurityContextPersistenceFilter@661e1399, org.springframework.security.web.header.HeaderWriterFilter@5ebbde60, org.springframework.web.filter.CorsFilter@7b3cbe6e, org.springframework.security.web.authentication.logout.LogoutFilter@6bf570c, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@200d1a3d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@424f02b8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@482ba4b1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@177ede17, org.springframework.security.web.session.SessionManagementFilter@274fdea6, org.springframework.security.web.access.ExceptionTranslationFilter@4e974b9e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6b832551]
+2018-12-27 20:48:21 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2018-12-27 20:48:21 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2018-12-27 20:48:21 [main] INFO  o.a.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
+2018-12-27 20:48:21 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.ppm.services.app.Application - Started Application in 11.346 seconds (JVM running for 12.598)
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - ========================================
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext -  System context details
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - ========================================
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Environment :test
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -COR :http://localhost:9005/Celeriti/CeleritiPcd
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -TDA :http://20.17.189.77:8165/Celeriti/CeleritiPcd
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -PASCOR :http://20.17.189.77:8162/Celeriti/CeleritiPcd
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -PASTDA :http://20.17.189.77:8164/Celeriti/CeleritiPcd
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -Update records size :1000
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -COR :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMCOR;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -TDA :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMTDA;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -PASCOR :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMCOR;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -PASTDA :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMTDA;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database batch update size :20
+2018-12-27 20:48:21 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - ========================================
+2018-12-27 20:48:55 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-12-27 20:48:55 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization started
+2018-12-27 20:48:55 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization completed in 30 ms
+2018-12-27 20:48:55 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 20:48:55 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :1601--FSS--all--null
+2018-12-27 20:48:56 [http-nio-8080-exec-2] WARN  org.apache.axis.utils.JavaUtils - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+2018-12-27 20:49:08 [http-nio-8080-exec-2] ERROR c.c.h.p.p.s.m.util.Utils - INVALID LOGINNAME:LOGINNAME SHOULD BE LESS THAN OR EQUAL TO 8 CHARACTERS        
+org.apache.axis.AxisFault: INVALID LOGINNAME:LOGINNAME SHOULD BE LESS THAN OR EQUAL TO 8 CHARACTERS        
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanEndElement(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLNSDocumentScannerImpl.next(Unknown Source)
+	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(Unknown Source)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:696)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.handlers.soap.MustUnderstandChecker.invoke(MustUnderstandChecker.java:62)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:206)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2784)
+	at org.apache.axis.client.Call.invoke(Call.java:2767)
+	at org.apache.axis.client.Call.invoke(Call.java:2443)
+	at org.apache.axis.client.Call.invoke(Call.java:2366)
+	at org.apache.axis.client.Call.invoke(Call.java:1812)
+	at com.cft.hogan.platform.ppm.services.pcd.service.client.CeleritiPcd_BindingStub.processPcd(CeleritiPcd_BindingStub.java:698)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.util.PCDService.getParameterXmlTemplate(PCDService.java:66)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createPsetWorkBook(ExportService.java:182)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.save(ExportService.java:145)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(ExportController.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:127)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:91)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:170)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:215)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:66)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:357)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:270)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:800)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:806)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Unknown Source)
+2018-12-27 20:49:08 [http-nio-8080-exec-2] ERROR c.c.h.p.p.s.m.util.Utils - Environment :test --Region :cor --PCD Service :http://localhost:9005/Celeriti/CeleritiPcd
+
+2018-12-27 20:49:08 [http-nio-8080-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: System error occurred. Please try again or contact system administrator.]
+2018-12-27 20:49:47 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 20:49:47 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :1601--FSS--all--null
+2018-12-27 20:49:47 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from service :cor1601
+2018-12-27 20:49:47 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 1 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:48 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:48 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 5 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:49 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:49 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 9 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:50 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:50 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 10 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:51 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:51 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 15 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:51 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:51 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 20 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:52 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:52 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 30 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:53 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:53 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 40 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:53 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:53 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 50 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:54 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:54 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 54 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:55 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:55 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 60 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:56 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:56 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 70 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:57 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:57 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 71 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:57 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:57 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 80 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:58 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:58 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 99 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:49:59 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :cor1601
+2018-12-27 20:49:59 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1601 CompanyID: 65535 ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:51:07 [http-nio-8080-exec-7] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 20:51:07 [http-nio-8080-exec-7] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :1626--FSS--null--null
+2018-12-27 20:51:08 [http-nio-8080-exec-7] ERROR c.c.h.p.p.s.m.util.Utils - Error in PCD service- XML template not retrieved: PCD#1626 Error-FORMAT INVALID
+com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: Error in PCD service- XML template not retrieved: PCD#1626 Error-FORMAT INVALID
+	at com.cft.hogan.platform.ppm.services.massmaintenance.util.PCDService.getParameterXmlTemplate(PCDService.java:68)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createPsetWorkBook(ExportService.java:182)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.save(ExportService.java:145)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(ExportController.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:127)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:91)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:170)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:215)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:66)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:357)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:270)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:800)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:806)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Unknown Source)
+2018-12-27 20:51:08 [http-nio-8080-exec-7] ERROR c.c.h.p.p.s.m.util.Utils - Environment :test --Region :cor --PCD Service :http://localhost:9005/Celeriti/CeleritiPcd
+
+2018-12-27 20:51:08 [http-nio-8080-exec-7] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: Error in PCD service- XML template not retrieved: PCD#1626 Error-FORMAT INVALID]
+2018-12-27 20:51:48 [http-nio-8080-exec-10] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 20:51:48 [http-nio-8080-exec-10] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :1626--FSS--null--null
+2018-12-27 20:51:58 [http-nio-8080-exec-10] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from service :tda1626
+2018-12-27 20:51:58 [http-nio-8080-exec-10] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 1626 CompanyID: null ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:53:23 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 20:53:23 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :48842--FSS--null--null
+2018-12-27 20:53:24 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from service :tda48842
+2018-12-27 20:53:24 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 48842 CompanyID: null ApplicationID: FSS EffectiveDate: null
+2018-12-27 20:53:25 [http-nio-8080-exec-2] ERROR c.c.h.p.p.s.m.util.Utils - null
+java.lang.NullPointerException: null
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.populateRepeatingElements(ExportService.java:898)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createDataRow(ExportService.java:802)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.pupulatePsetWorksheet(ExportService.java:621)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createPsetWorkBook(ExportService.java:205)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.save(ExportService.java:145)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(ExportController.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:127)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:91)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:170)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:215)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:66)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:357)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:270)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:800)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:806)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Unknown Source)
+2018-12-27 20:53:25 [http-nio-8080-exec-2] ERROR c.c.h.p.p.s.m.util.Utils - Environment :test --Region :tda --PCD Service :http://20.17.189.77:8165/Celeriti/CeleritiPcd
+
+2018-12-27 20:53:25 [http-nio-8080-exec-2] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: System error occurred. Please try again or contact system administrator.]
+2018-12-27 21:00:39 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 21:00:39 [http-nio-8080-exec-6] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :48842--FSS--null--null
+2018-12-27 21:00:40 [http-nio-8080-exec-6] ERROR c.c.h.p.p.s.m.util.Utils - Error in PCD service- XML template not retrieved: PCD#48842 Error-NO MORE RECORDS TO DISPLAY
+com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: Error in PCD service- XML template not retrieved: PCD#48842 Error-NO MORE RECORDS TO DISPLAY
+	at com.cft.hogan.platform.ppm.services.massmaintenance.util.PCDService.getParameterXmlTemplate(PCDService.java:68)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createPsetWorkBook(ExportService.java:182)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.save(ExportService.java:145)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(ExportController.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:127)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:91)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:170)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:215)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:66)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:357)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:270)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:800)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:806)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Unknown Source)
+2018-12-27 21:00:40 [http-nio-8080-exec-6] ERROR c.c.h.p.p.s.m.util.Utils - Environment :test --Region :cor --PCD Service :http://localhost:9005/Celeriti/CeleritiPcd
+
+2018-12-27 21:00:40 [http-nio-8080-exec-6] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: Error in PCD service- XML template not retrieved: PCD#48842 Error-NO MORE RECORDS TO DISPLAY]
+2018-12-27 21:00:51 [http-nio-8080-exec-4] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 21:00:51 [http-nio-8080-exec-4] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :48842--FSS--null--null
+2018-12-27 21:00:51 [http-nio-8080-exec-4] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from cache :tda48842
+2018-12-27 21:00:51 [http-nio-8080-exec-4] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 48842 CompanyID: null ApplicationID: FSS EffectiveDate: null
+2018-12-27 21:00:52 [http-nio-8080-exec-4] ERROR c.c.h.p.p.s.m.util.Utils - null
+java.lang.NullPointerException: null
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.populateRepeatingElements(ExportService.java:898)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createDataRow(ExportService.java:802)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.pupulatePsetWorksheet(ExportService.java:621)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.createPsetWorkBook(ExportService.java:205)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.service.ExportService.save(ExportService.java:145)
+	at com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(ExportController.java:34)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:891)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:127)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:91)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:170)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:215)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:66)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:215)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:178)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:357)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:270)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:800)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:806)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Unknown Source)
+2018-12-27 21:00:52 [http-nio-8080-exec-4] ERROR c.c.h.p.p.s.m.util.Utils - Environment :test --Region :tda --PCD Service :http://20.17.189.77:8165/Celeriti/CeleritiPcd
+
+2018-12-27 21:00:52 [http-nio-8080-exec-4] WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException: System error occurred. Please try again or contact system administrator.]
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@29626d54: startup date [Thu Dec 27 20:48:10 CST 2018]; root of context hierarchy
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 21:02:31 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 21:02:35 [main] INFO  c.c.h.p.ppm.services.app.Application - Starting Application on LP-PC0XLGYT with PID 15880 (C:\workspace\ppm-services\target\classes started by karthikeyan_n in C:\workspace\ppm-services)
+2018-12-27 21:02:35 [main] DEBUG c.c.h.p.ppm.services.app.Application - Running with Spring Boot v2.0.5.RELEASE, Spring v5.0.9.RELEASE
+2018-12-27 21:02:35 [main] INFO  c.c.h.p.ppm.services.app.Application - No active profile set, falling back to default profiles: default
+2018-12-27 21:02:35 [main] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6e4784bc: startup date [Thu Dec 27 21:02:35 CST 2018]; root of context hierarchy
+2018-12-27 21:02:36 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'corDatasource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_COR; factoryMethodName=corDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_COR.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_PASCOR; factoryMethodName=corDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_PASCOR.class]]
+2018-12-27 21:02:36 [main] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'tdaDatasource' with a different definition: replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_PASTDA; factoryMethodName=tdaDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_PASTDA.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=dataSource_TDA; factoryMethodName=tdaDatasource; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [com/cft/hogan/platform/ppm/services/config/datasource/DataSource_TDA.class]]
+2018-12-27 21:02:36 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$57928285] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-12-27 21:02:36 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.hateoas.config.HateoasConfiguration' of type [org.springframework.hateoas.config.HateoasConfiguration$$EnhancerBySpringCGLIB$$d712cfb7] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-12-27 21:02:36 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2018-12-27 21:02:36 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2018-12-27 21:02:36 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2018-12-27 21:02:36 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.34
+2018-12-27 21:02:36 [localhost-startStop-1] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jre1.8.0_191\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_191/bin/server;C:/Program Files/Java/jre1.8.0_191/bin;C:/Program Files/Java/jre1.8.0_191/lib/amd64;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Windows\CCM;C:\Program Files\Java\jdk1.8.0_191\;C:\Program Files\apache-maven-3.5.4\bin;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\nodejs\;C:\Users\karthikeyan_n\AppData\Local\Microsoft\WindowsApps;C:\Users\karthikeyan_n\AppData\Roaming\npm;C:\Program Files\sts-bundle\sts-4.0.1.RELEASE;;.]
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1456 ms
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.b.w.s.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.b.w.s.DelegatingFilterProxyRegistrationBean - Mapping filter: 'springSecurityFilterChain' to: [/*]
+2018-12-27 21:02:37 [localhost-startStop-1] INFO  o.s.b.w.s.ServletRegistrationBean - Servlet dispatcherServlet mapped to [/]
+2018-12-27 21:02:37 [main] INFO  o.s.j.d.DriverManagerDataSource - Loaded JDBC driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+2018-12-27 21:02:37 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 21:02:37 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_COR
+	...]
+2018-12-27 21:02:37 [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.2.17.Final}
+2018-12-27 21:02:37 [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+2018-12-27 21:02:37 [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-12-27 21:02:38 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 21:02:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 21:02:39 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_COR
+	...]
+2018-12-27 21:02:39 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'
+2018-12-27 21:02:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 21:02:40 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASCOR
+	...]
+2018-12-27 21:02:40 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:41 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 21:02:41 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 21:02:41 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASCOR
+	...]
+2018-12-27 21:02:41 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 21:02:42 [main] INFO  o.s.j.d.DriverManagerDataSource - Loaded JDBC driver: com.microsoft.sqlserver.jdbc.SQLServerDriver
+2018-12-27 21:02:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 21:02:42 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASTDA
+	...]
+2018-12-27 21:02:42 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 21:02:42 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 21:02:42 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_PASTDA
+	...]
+2018-12-27 21:02:43 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:43 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 21:02:43 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 21:02:43 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_TDA
+	...]
+2018-12-27 21:02:44 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 21:02:44 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Building JPA container EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 21:02:44 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [
+	name: DATASOURCE_TDA
+	...]
+2018-12-27 21:02:45 [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.SQLServerDialect
+2018-12-27 21:02:45 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6e4784bc: startup date [Thu Dec 27 21:02:35 CST 2018]; root of context hierarchy
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/applications],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ApplicationController.get()
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/parameters/{id}/companies],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.CompanyController.findByID(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/exports],methods=[POST]}" onto public org.springframework.http.ResponseEntity<byte[]> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ExportController.getFile(com.cft.hogan.platform.ppm.services.massmaintenance.bean.ExportTaskBean)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports],methods=[POST]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.save(java.lang.String,java.lang.String,org.springframework.web.multipart.MultipartFile)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports/{id}],methods=[PUT]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.reload(java.lang.String,org.springframework.web.multipart.MultipartFile)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports],methods=[GET]}" onto public org.springframework.hateoas.Resources<org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean>> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.findAll(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports/{id}],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<?> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.deleteTask(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/imports/{id}],methods=[GET]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ImportTaskBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ImportTaskController.findByUUID(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/applications/{applicationID}/parameters],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ParameterController.get(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/{id}],methods=[PUT]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.update(java.lang.String,com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules],methods=[POST]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.save(com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/batch],methods=[GET]}" onto public java.util.List<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBatchBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.batch(java.lang.String,java.sql.Date)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules],methods=[GET]}" onto public org.springframework.hateoas.Resources<org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean>> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.findAll(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/{id}],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<?> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.deleteTask(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/schedules/{id}],methods=[GET]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.ScheduleBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.ScheduleController.findByUUID(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates/{id}],methods=[PUT]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.update(java.lang.String,com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates/{id}],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<?> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.delete(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates],methods=[POST]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.save(com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates],methods=[GET]}" onto public org.springframework.hateoas.Resources<org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean>> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.findAll()
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/templates/{id}],methods=[GET]}" onto public org.springframework.hateoas.Resource<com.cft.hogan.platform.ppm.services.massmaintenance.bean.TemplateBean> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TemplateController.findByUUID(java.lang.String)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/user/token],methods=[DELETE]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TokenController.logOut()
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/user/token],methods=[GET]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TokenController.getUser()
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/v1/parameter/mass-maintenance/user/token],methods=[POST]}" onto public org.springframework.http.ResponseEntity<java.lang.Object> com.cft.hogan.platform.ppm.services.massmaintenance.controller.TokenController.getToken()
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.h.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-27 21:02:46 [main] INFO  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Detected @ExceptionHandler methods in exceptionAdvice
+2018-12-27 21:02:46 [main] INFO  o.s.l.c.s.AbstractContextSource - Property 'userDn' not set - anonymous context will be used for read-write operations
+2018-12-27 21:02:46 [main] INFO  o.s.s.l.DefaultSpringSecurityContextSource -  URL 'ldap://localhost:8389/dc=springframework,dc=org', root DN is 'dc=springframework,dc=org'
+2018-12-27 21:02:46 [main] INFO  o.s.l.c.s.AbstractContextSource - Property 'userDn' not set - anonymous context will be used for read-write operations
+2018-12-27 21:02:46 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Creating filter chain: org.springframework.security.web.util.matcher.AnyRequestMatcher@1, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1ab53860, org.springframework.security.web.context.SecurityContextPersistenceFilter@69b3886f, org.springframework.security.web.header.HeaderWriterFilter@4bce62b, org.springframework.web.filter.CorsFilter@7b5ac347, org.springframework.security.web.authentication.logout.LogoutFilter@7f12094d, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@8eb6f9a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@44faa4f2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4bcdd11, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57b9389f, org.springframework.security.web.session.SessionManagementFilter@424f02b8, org.springframework.security.web.access.ExceptionTranslationFilter@a056b26, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@55421b8d]
+2018-12-27 21:02:46 [main] INFO  o.s.j.e.a.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2018-12-27 21:02:46 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2018-12-27 21:02:46 [main] INFO  o.a.tomcat.util.net.NioSelectorPool - Using a shared selector for servlet write/read
+2018-12-27 21:02:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.ppm.services.app.Application - Started Application in 11.494 seconds (JVM running for 12.746)
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - ========================================
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext -  System context details
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - ========================================
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Environment :test
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -COR :http://localhost:9005/Celeriti/CeleritiPcd
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -TDA :http://20.17.189.77:8162/Celeriti/CeleritiPcd
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -PASCOR :http://20.17.189.77:8162/Celeriti/CeleritiPcd
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -PASTDA :http://20.17.189.77:8164/Celeriti/CeleritiPcd
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - PCD Service End Points -Update records size :1000
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -COR :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMCOR;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -TDA :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMTDA;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -PASCOR :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMCOR;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database -PASTDA :jdbc:sqlserver://cscvappnor088.fsg.amer.csc.com;DatabaseName=PPMTDA;instance=SQLSERVER;encrypt=true;TrustServerCertificate=true;
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - Database batch update size :20
+2018-12-27 21:02:47 [main] INFO  c.c.h.p.p.s.c.context.SystemContext - ========================================
+2018-12-27 21:03:04 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-12-27 21:03:04 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization started
+2018-12-27 21:03:04 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization completed in 31 ms
+2018-12-27 21:03:04 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.service.ExportService - Export Task request --SingleTab :true
+2018-12-27 21:03:04 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.service.ExportService - --PCD# :48842--FSS--null--null
+2018-12-27 21:03:04 [http-nio-8080-exec-2] WARN  org.apache.axis.utils.JavaUtils - Unable to find required classes (javax.activation.DataHandler and javax.mail.internet.MimeMultipart). Attachment support is disabled.
+2018-12-27 21:03:05 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.util.PCDService - PCD XML Template retrieved from service :tda48842
+2018-12-27 21:03:05 [http-nio-8080-exec-2] DEBUG c.c.h.p.p.s.m.util.PCDService - Retrieve PCD details PCD#: 48842 CompanyID: null ApplicationID: FSS EffectiveDate: null
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application shutdown requested.
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@6e4784bc: startup date [Thu Dec 27 21:02:35 CST 2018]; root of context hierarchy
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_TDA'
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASTDA'
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_PASCOR'
+2018-12-27 21:25:29 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'DATASOURCE_COR'

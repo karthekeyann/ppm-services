@@ -54,14 +54,14 @@ sn: Hamilton
 uid: bob
 userPassword: bobspassword
 
-dn: uid=karthikeyan,ou=people,dc=springframework,dc=org
+dn: uid=karthi,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: Karthikeyan Natarajan
 sn: Natarajan
-uid: karthikeyan
+uid: karthi
 userPassword: natarajan
 
 dn: uid=balaje,ou=people,dc=springframework,dc=org
@@ -74,14 +74,14 @@ sn: Palanichamy
 uid: balaje
 userPassword: palanichamy
 
-dn: uid=sivakumar,ou=people,dc=springframework,dc=org
+dn: uid=siva,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: Sivakumar Manickam
 sn: Manickam
-uid: sivakumar
+uid: siva
 userPassword: manickam
 
 dn: uid=anshika,ou=people,dc=springframework,dc=org
@@ -94,14 +94,14 @@ sn: Gupta
 uid: anshika
 userPassword: gupta
 
-dn: uid=arunkumar,ou=people,dc=springframework,dc=org
+dn: uid=arun,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 cn: Arunkumar Sharma
 sn: Sharma
-uid: arunkumar
+uid: arun
 userPassword: sharma
 
 dn: uid=batch,ou=people,dc=springframework,dc=org

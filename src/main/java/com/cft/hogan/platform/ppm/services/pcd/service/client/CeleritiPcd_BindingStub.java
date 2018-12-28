@@ -243,6 +243,13 @@ public class CeleritiPcd_BindingStub extends org.apache.axis.client.Stub impleme
             cachedSerFactories.add(org.apache.axis.encoding.ser.BaseSerializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleSerializerFactory.class, cls, qName));
             cachedDeserFactories.add(org.apache.axis.encoding.ser.BaseDeserializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleDeserializerFactory.class, cls, qName));
 
+            qName = new javax.xml.namespace.QName("http://MessageView/", "CredentialsRqHdr_Type");
+            cachedSerQNames.add(qName);
+            cls = com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://MessageView/", "Cursor_Type");
             cachedSerQNames.add(qName);
             cls = com.cft.hogan.platform.ppm.services.pcd.service.client.Cursor_Type.class;
@@ -334,6 +341,20 @@ public class CeleritiPcd_BindingStub extends org.apache.axis.client.Stub impleme
             cachedSerFactories.add(org.apache.axis.encoding.ser.BaseSerializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleSerializerFactory.class, cls, qName));
             cachedDeserFactories.add(org.apache.axis.encoding.ser.BaseDeserializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleDeserializerFactory.class, cls, qName));
 
+            qName = new javax.xml.namespace.QName("http://MessageView/", "LoginIdent_Type");
+            cachedSerQNames.add(qName);
+            cls = com.cft.hogan.platform.ppm.services.pcd.service.client.LoginIdent_Type.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://MessageView/", "LoginName_Type");
+            cachedSerQNames.add(qName);
+            cls = java.lang.String.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(org.apache.axis.encoding.ser.BaseSerializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleSerializerFactory.class, cls, qName));
+            cachedDeserFactories.add(org.apache.axis.encoding.ser.BaseDeserializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleDeserializerFactory.class, cls, qName));
+
             qName = new javax.xml.namespace.QName("http://MessageView/", "Long_Type");
             cachedSerQNames.add(qName);
             cls = long.class;
@@ -347,6 +368,15 @@ public class CeleritiPcd_BindingStub extends org.apache.axis.client.Stub impleme
             cachedSerClasses.add(cls);
             cachedSerFactories.add(org.apache.axis.encoding.ser.BaseSerializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleSerializerFactory.class, cls, qName));
             cachedDeserFactories.add(org.apache.axis.encoding.ser.BaseDeserializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleDeserializerFactory.class, cls, qName));
+
+            qName = new javax.xml.namespace.QName("http://MessageView/", "MsgRqHdr_Type");
+            cachedSerQNames.add(qName);
+            cls = com.cft.hogan.platform.ppm.services.pcd.service.client.CredentialsRqHdr_Type[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://MessageView/", "CredentialsRqHdr_Type");
+            qName2 = new javax.xml.namespace.QName("", "CredentialsRqHdr");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
             qName = new javax.xml.namespace.QName("http://MessageView/", "NC");
             cachedSerQNames.add(qName);
@@ -368,6 +398,13 @@ public class CeleritiPcd_BindingStub extends org.apache.axis.client.Stub impleme
             cachedSerClasses.add(cls);
             cachedSerFactories.add(org.apache.axis.encoding.ser.BaseSerializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleSerializerFactory.class, cls, qName));
             cachedDeserFactories.add(org.apache.axis.encoding.ser.BaseDeserializerFactory.createFactory(org.apache.axis.encoding.ser.SimpleDeserializerFactory.class, cls, qName));
+
+            qName = new javax.xml.namespace.QName("http://MessageView/", "PartyRef_Type");
+            cachedSerQNames.add(qName);
+            cls = com.cft.hogan.platform.ppm.services.pcd.service.client.PartyRef_Type.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
 
             qName = new javax.xml.namespace.QName("http://MessageView/", "PcdCacheRq_Type");
             cachedSerQNames.add(qName);
