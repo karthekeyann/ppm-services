@@ -114,6 +114,16 @@ sn: Sharma
 uid: arun
 userPassword: sharma
 
+dn: uid=bilsay,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bilsay Ercan
+sn: Ercan
+uid: bilsay
+userPassword: ercan
+
 dn: uid=batch,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person

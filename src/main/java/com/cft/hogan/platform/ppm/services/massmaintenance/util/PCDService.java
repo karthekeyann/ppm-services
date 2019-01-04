@@ -109,29 +109,33 @@ public class PCDService {
 
 		CeleritiPcd_PortType service = getPCDService();
 		PcdXmlRs_Type pcdXmlRs = service.processPcd(pcdXmlRq);
-		if ("0".equals(String.valueOf(pcdXmlRs.getXStatus().getStatusCode()))) {
-			PcdItemList_TypePcdItem[] pcdItemList = pcdXmlRs.getPcdItemList().getPcdItem();
+		if(pcdXmlRs!=null) {
+			if ("0".equals(String.valueOf(pcdXmlRs.getXStatus().getStatusCode()))) {
+				PcdItemList_TypePcdItem[] pcdItemList = pcdXmlRs.getPcdItemList().getPcdItem();
 
-			if(pcdItemList!=null) {
-				mergePCDItems(allRecords, pcdItemList);
-				while ("Y".equalsIgnoreCase(pcdXmlRs.getPcdItemList().getMoreItem())) {
-					log.debug(logMsg+"Continue for more Items PCD#: "+parameterBean.getNumber() + " CompanyID: "+parameterBean.getCompanyID() +
-							" ApplicationID: "+parameterBean.getApplicationID()	+ " EffectiveDate: "+parameterBean.getEffectiveDate());
-					pcdXmlRs = service.processPcd(getNextItemsRequest(pcdXmlRs, pcdXmlRq));
-					if ("0".equals(String.valueOf(pcdXmlRs.getXStatus().getStatusCode()))) {
-						if (pcdXmlRs.getPcdItemList() != null	&& pcdXmlRs.getPcdItemList().getPcdItem() != null) {
-							pcdItemList = pcdXmlRs.getPcdItemList().getPcdItem();
-							mergePCDItems(allRecords, pcdItemList);
+				if(pcdItemList!=null) {
+					mergePCDItems(allRecords, pcdItemList);
+					while ("Y".equalsIgnoreCase(pcdXmlRs.getPcdItemList().getMoreItem())) {
+						log.debug(logMsg+"Continue for more Items PCD#: "+parameterBean.getNumber() + " CompanyID: "+parameterBean.getCompanyID() +
+								" ApplicationID: "+parameterBean.getApplicationID()	+ " EffectiveDate: "+parameterBean.getEffectiveDate());
+						pcdXmlRs = service.processPcd(getNextItemsRequest(pcdXmlRs, pcdXmlRq));
+						if ("0".equals(String.valueOf(pcdXmlRs.getXStatus().getStatusCode()))) {
+							if (pcdXmlRs.getPcdItemList() != null	&& pcdXmlRs.getPcdItemList().getPcdItem() != null) {
+								pcdItemList = pcdXmlRs.getPcdItemList().getPcdItem();
+								mergePCDItems(allRecords, pcdItemList);
+							} else {
+								break;
+							}
 						} else {
 							break;
 						}
-					} else {
-						break;
 					}
 				}
+			}else {
+				throw new SystemException("Error in PCD service- PCD details not retrieved: status-"+pcdXmlRs.getXStatus().getStatusDesc());
 			}
 		}else {
-			throw new SystemException("Error in PCD service- PCD details not retrieved: status-"+response.getXStatus().getStatusDesc());
+			throw new SystemException("Error in PCD service- PCD details not retrieved: response is null-");
 		}
 		response.setPcdItemList(new PcdItemList_Type(allRecords.toArray(new PcdItemList_TypePcdItem[allRecords.size()]), "N", String.valueOf(allRecords.size())));
 		response.setXStatus(getSuccessStatus());

@@ -16,7 +16,11 @@ public class WebMvcConfig {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/v1/parameter/mass-maintenance/**")
-				.allowedOrigins("http://localhost:3000","http://cscvappnor088.fsg.amer.csc.com","http://cscvappnor090.fsg.amer.csc.com")
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://cscvappnor088.fsg.amer.csc.com", 
+						"http://cscvappnor090.fsg.amer.csc.com"
+						)
 				.allowedMethods("*")
 				.allowCredentials(true);
 			}
