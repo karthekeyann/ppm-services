@@ -12,6 +12,7 @@ import javax.xml.rpc.ServiceException;
 import org.apache.axis.message.MessageElement;
 import org.springframework.util.StringUtils;
 
+import com.cft.hogan.platform.ppm.services.cache.SystemCache;
 import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ParameterBean;
@@ -45,7 +46,7 @@ public class PCDService {
 
 	public PcdXmlRs_Type getParameterXmlTemplate(String parameterNum) throws Exception {
 		String key = Utils.getRegion()+parameterNum;
-		HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = SystemContext.getXMLTemplatesMap();
+		HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = SystemCache.getXMLTemplatesMap();
 		if(xmlTemplatesMap.containsKey(key)) {
 			log.debug(logMsg+"PCD XML Template retrieved from cache :"+key);
 			return xmlTemplatesMap.get(key);

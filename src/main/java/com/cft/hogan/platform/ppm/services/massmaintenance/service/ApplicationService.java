@@ -11,7 +11,7 @@ import java.util.Properties;
 
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.cache.SystemCache;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ApplicationBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
@@ -24,7 +24,7 @@ public class ApplicationService {
 		String region = Utils.getRegion();
 		List<ApplicationBean> applicationsList = null;
 		try {
-			HashMap<String, List<ApplicationBean>> applicationsMap = SystemContext.getApplicationssMap();
+			HashMap<String, List<ApplicationBean>> applicationsMap = SystemCache.getApplicationssMap();
 			if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 				if(!applicationsMap.containsKey(Constants.REGION_COR)) {
 					applicationsMap.put(Constants.REGION_COR, createList(readApplications(region)));

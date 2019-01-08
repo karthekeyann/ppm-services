@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.cache.SystemCache;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.PCDService;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
@@ -19,7 +19,7 @@ public class CompanyService {
 		List<CompanyBean> companies = null;
 		try {
 
-			HashMap<String, HashMap<String, List<CompanyBean>>> companiesMap = SystemContext.getCompaniesMap();
+			HashMap<String, HashMap<String, List<CompanyBean>>> companiesMap = SystemCache.getCompaniesMap();
 			String region = Utils.getRegion();
 			if(!companiesMap.containsKey(region)) {
 				PCDService service = new PCDService();

@@ -4,19 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 
 import org.springframework.util.StringUtils;
 
-import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ApplicationBean;
-import com.cft.hogan.platform.ppm.services.massmaintenance.bean.CompanyBean;
-import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ParameterBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
-import com.cft.hogan.platform.ppm.services.pcd.service.client.PcdXmlRs_Type;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,37 +35,11 @@ public class SystemContext {
 
 	private static Properties datasource = null;
 	
-	private static HashMap<String, List<ApplicationBean>> applicationsMap = new HashMap<>();
-	
-	private static HashMap<String, List<ParameterBean>> parametersMap = new HashMap<>();
-	
-	private static HashMap<String, HashMap<String, List<CompanyBean>>> companiesMap = new HashMap<>();
-	
-	private static HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = new HashMap<>();
-	
-	
 	public static String getEnvironment(){
 		return environment;
 	}
 	
 	
-	public static HashMap<String, PcdXmlRs_Type> getXMLTemplatesMap(){
-		return xmlTemplatesMap;
-	}
-	
-	
-	public static HashMap<String, HashMap<String, List<CompanyBean>>> getCompaniesMap(){
-		return companiesMap;
-	}
-	
-	public static HashMap<String, List<ApplicationBean>> getApplicationssMap(){
-		return applicationsMap;
-	}
-	
-	public static HashMap<String, List<ParameterBean>> getParametersMap(){
-		return parametersMap;
-	}
-
 	public static void loadPropertyContext(String[] args) throws IOException{
 		if(args.length==0 || StringUtils.isEmpty(args[0]) || 
 				!(Constants.ENV_TEST.equalsIgnoreCase(args[0]) || Constants.ENV_QA.equalsIgnoreCase(args[0]) ||Constants.ENV_PROD.equalsIgnoreCase(args[0])) ) {

@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import org.springframework.stereotype.Service;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
+import com.cft.hogan.platform.ppm.services.cache.SystemCache;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ParameterBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
@@ -25,7 +25,7 @@ public class ParameterService {
 		String region = Utils.getRegion();
 		List<ParameterBean> parametersList = null;
 		try {
-			HashMap<String, List<ParameterBean>> parametersMap = SystemContext.getParametersMap();
+			HashMap<String, List<ParameterBean>> parametersMap = SystemCache.getParametersMap();
 			String key = null;
 			if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 				key = Constants.REGION_COR+applicationID;
