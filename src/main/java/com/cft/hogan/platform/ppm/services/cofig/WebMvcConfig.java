@@ -1,7 +1,9 @@
 package com.cft.hogan.platform.ppm.services.cofig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -10,16 +12,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SuppressWarnings("deprecation")
 @Configuration
 public class WebMvcConfig {
+	
+	@Autowired
+	Environment env;
+	
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/v1/parameter/mass-maintenance/**")
+				registry.addMapping(env.getProperty("spring.cors.mapping"))
 				.allowedOrigins(
-						"http://localhost:3000",
-						"http://cscvappnor088.fsg.amer.csc.com", 
-						"http://cscvappnor090.fsg.amer.csc.com"
+						env.getProperty("spring.cors.origins1"),
+						env.getProperty("spring.cors.origins2"), 
+						env.getProperty("spring.cors.origins3")
 						)
 				.allowedMethods("*")
 				.allowCredentials(true);

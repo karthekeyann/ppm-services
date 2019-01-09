@@ -27,7 +27,7 @@
     </layout>
   </appender>
 
-  <root level="info">
+  <root level="debug">
     <appender-ref ref="CONSOLE" />
     <appender-ref ref="ROLLINGFILE" />
   </root>

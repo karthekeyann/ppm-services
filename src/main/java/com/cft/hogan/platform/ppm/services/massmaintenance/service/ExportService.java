@@ -31,6 +31,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.springframework.util.StringUtils;
 
+import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ExportTaskBean;
 import com.cft.hogan.platform.ppm.services.massmaintenance.bean.ParameterBean;
@@ -124,7 +125,7 @@ public class ExportService {
 	private HSSFCellStyle oddRowColumnCellStyle = null;
 	private HSSFCellStyle evenRowColumnCellStyle = null;
 	private HSSFCellStyle extendedTierheaderKeyColumnCellStyle = null;
-	
+
 	public byte[] save(ExportTaskBean exportTaskBean) {
 		byte[] response =null;
 		try {
@@ -629,7 +630,7 @@ public class ExportService {
 			if(!singleTab) {
 				// Write the title
 				createTitleRow(sheetTitleRow, worksheet, 0, columnCount,
-						aPsetElementsInfo.getParameterNumber() + HYPHEN + getLabel(aPsetElementsInfo, "parameterName"));
+						aPsetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(aPsetElementsInfo.getAppName(), aPsetElementsInfo.getParameterNumber()));
 			}
 			for (int column = 0; column < columnCount; column++) {
 				worksheet.autoSizeColumn(column);
@@ -642,7 +643,7 @@ public class ExportService {
 		} else {
 			// write title
 			createTitleRow(sheetTitleRow, worksheet, 0, 10,
-					aPsetElementsInfo.getParameterNumber() + HYPHEN + getLabel(aPsetElementsInfo, "parameterName"));
+					aPsetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(aPsetElementsInfo.getAppName(), aPsetElementsInfo.getParameterNumber()));
 			// Write the error caught in service
 			HSSFRow headerRow = worksheet.createRow(labelRow);
 			createCell(headerRow, 0, status.getStatusDesc(), titleCellStyle);
@@ -652,6 +653,18 @@ public class ExportService {
 				worksheet.getPhysicalNumberOfRows());
 		// Set Action header with required style
 		worksheet.getRow(labelRow).getCell(0).setCellStyle(headerKeyReqCellStyle);
+	}
+
+
+	private String getParameterName(String applicationID, String parameterNum) {
+		ParameterService service = new ParameterService();
+		List<ParameterBean> parametersList = service.getParameters(applicationID);
+		for(ParameterBean bean: parametersList) {
+			if(parameterNum.equalsIgnoreCase(bean.getNumber())){
+				return bean.getName();
+			}
+		}
+		return Constants.EMPTY;
 	}
 
 	/**
@@ -1204,7 +1217,7 @@ public class ExportService {
 	private Properties getLabelsProperties(String pcdNumber) {
 		Properties labels = new Properties();
 		try {
-			StringBuffer path = new StringBuffer(Constants.LABELS_PROP_PATH);
+			StringBuffer path = new StringBuffer(SystemContext.getLabelsBasePath());
 			path.append(Utils.getRegion().toLowerCase()).append("/");
 			String fileName = "ParameterKeyLabels.properties";
 			File file = new File(path.toString() + fileName);

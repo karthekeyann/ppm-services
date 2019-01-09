@@ -93,7 +93,7 @@ public class ImportTaskService {
 			log.debug(logMsg+"Import task created :"+uuid+" --Total num of records to be udpated :"+requestList.size());
 			int endIndex = 0;
 			int savedItems = 0;
-			int batchSize = SystemContext.getPCDServiceBatchUpdateSize();
+			int batchSize = SystemContext.getPCDServiceUpdateRecordSize();
 			for(int index=0; index < requestList.size();){
 				endIndex  = index+batchSize;
 				if(endIndex > requestList.size()) {
@@ -174,7 +174,7 @@ public class ImportTaskService {
 				List<UpdPcdRecRq_Type> requestList = processWorkBook(file, failedItems, true, null, service, logMsg); 
 				int endIndex = 0;
 				int updatedItems = 0;
-				int batchSize = SystemContext.getPCDServiceBatchUpdateSize();
+				int batchSize = SystemContext.getPCDServiceUpdateRecordSize();
 				for(int index=0; index < requestList.size();){
 					endIndex  = index+batchSize;
 					if(endIndex > requestList.size()) {

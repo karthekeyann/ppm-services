@@ -1,7 +1,6 @@
 package com.cft.hogan.platform.ppm.services.config.datasource;
 
 import java.util.HashMap;
-import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -16,14 +15,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.cft.hogan.platform.ppm.services.config.context.SystemContext;
 import com.cft.hogan.platform.ppm.services.massmaintenance.util.Constants;
 
 @Configuration
 @EnableTransactionManagement
-public class DataSource_TDA {
-
-	private Properties prop = null;
+public class DataSource_TDA extends DataSource_Base{
 
 	@Bean
 	public DataSource tdaDatasource() throws Exception {
@@ -69,10 +65,4 @@ public class DataSource_TDA {
 		return transactionManager;
 	}
 
-	private Properties getProperties() throws Exception {
-		if(prop==null) {
-			prop = SystemContext.getDataSourceProperties();
-		}
-		return prop;
-	}
 }

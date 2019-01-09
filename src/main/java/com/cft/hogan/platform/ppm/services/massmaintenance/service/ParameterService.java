@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.cft.hogan.platform.ppm.services.cache.SystemCache;
@@ -21,6 +23,9 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 @Service
 public class ParameterService {
 
+	@Autowired
+	Environment env;
+
 	public List<ParameterBean> getParameters(String applicationID) {
 		String region = Utils.getRegion();
 		List<ParameterBean> parametersList = null;
@@ -29,24 +34,28 @@ public class ParameterService {
 			String key = null;
 			if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 				key = Constants.REGION_COR+applicationID;
+				key = key.toLowerCase();
 				if(!parametersMap.containsKey(key)) {
 					parametersMap.put(key, createList(readParameters(region, applicationID)));
 				}
 				parametersList = parametersMap.get(key);
 			}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
 				key = Constants.REGION_TDA+applicationID;
+				key = key.toLowerCase();
 				if(!parametersMap.containsKey(key)) {
 					parametersMap.put(key, createList(readParameters(region, applicationID)));
 				}
 				parametersList = parametersMap.get(key);
 			}else if(region.equalsIgnoreCase(Constants.REGION_PASCOR)) {
 				key = Constants.REGION_PASCOR+applicationID;
+				key = key.toLowerCase();
 				if(!parametersMap.containsKey(key)) {
 					parametersMap.put(key, createList(readParameters(region, applicationID)));
 				}
 				parametersList = parametersMap.get(key);
 			}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
 				key = Constants.REGION_PASTDA+applicationID;
+				key = key.toLowerCase();
 				if(!parametersMap.containsKey(key)) {
 					parametersMap.put(key, createList(readParameters(region, applicationID)));
 				}
@@ -58,20 +67,14 @@ public class ParameterService {
 		return parametersList;
 	}
 
-
 	private Properties readParameters(String region, String applicationID) throws IOException {
 		Properties applications = new Properties();
 		File file = null;
 		String fileName = "/"+applicationID+"-parameters.properties";
-		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_COR +fileName);
-		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_TDA +fileName);
-		}else if(region.equalsIgnoreCase(Constants.REGION_PASCOR)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_PASCOR +fileName);
-		}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_PASTDA +fileName);
-		}
+		String baseFolder = env.getProperty(Constants.PARMETER_CONFIG_PATH);
+
+		file = new File(baseFolder +region +fileName);
+
 		if(file.exists()) {
 			BufferedReader inputStream = new BufferedReader(new FileReader(file));
 			try {

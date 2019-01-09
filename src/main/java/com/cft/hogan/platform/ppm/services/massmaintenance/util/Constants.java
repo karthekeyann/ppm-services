@@ -59,8 +59,8 @@ public abstract class Constants {
 	public static final String DATA_SOURCE_PROP_FILE_TEST = "./config/system/datasource-test.properties";
 	public static final String DATA_SOURCE_PROP_FILE_QA = "./config/system/datasource-qa.properties";
 	public static final String DATA_SOURCE_PROP_FILE_PROD = "./config/system/datasource-prod.properties";
-	public static final String LABELS_PROP_PATH = "./config/labels/";
-	public static final String PARMETER_CONFIG_PATH = "./config/parameters/";
+	public static final String LABELS_PROP_PATH = "ppm.labels.base.path";
+	public static final String PARMETER_CONFIG_PATH = "ppm.param.base.path";
 	
 	public static final String ENV_TEST = "TEST";
 	public static final String ENV_QA = "QA";

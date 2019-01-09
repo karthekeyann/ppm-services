@@ -1,11 +1,8 @@
 package com.cft.hogan.platform.ppm.services.config.context;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 
+import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.services.massmaintenance.exception.SystemException;
@@ -18,64 +15,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SystemContext {
 
-	//env
-	private static String environment = null;
-
-	//Service end point
-	private static String pcd_service_endpoint_cor = null;
-	private static String pcd_service_endpoint_tda = null;
-	private static String pcd_service_endpoint_pascor = null;
-	private static String pcd_service_endpoint_pastda = null;
-
-	//pcd service update records
-	private static int pcd_service_batch_update_size  = 1;
-
-	//db batch update 
-	private static int database_batch_update_size  = 1;
-
-	private static Properties datasource = null;
+	private static Environment env;
 	
-	public static String getEnvironment(){
-		return environment;
+	public static void setEnvironment(Environment lenv) {
+		
+		env = lenv;
 	}
 	
-	
-	public static void loadPropertyContext(String[] args) throws IOException{
-		if(args.length==0 || StringUtils.isEmpty(args[0]) || 
-				!(Constants.ENV_TEST.equalsIgnoreCase(args[0]) || Constants.ENV_QA.equalsIgnoreCase(args[0]) ||Constants.ENV_PROD.equalsIgnoreCase(args[0])) ) {
-			throw new SystemException("Invalid argument #1(Environment) :"+args[0]);
-		}else {
-			environment = args[0];
-		}
-		readDataSourceProperties();
-		readPCDServiceProperties();
+	public static int getPCDServiceUpdateRecordSize() {
+
+		return Integer.parseInt(env.getProperty("pcd.service.update.record.size"));
 	}
 
-	public static Properties getDataSourceProperties() throws IOException {
-		return datasource;
-	}
-
-	public static int getPCDServiceBatchUpdateSize() {
-
-		return pcd_service_batch_update_size;
-	}
-	
 	public static int getDataBaseBatchUpdateSize() {
 
-		return database_batch_update_size;
+		return Integer.parseInt(env.getProperty("database.batch.update.size"));
 	}
 
 	public static String getEndPoint() throws IOException {
+
 		String region = Utils.getRegion();
 		String endPoint = null;
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
-			endPoint = pcd_service_endpoint_cor;
+			endPoint = env.getProperty("pcd.service.endpoint.cor");
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
-			endPoint = pcd_service_endpoint_tda;
+			endPoint = env.getProperty("pcd.service.endpoint.tda");
 		}else if(region.equalsIgnoreCase(Constants.REGION_PASCOR)) {
-			endPoint = pcd_service_endpoint_pascor;
+			endPoint = env.getProperty("pcd.service.endpoint.pascor");
 		}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
-			endPoint = pcd_service_endpoint_pastda;
+			endPoint = env.getProperty("pcd.service.endpoint.pastda");
 		}
 		if(endPoint==null || StringUtils.isEmpty(endPoint)) {
 			throw new SystemException("Invalid PCD Service Endpoint :"+endPoint);
@@ -83,87 +51,27 @@ public class SystemContext {
 		return endPoint;
 	}
 	
-	private static void readDataSourceProperties() throws IOException {
-		if(datasource==null) {
-			datasource = new Properties();
-		}
-		File file = null;
-
-		if(environment.equalsIgnoreCase(Constants.ENV_TEST)) {
-			file = new File(Constants.DATA_SOURCE_PROP_FILE_TEST);
-		}else if(environment.equalsIgnoreCase(Constants.ENV_QA)) {
-			file = new File(Constants.DATA_SOURCE_PROP_FILE_QA);
-		}else if(environment.equalsIgnoreCase(Constants.ENV_PROD)) {
-			file = new File(Constants.DATA_SOURCE_PROP_FILE_PROD);
-		}
-
-		BufferedReader inputStream = null;
-		try {
-			if(file.exists()) {
-				inputStream = new BufferedReader(new FileReader(file));
-				datasource.load(inputStream);
-				if(datasource.getProperty("database.batch.update.size") !=null) {
-					database_batch_update_size = Integer.parseInt(datasource.getProperty("database.batch.update.size"));
-				}
-			}else {
-				throw new SystemException("Datasource properties file does not exists: "+file.getAbsolutePath());
-			}
-		}finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
-		}
+	public static String getLabelsBasePath() {
+		return env.getProperty(Constants.LABELS_PROP_PATH);
 	}
-	
-	private static void readPCDServiceProperties() throws IOException {
-		Properties prop = new Properties();
-		File file = null;
-		if(environment.equalsIgnoreCase(Constants.ENV_TEST)) {
-			file = new File(Constants.PCD_SERVICE_ENDPOINT_TEST);
-		}else if(environment.equalsIgnoreCase(Constants.ENV_QA)) {
-			file = new File(Constants.PCD_SERVICE_ENDPOINT_QA);
-		}else if(environment.equalsIgnoreCase(Constants.ENV_PROD)) {
-			file = new File(Constants.PCD_SERVICE_ENDPOINT_PROD);
-		}
-		if(file.exists()) {
-			BufferedReader inputStream = new BufferedReader(new FileReader(file));
-			try {
-				prop.load(inputStream);
-			}
-			finally {
-				if (inputStream != null) {
-					inputStream.close();
-				}
-			}
-		}else {
-			throw new SystemException("Service End point properties file does not exists: "+file.getAbsolutePath());
-		}
 
-		pcd_service_endpoint_cor = prop.getProperty("pcd.service.endpoint.cor");
-		pcd_service_endpoint_tda = prop.getProperty("pcd.service.endpoint.tda");
-		pcd_service_endpoint_pascor = prop.getProperty("pcd.service.endpoint.pascor");
-		pcd_service_endpoint_pastda = prop.getProperty("pcd.service.endpoint.pastda");
-		pcd_service_batch_update_size =	Integer.parseInt(prop.getProperty("pcd.service.batch.update.size"));
-		prop.clear();
-	}
-	
-	
+
 	public static void logDetails() {
 		log.info("========================================");
 		log.info(" System context details");
 		log.info("========================================");
-		log.info("Environment :"+SystemContext.environment);
-		log.info("PCD Service End Points -COR :"+pcd_service_endpoint_cor);
-		log.info("PCD Service End Points -TDA :"+pcd_service_endpoint_tda);
-		log.info("PCD Service End Points -PASCOR :"+pcd_service_endpoint_pascor);
-		log.info("PCD Service End Points -PASTDA :"+pcd_service_endpoint_pastda);
-		log.info("PCD Service End Points -Update records size :"+pcd_service_batch_update_size);
-		log.info("Database -COR :"+datasource.getProperty("spring.datasource.url.cor"));
-		log.info("Database -TDA :"+datasource.getProperty("spring.datasource.url.tda"));
-		log.info("Database -PASCOR :"+datasource.getProperty("spring.datasource.url.pascor"));
-		log.info("Database -PASTDA :"+datasource.getProperty("spring.datasource.url.pastda"));
-		log.info("Database batch update size :"+database_batch_update_size);
+		log.info("Active Profile :"+env.getActiveProfiles()[0]);
+		log.info("PCD Service End Points -COR :"+env.getProperty("pcd.service.endpoint.cor"));
+		log.info("PCD Service End Points -TDA :"+env.getProperty("pcd.service.endpoint.tda"));
+		log.info("PCD Service End Points -PASCOR :"+env.getProperty("pcd.service.endpoint.pascor"));
+		log.info("PCD Service End Points -PASTDA :"+env.getProperty("pcd.service.endpoint.pastda"));
+		log.info("PCD Service End Points -Update records size :"+env.getProperty("pcd.service.update.record.size"));
+		log.info("Database -COR :"+env.getProperty("spring.datasource.url.cor"));
+		log.info("Database -TDA :"+env.getProperty("spring.datasource.url.tda"));
+		log.info("Database -PASCOR :"+env.getProperty("spring.datasource.url.pascor"));
+		log.info("Database -PASTDA :"+env.getProperty("spring.datasource.url.pastda"));
+		log.info("Database batch update size :"+env.getProperty("database.batch.update.size"));
 		log.info("========================================");
 	}
-	
+
 }

@@ -135,7 +135,7 @@ public class Utils {
 		StringBuffer msg = new StringBuffer()
 				.append("SessionID:").append(getSessionID())
 				.append(" -User:").append(getLoggedInUser())
-				.append(" -Environment:").append(SystemContext.getEnvironment())
+//				.append(" -Environment:").append(SystemContext.getEnvironment())
 				.append(" -Region:").append(Utils.getRegion());
 		return msg.toString();
 	}

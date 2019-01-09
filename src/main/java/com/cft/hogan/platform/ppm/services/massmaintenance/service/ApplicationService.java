@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.cft.hogan.platform.ppm.services.cache.SystemCache;
@@ -19,6 +21,9 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 
 @Service
 public class ApplicationService {
+
+	@Autowired
+	Environment env;
 
 	public List<ApplicationBean> getApplications() {
 		String region = Utils.getRegion();
@@ -56,16 +61,12 @@ public class ApplicationService {
 	private Properties readApplications(String region) throws IOException {
 		Properties applications = new Properties();
 		File file = null;
-		String fileName = "/pcd-applications.properties";
-		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_COR +fileName);
-		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_TDA +fileName);
-		}else if(region.equalsIgnoreCase(Constants.REGION_PASCOR)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_PASCOR +fileName);
-		}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
-			file = new File(Constants.PARMETER_CONFIG_PATH + Constants.REGION_PASTDA +fileName);
-		}
+		StringBuffer fileName = new StringBuffer()
+				.append(env.getProperty(Constants.PARMETER_CONFIG_PATH))
+				.append(region)
+				.append("/pcd-applications.properties");
+
+		file = new File(fileName.toString());
 
 		if(file.exists()) {
 			BufferedReader inputStream = new BufferedReader(new FileReader(file));

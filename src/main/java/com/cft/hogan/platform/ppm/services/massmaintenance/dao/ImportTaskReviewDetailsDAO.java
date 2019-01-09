@@ -13,7 +13,7 @@ import com.cft.hogan.platform.ppm.services.massmaintenance.util.Utils;
 
 @SuppressWarnings("unchecked")
 abstract public class ImportTaskReviewDetailsDAO {
-
+	
 	protected List<ImportTaskReviewDetailEntity> findByImportTaskUUID(String importTaskUUID, EntityManager entityManager) {
 
 		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_IMPORT_TASK_DETAILS " +
