@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.util.mm.excel;
+package com.cft.hogan.platform.ppm.api.util.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
 

@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.util.mm.excel;
+package com.cft.hogan.platform.ppm.api.util.excel;
 
 public class WorkbookStyle {
 	private CellStyle pcdNameandNumberStyle;
