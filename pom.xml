@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.cft.hogan.platform</groupId>
-	<artifactId>ppm-services</artifactId>
-	<version>1</version>
+	<artifactId>ppm-apis</artifactId>
+	<version>1.0</version>
 	<packaging>war</packaging>
 
-	<name>ppm-services</name>
+	<name>ppm-apis</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -45,7 +45,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>org.springframework.ldap</groupId>
 			<artifactId>spring-ldap-core</artifactId>
 		</dependency>
@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>com.unboundid</groupId>
 			<artifactId>unboundid-ldapsdk</artifactId>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
@@ -106,6 +106,7 @@
 	</dependencies>
 
 	<build>
+	<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
