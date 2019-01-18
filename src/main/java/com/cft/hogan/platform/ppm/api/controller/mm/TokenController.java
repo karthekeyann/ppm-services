@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cft.hogan.platform.ppm.api.facade.mm.TokenFacade;
 
 @RestController
-@RequestMapping("/v1/parameter/mass-maintenance/user/token")
+@RequestMapping("/user/token")
 public class TokenController {
 
 	@Autowired

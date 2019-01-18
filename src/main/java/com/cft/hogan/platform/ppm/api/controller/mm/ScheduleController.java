@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,7 @@ import com.cft.hogan.platform.ppm.api.facade.mm.ScheduleFacade;
 
 
 @RestController
+@RequestMapping("/mass-maintenance/schedules")
 public class ScheduleController {
 
 	@Autowired
@@ -39,33 +41,33 @@ public class ScheduleController {
 	@Autowired
 	private ScheduleResourceAssembler assembler;
 
-	@GetMapping("/v1/parameter/mass-maintenance/schedules")
+	@GetMapping
 	public Resources<Resource<ScheduleBean>> findAll(@RequestParam("type") String type) {
 		List<Resource<ScheduleBean>> scheduleBeans = scheduleFacade.findByType(type).stream().map(assembler::toResource).collect(Collectors.toList());
 		return new Resources<>(scheduleBeans, linkTo(methodOn(ScheduleController.class).findAll(type)).withSelfRel());
 	}
 
-	@GetMapping("/v1/parameter/mass-maintenance/schedules/{id}")
+	@GetMapping("/{id}")
 	public Resource<ScheduleBean> findByUUID(@PathVariable(value = "id") String scheduleId) {
 		return assembler.toResource(scheduleFacade.findByUUID(scheduleId));
 	}
 	
-	@GetMapping("/v1/parameter/mass-maintenance/schedules/batch")
+	@GetMapping("/batch")
 	public List<ScheduleBatchBean> batch(@RequestParam("type") String type, @Nullable @RequestParam("bp-date") Date date) {
 		return scheduleFacade.schedulesForBatch(date, type);
 	}
 
-	@PostMapping("/v1/parameter/mass-maintenance/schedules")
+	@PostMapping
 	public Resource<ScheduleBean> save(@Valid @RequestBody ScheduleBean scheduleBean) {
 		return assembler.toResource(scheduleFacade.save(scheduleBean));
 	}
 
-	@PutMapping("/v1/parameter/mass-maintenance/schedules/{id}")
+	@PutMapping("/{id}")
 	public Resource<ScheduleBean> update(@PathVariable(value = "id") String scheduleId,	@Valid @RequestBody ScheduleBean scheduleBean) {
 		return assembler.toResource(scheduleFacade.update(scheduleBean,scheduleId ));
 	}
 
-	@DeleteMapping("/v1/parameter/mass-maintenance/schedules/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteTask(@PathVariable(value = "id") String taskId) {
 		scheduleFacade.delete(taskId);
 		return ResponseEntity.noContent().build();	
