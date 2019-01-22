@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.controller.mm;
+package com.cft.hogan.platform.ppm.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cft.hogan.platform.ppm.api.facade.mm.TokenFacade;
 
 @RestController
-@RequestMapping("/user/token")
+@RequestMapping("/ppm/user/token")
 public class TokenController {
 
 	@Autowired

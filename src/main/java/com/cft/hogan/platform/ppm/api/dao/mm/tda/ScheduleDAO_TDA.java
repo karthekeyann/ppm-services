@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cft.hogan.platform.ppm.api.dao.mm.ScheduleDAO;
 import com.cft.hogan.platform.ppm.api.dao.mm.ScheduleDAO_I;
-import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 
 
@@ -25,22 +25,22 @@ public class ScheduleDAO_TDA extends ScheduleDAO implements ScheduleDAO_I {
 	private EntityManager entityManager;
 	
 	@Override
- 	public ScheduleEntity findByUUID(String uuid) {
+ 	public ScheduleTaskEntity findByUUID(String uuid) {
  		return findByUUID(uuid, entityManager);
  	}
 	
  	@Override
- 	public List<ScheduleEntity> findByType(String type) {
+ 	public List<ScheduleTaskEntity> findByType(String type) {
  		return findByType(type, entityManager);
  	}
  	
  	@Override
- 	public String save(ScheduleEntity entity)  {
+ 	public String save(ScheduleTaskEntity entity)  {
  		return save(entity, entityManager);
  	}
  	
  	@Override
- 	public int update(ScheduleEntity entity) {
+ 	public int update(ScheduleTaskEntity entity) {
  		return update(entity, entityManager);
  	}
  	
@@ -50,12 +50,12 @@ public class ScheduleDAO_TDA extends ScheduleDAO implements ScheduleDAO_I {
  	}
  	
  	@Override
-	public ScheduleEntity findByTemplateUUID(String templateUUID) {
+	public ScheduleTaskEntity findByTemplateUUID(String templateUUID) {
 		return findByTemplateUUID(templateUUID, entityManager);
 	}
 	
 	@Override
-	public List<ScheduleEntity> findByStatus(String status, Date date, String type) {
+	public List<ScheduleTaskEntity> findByStatus(String status, Date date, String type) {
 		return findByStatus(status, date, type, entityManager);
 	}
 

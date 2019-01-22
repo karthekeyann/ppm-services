@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cft.hogan.platform.ppm.api.dao.mm.TemplatePSetDAO;
 import com.cft.hogan.platform.ppm.api.dao.mm.TemplatePSetDAO_I;
-import com.cft.hogan.platform.ppm.api.entity.mm.TemplatePSetEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.TemplateParameterEntity;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 
 
@@ -23,11 +23,11 @@ public class TemplatePSetDAO_PASCOR extends TemplatePSetDAO implements TemplateP
 	@PersistenceContext(unitName = Constants.DATASOURCE_PASCOR)
 	private EntityManager entityManager;
 
-	public int save(List<TemplatePSetEntity> psets) {
+	public int save(List<TemplateParameterEntity> psets) {
 		return save(psets, entityManager);
 	}
 
-	public List<TemplatePSetEntity> findByTemplateUUID(String templateUUID) {
+	public List<TemplateParameterEntity> findByTemplateUUID(String templateUUID) {
 		return findByTemplateUUID(templateUUID, entityManager);
 	}
 

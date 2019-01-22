@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cft.hogan.platform.ppm.api.facade.ParameterFacade;
 
 @RestController
-@RequestMapping("/applications/{applicationID}/parameters")
+@RequestMapping("/ppm/applications/{applicationID}/parameters")
 public class ParameterController {
 
 	@Autowired

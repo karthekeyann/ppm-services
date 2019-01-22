@@ -17,7 +17,7 @@ import com.cft.hogan.platform.ppm.api.bean.mm.ExportTaskBean;
 import com.cft.hogan.platform.ppm.api.facade.mm.ExportTaskFacade;
 
 @RestController
-@RequestMapping("/mass-maintenance/exports")
+@RequestMapping("/ppm/mass-maintenance/export-tasks")
 public class ExportTaskController {
 	
 	@PostMapping

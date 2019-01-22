@@ -27,7 +27,7 @@ import com.cft.hogan.platform.ppm.api.bean.mm.ImportTaskBean;
 import com.cft.hogan.platform.ppm.api.facade.mm.ImportTaskFacade;
 
 @RestController
-@RequestMapping("/mass-maintenance/imports")
+@RequestMapping("/ppm/mass-maintenance/import-tasks")
 public class ImportTaskController {
 
 	@Autowired

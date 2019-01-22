@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cft.hogan.platform.ppm.api.dao.mm.ScheduleDAO;
 import com.cft.hogan.platform.ppm.api.dao.mm.ScheduleDAO_I;
-import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 
 
@@ -24,19 +24,19 @@ public class ScheduleDAO_PASTDA extends ScheduleDAO implements ScheduleDAO_I {
 	@PersistenceContext(unitName = Constants.DATASOURCE_PASTDA)
 	private EntityManager entityManager;
 
- 	public ScheduleEntity findByUUID(String uuid) {
+ 	public ScheduleTaskEntity findByUUID(String uuid) {
  		return findByUUID(uuid, entityManager);
  	}
 
- 	public List<ScheduleEntity> findByType(String type) {
+ 	public List<ScheduleTaskEntity> findByType(String type) {
  		return findByType(type, entityManager);
  	}
 
- 	public String save(ScheduleEntity entity)  {
+ 	public String save(ScheduleTaskEntity entity)  {
  		return save(entity, entityManager);
  	}
  	
- 	public int update(ScheduleEntity entity) {
+ 	public int update(ScheduleTaskEntity entity) {
  		return update(entity, entityManager);
  	}
 
@@ -44,12 +44,12 @@ public class ScheduleDAO_PASTDA extends ScheduleDAO implements ScheduleDAO_I {
  		return delete(uuid, entityManager);
  	}
 
-	public ScheduleEntity findByTemplateUUID(String templateUUID) {
+	public ScheduleTaskEntity findByTemplateUUID(String templateUUID) {
 		return findByTemplateUUID(templateUUID, entityManager);
 	}
 	
 	@Override
-	public List<ScheduleEntity> findByStatus(String status, Date date, String type) {
+	public List<ScheduleTaskEntity> findByStatus(String status, Date date, String type) {
 		return findByStatus(status, date, type, entityManager);
 	}
 

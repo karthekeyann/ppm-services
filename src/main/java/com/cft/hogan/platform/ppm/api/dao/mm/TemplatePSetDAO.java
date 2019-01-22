@@ -9,13 +9,13 @@ import javax.persistence.Query;
 import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateEntity;
-import com.cft.hogan.platform.ppm.api.entity.mm.TemplatePSetEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.TemplateParameterEntity;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @SuppressWarnings("unchecked")
 abstract public class TemplatePSetDAO  {
 
-	protected int save(List<TemplatePSetEntity> psets, EntityManager entityManager) {
+	protected int save(List<TemplateParameterEntity> psets, EntityManager entityManager) {
 
 		final String sqlQuery = "INSERT INTO CELPPM.PPM_MM_TEMPLATE_PSET " +
 				"(UUID, TEMPLATE_UUID, NUMBER, NAME, COMPANY_ID, APPLICATION_ID, CREATED_BY, CREATED_TS, MODIFIED_BY, MODIFIED_TS, EFF_DATE) "+
@@ -35,9 +35,9 @@ abstract public class TemplatePSetDAO  {
 		return psets.size();
 	}
 
-	private int save(TemplatePSetEntity entity, String sqlQuery, EntityManager entityManager) {
+	private int save(TemplateParameterEntity entity, String sqlQuery, EntityManager entityManager) {
 
-		Query query = entityManager.createNativeQuery(sqlQuery, TemplatePSetEntity.class);
+		Query query = entityManager.createNativeQuery(sqlQuery, TemplateParameterEntity.class);
 		entity.setUuid(String.valueOf(UUID.randomUUID()));
 		query.setParameter(1, entity.getUuid());
 		query.setParameter(2, entity.getTemplateUUID());
@@ -57,11 +57,11 @@ abstract public class TemplatePSetDAO  {
 	}
 
 
-	protected List<TemplatePSetEntity> findByTemplateUUID(String templateUUID, EntityManager entityManager) {
+	protected List<TemplateParameterEntity> findByTemplateUUID(String templateUUID, EntityManager entityManager) {
 
 		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_TEMPLATE_PSET " +
 				"WHERE TEMPLATE_UUID = ?  ORDER BY NUMBER";
-		Query query = entityManager.createNativeQuery(sqlQuery, TemplatePSetEntity.class);
+		Query query = entityManager.createNativeQuery(sqlQuery, TemplateParameterEntity.class);
 		query.setParameter(1, templateUUID);
 		return query.getResultList();
 	}

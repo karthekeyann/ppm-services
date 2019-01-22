@@ -17,7 +17,7 @@ import com.cft.hogan.platform.ppm.api.util.Utils;
 
 
 @Service
-public class ImportTaskDetailsFacade {
+public class ImportTaskDetailFacade {
 
 	@Autowired
 	ImportTaskReviewDetailsDAO_COR daoCOR;

@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="PPM_MM_SCHEDULED_TASK" , schema="CELPPM")
-public class ScheduleEntity implements Serializable {
+public class ScheduleTaskEntity implements Serializable {
 	/**
 	 * 
 	 */

@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleBatchBean;
-import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleBean;
+import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleTaskBean;
 import com.cft.hogan.platform.ppm.api.bean.mm.TemplateBean;
 import com.cft.hogan.platform.ppm.api.dao.mm.ScheduleDAO_I;
 import com.cft.hogan.platform.ppm.api.dao.mm.cor.ScheduleDAO_COR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pascor.ScheduleDAO_PASCOR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pastda.ScheduleDAO_PASTDA;
 import com.cft.hogan.platform.ppm.api.dao.mm.tda.ScheduleDAO_TDA;
-import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
 import com.cft.hogan.platform.ppm.api.exception.BusinessException;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
@@ -27,7 +27,7 @@ import com.cft.hogan.platform.ppm.api.util.DAY;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @Service
-public class ScheduleFacade {
+public class ScheduleTaskFacade {
 
 	@Autowired
 	private TemplateFacade templateFacade;
@@ -45,8 +45,8 @@ public class ScheduleFacade {
 	private ScheduleDAO_PASTDA daoPASTDA;
 
 
-	public ScheduleBean findByUUID(String scheduleId) {
-		ScheduleBean bean = null;
+	public ScheduleTaskBean findByUUID(String scheduleId) {
+		ScheduleTaskBean bean = null;
 		try {
 			bean =  entityToBean(getDAO().findByUUID(scheduleId));
 			if((Constants.EXPORT).equalsIgnoreCase(bean.getType()))	{
@@ -63,8 +63,8 @@ public class ScheduleFacade {
 	}
 
 
-	public ScheduleEntity findByTemplateUUID(String templateUUID) {
-		ScheduleEntity entity = null;
+	public ScheduleTaskEntity findByTemplateUUID(String templateUUID) {
+		ScheduleTaskEntity entity = null;
 		try {
 			entity =  getDAO().findByTemplateUUID(templateUUID);
 		} catch (Exception e) {
@@ -73,13 +73,13 @@ public class ScheduleFacade {
 		return entity;
 	}
 
-	public List<ScheduleBean> findByType(String type) {
-		List<ScheduleBean> beanList = new ArrayList<ScheduleBean>();
+	public List<ScheduleTaskBean> findByType(String type) {
+		List<ScheduleTaskBean> beanList = new ArrayList<ScheduleTaskBean>();
 		try {
-			List<ScheduleEntity> entityList = null;
+			List<ScheduleTaskEntity> entityList = null;
 			entityList =  getDAO().findByType(type);
 			entityList.forEach((entity)->{
-				ScheduleBean bean =  entityToBean(entity);
+				ScheduleTaskBean bean =  entityToBean(entity);
 				if(type.equalsIgnoreCase(Constants.EXPORT))	{
 					try {
 						setTemplateName(bean);
@@ -95,7 +95,7 @@ public class ScheduleFacade {
 		return beanList;	
 	}
 
-	public ScheduleBean save(ScheduleBean bean) {
+	public ScheduleTaskBean save(ScheduleTaskBean bean) {
 		String uuid = null;
 		try {
 			validateEffectiveDate(bean.getEffectiveDate());
@@ -108,7 +108,7 @@ public class ScheduleFacade {
 	}
 
 
-	public ScheduleBean update(ScheduleBean bean, String scheduleId) {
+	public ScheduleTaskBean update(ScheduleTaskBean bean, String scheduleId) {
 		try {
 			if(!Utils.isValidDate(bean.getEffectiveDate())) {
 				throw new BusinessException("Invalid Start date: "+bean.getEffectiveDate(), false);
@@ -125,7 +125,7 @@ public class ScheduleFacade {
 
 	public void delete(String scheduleId) {
 		try {
-			ScheduleBean schedule = findByUUID(scheduleId);
+			ScheduleTaskBean schedule = findByUUID(scheduleId);
 			if(schedule == null ) {
 				throw new ItemNotFoundException();
 			}
@@ -143,7 +143,7 @@ public class ScheduleFacade {
 	public List<ScheduleBatchBean> schedulesForBatch(Date bpDate, String type){
 		List<ScheduleBatchBean> beanList = new ArrayList<ScheduleBatchBean>();
 		try {
-			List<ScheduleEntity> entityList = null;
+			List<ScheduleTaskEntity> entityList = null;
 			if(bpDate==null) {
 				bpDate = new Date(new java.util.Date().getTime());
 			}
@@ -169,7 +169,7 @@ public class ScheduleFacade {
 	}
 
 
-	private boolean evaluateBatchCriteria(Date bpDate, ScheduleEntity entity) {
+	private boolean evaluateBatchCriteria(Date bpDate, ScheduleTaskEntity entity) {
 		//ONLY ONCE
 		if("ONLY ONCE".equalsIgnoreCase(entity.getFrequency())){
 			return true;
@@ -202,7 +202,7 @@ public class ScheduleFacade {
 	}
 
 
-	private void setTemplateName(ScheduleBean bean) {
+	private void setTemplateName(ScheduleTaskBean bean) {
 		TemplateBean templateBean;
 		try {
 			templateBean = templateFacade.findByUUID(bean.getTemplateUUID());
@@ -228,8 +228,8 @@ public class ScheduleFacade {
 	}
 
 
-	private ScheduleBean entityToBean(ScheduleEntity entity) {
-		ScheduleBean bean = new ScheduleBean();
+	private ScheduleTaskBean entityToBean(ScheduleTaskEntity entity) {
+		ScheduleTaskBean bean = new ScheduleTaskBean();
 		bean.setCreatedBy(entity.getCreatedBy());
 		bean.setCreatedOn(entity.getCreatedOn());
 		bean.setEffectiveDate(entity.getEffectiveDate());
@@ -252,7 +252,7 @@ public class ScheduleFacade {
 		return bean;
 	}
 
-	private ScheduleBatchBean entityToBeanBatch(ScheduleEntity entity) {
+	private ScheduleBatchBean entityToBeanBatch(ScheduleTaskEntity entity) {
 		ScheduleBatchBean bean = new ScheduleBatchBean();
 		bean.setCreatedBy(entity.getCreatedBy());
 		bean.setCreatedOn(entity.getCreatedOn());
@@ -276,8 +276,8 @@ public class ScheduleFacade {
 		return bean;
 	}
 
-	private ScheduleEntity beanToEntity(ScheduleBean bean) {
-		ScheduleEntity entity = new ScheduleEntity();
+	private ScheduleTaskEntity beanToEntity(ScheduleTaskBean bean) {
+		ScheduleTaskEntity entity = new ScheduleTaskEntity();
 		entity.setCreatedBy(bean.getCreatedBy());
 		entity.setCreatedOn(bean.getCreatedOn());
 		entity.setEffectiveDate(bean.getEffectiveDate());

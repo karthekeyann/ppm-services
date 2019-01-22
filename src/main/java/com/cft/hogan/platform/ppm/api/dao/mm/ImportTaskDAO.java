@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskEntity;
-import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @SuppressWarnings("unchecked")
@@ -70,7 +70,7 @@ abstract public class ImportTaskDAO  {
 		
 		String sqlQuery = "DELETE FROM CELPPM.PPM_MM_IMPORT_TASK " +
 				"WHERE UUID = ?";
-		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleEntity.class);
+		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		//WHERE
 		query.setParameter(1, uuid);
 		return 	query.executeUpdate();

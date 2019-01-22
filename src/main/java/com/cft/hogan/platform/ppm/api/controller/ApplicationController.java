@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cft.hogan.platform.ppm.api.facade.ApplicationFacade;
 
 @RestController
-@RequestMapping("/applications")
+@RequestMapping("/ppm/applications")
 public class ApplicationController {
 	
 	@Autowired

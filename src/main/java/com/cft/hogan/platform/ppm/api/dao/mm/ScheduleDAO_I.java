@@ -3,23 +3,23 @@ package com.cft.hogan.platform.ppm.api.dao.mm;
 import java.sql.Date;
 import java.util.List;
 
-import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 
 public interface ScheduleDAO_I {
 	
- 	public String save(ScheduleEntity entity);
+ 	public String save(ScheduleTaskEntity entity);
  	
- 	public ScheduleEntity findByUUID(String uuid);
+ 	public ScheduleTaskEntity findByUUID(String uuid);
 
- 	public List<ScheduleEntity> findByType(String type);
+ 	public List<ScheduleTaskEntity> findByType(String type);
  	
- 	public List<ScheduleEntity> findByStatus(String status, Date date, String type);
+ 	public List<ScheduleTaskEntity> findByStatus(String status, Date date, String type);
  	
- 	public int update(ScheduleEntity entity) ;
+ 	public int update(ScheduleTaskEntity entity) ;
 
  	public int delete(String uuid);
 
-	public ScheduleEntity findByTemplateUUID(String templateUUID);
+	public ScheduleTaskEntity findByTemplateUUID(String templateUUID);
 
 
 }

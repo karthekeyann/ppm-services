@@ -14,9 +14,9 @@ import com.cft.hogan.platform.ppm.api.dao.mm.cor.TemplateDAO_COR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pascor.TemplateDAO_PASCOR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pastda.TemplateDAO_PASTDA;
 import com.cft.hogan.platform.ppm.api.dao.mm.tda.TemplateDAO_TDA;
-import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateEntity;
-import com.cft.hogan.platform.ppm.api.entity.mm.TemplatePSetEntity;
+import com.cft.hogan.platform.ppm.api.entity.mm.TemplateParameterEntity;
 import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
 import com.cft.hogan.platform.ppm.api.exception.SystemException;
@@ -43,7 +43,7 @@ public class TemplateFacade {
 	private TemplateParameterFacade templateParameterFacade;
 
 	@Autowired
-	private ScheduleFacade scheduleFacade;
+	private ScheduleTaskFacade scheduleTaskFacade;
 
 	public TemplateBean save(TemplateBean input) {
 		String uuid = null;
@@ -119,7 +119,7 @@ public class TemplateFacade {
 		try {
 			try {
 				checkOwner(uuid);
-				ScheduleEntity schedule = scheduleFacade.findByTemplateUUID(uuid);
+				ScheduleTaskEntity schedule = scheduleTaskFacade.findByTemplateUUID(uuid);
 				if(schedule !=null) {
 					throw new BadRequestException("Template linked to Schedule task. Unlink and try again: Ref Schedule Task :"+schedule.getName());
 				}
@@ -143,7 +143,7 @@ public class TemplateFacade {
 		}
 	}
 	
-	private void validatePSets(List<TemplatePSetEntity> psets) {
+	private void validatePSets(List<TemplateParameterEntity> psets) {
 		if(psets == null || psets.size()==0) {
 			throw new BadRequestException("Parameter not selected");
 		}

@@ -65,7 +65,7 @@ public class ImportTaskFacade {
 	private ImportTaskDAO_PASTDA daoPASTDA;
 
 	@Autowired
-	private ImportTaskDetailsFacade importTaskDetailsFacade;
+	private ImportTaskDetailFacade importTaskDetailFacade;
 
 	private StringBuffer validationMessgae = null;
 	private int errorRow = 0; 
@@ -115,7 +115,7 @@ public class ImportTaskFacade {
 		ImportTaskBean bean = null;
 		try {
 			bean = entityToBean(getDAO().findByUUID(taskId));
-			bean.setImportTaskReviewDetails(importTaskDetailsFacade.findByImportTaskUUID(taskId));
+			bean.setImportTaskReviewDetails(importTaskDetailFacade.findByImportTaskUUID(taskId));
 		}catch(Exception e) {
 			Utils.handleException(e);
 		}
@@ -133,7 +133,7 @@ public class ImportTaskFacade {
 				throw new BadRequestException("Import task can be deleted by task creator/owner");
 			}
 
-			List<ImportTaskReviewDetailEntity> taskDetailsList = importTaskDetailsFacade.findPsetKeyByImportTaskUUIDAndStatus(taskId, Constants.SUCCESS);
+			List<ImportTaskReviewDetailEntity> taskDetailsList = importTaskDetailFacade.findPsetKeyByImportTaskUUIDAndStatus(taskId, Constants.SUCCESS);
 			if(taskDetailsList !=null && taskDetailsList.size() > 0) {
 				throw new BadRequestException("Delete not allowed when items updated by the task. Please review the updated items and submit the failed records.");
 			}
@@ -163,7 +163,7 @@ public class ImportTaskFacade {
 	public ImportTaskBean reload(String taskUUID, MultipartFile file, String user) {
 		try {
 			String logMsg = Utils.getLogMsg();
-			List<ImportTaskReviewDetailEntity> resultSet = importTaskDetailsFacade.findPsetKeyByImportTaskUUIDAndStatus(taskUUID, Constants.FAILED);
+			List<ImportTaskReviewDetailEntity> resultSet = importTaskDetailFacade.findPsetKeyByImportTaskUUIDAndStatus(taskUUID, Constants.FAILED);
 			log.debug(logMsg+"Import task ID :"+taskUUID+" --No of failed records retrieved for import task"+taskUUID +"  :"+ resultSet.size());
 			if(resultSet!=null && resultSet.size()>0) {
 				PCDService service = new PCDService();
@@ -232,7 +232,7 @@ public class ImportTaskFacade {
 					importTaskReviewDetail.setExpiryDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtExpDt())));
 					importTaskReviewDetail.setModifiedBy(Utils.getUserIdInRequestHeader());
 					try {
-						importTaskDetailsFacade.Update(importTaskReviewDetail);
+						importTaskDetailFacade.Update(importTaskReviewDetail);
 					} catch (Exception e) {
 						StringBuffer message = new StringBuffer();
 						message.append("Import task ID :").append(taskUUID);
@@ -286,7 +286,7 @@ public class ImportTaskFacade {
 				Utils.handleException(e);
 			}
 		});
-		return importTaskDetailsFacade.save(reviewList);
+		return importTaskDetailFacade.save(reviewList);
 	}
 
 	private String constructPCDKey(CdmfKeyInfo_Type  cdmfKeyInfo) {
@@ -563,7 +563,7 @@ public class ImportTaskFacade {
 
 
 	private void updateImportTaskStatus(String taskID, String logMsg) {
-		List<ImportTaskReviewDetailEntity> reeviewList = importTaskDetailsFacade.findPsetKeyByImportTaskUUIDAndStatus(String.valueOf(taskID), Constants.FAILED);
+		List<ImportTaskReviewDetailEntity> reeviewList = importTaskDetailFacade.findPsetKeyByImportTaskUUIDAndStatus(String.valueOf(taskID), Constants.FAILED);
 		log.debug(logMsg+"Import task Id :"+taskID+"--Failed records: "+ reeviewList.size());
 		if(reeviewList.size()==0) {
 			ImportTaskEntity entity = new ImportTaskEntity();

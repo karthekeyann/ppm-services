@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ScheduleBean {
+public class ScheduleTaskBean {
 
 	private String uuid;
 

@@ -27,49 +27,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cft.hogan.platform.ppm.api.assembler.ScheduleResourceAssembler;
 import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleBatchBean;
-import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleBean;
-import com.cft.hogan.platform.ppm.api.facade.mm.ScheduleFacade;
+import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleTaskBean;
+import com.cft.hogan.platform.ppm.api.facade.mm.ScheduleTaskFacade;
 
 
 @RestController
-@RequestMapping("/mass-maintenance/schedules")
-public class ScheduleController {
+@RequestMapping("/ppm/mass-maintenance/schedule-tasks")
+public class ScheduleTaskController {
 
 	@Autowired
-	private ScheduleFacade scheduleFacade;
+	private ScheduleTaskFacade scheduleTaskFacade;
 
 	@Autowired
 	private ScheduleResourceAssembler assembler;
 
 	@GetMapping
-	public Resources<Resource<ScheduleBean>> findAll(@RequestParam("type") String type) {
-		List<Resource<ScheduleBean>> scheduleBeans = scheduleFacade.findByType(type).stream().map(assembler::toResource).collect(Collectors.toList());
-		return new Resources<>(scheduleBeans, linkTo(methodOn(ScheduleController.class).findAll(type)).withSelfRel());
+	public Resources<Resource<ScheduleTaskBean>> findAll(@RequestParam("type") String type) {
+		List<Resource<ScheduleTaskBean>> scheduleTaskBeans = scheduleTaskFacade.findByType(type).stream().map(assembler::toResource).collect(Collectors.toList());
+		return new Resources<>(scheduleTaskBeans, linkTo(methodOn(ScheduleTaskController.class).findAll(type)).withSelfRel());
 	}
 
 	@GetMapping("/{id}")
-	public Resource<ScheduleBean> findByUUID(@PathVariable(value = "id") String scheduleId) {
-		return assembler.toResource(scheduleFacade.findByUUID(scheduleId));
+	public Resource<ScheduleTaskBean> findByUUID(@PathVariable(value = "id") String scheduleId) {
+		return assembler.toResource(scheduleTaskFacade.findByUUID(scheduleId));
 	}
 	
 	@GetMapping("/batch")
 	public List<ScheduleBatchBean> batch(@RequestParam("type") String type, @Nullable @RequestParam("bp-date") Date date) {
-		return scheduleFacade.schedulesForBatch(date, type);
+		return scheduleTaskFacade.schedulesForBatch(date, type);
 	}
 
 	@PostMapping
-	public Resource<ScheduleBean> save(@Valid @RequestBody ScheduleBean scheduleBean) {
-		return assembler.toResource(scheduleFacade.save(scheduleBean));
+	public Resource<ScheduleTaskBean> save(@Valid @RequestBody ScheduleTaskBean scheduleTaskBean) {
+		return assembler.toResource(scheduleTaskFacade.save(scheduleTaskBean));
 	}
 
 	@PutMapping("/{id}")
-	public Resource<ScheduleBean> update(@PathVariable(value = "id") String scheduleId,	@Valid @RequestBody ScheduleBean scheduleBean) {
-		return assembler.toResource(scheduleFacade.update(scheduleBean,scheduleId ));
+	public Resource<ScheduleTaskBean> update(@PathVariable(value = "id") String scheduleId,	@Valid @RequestBody ScheduleTaskBean scheduleTaskBean) {
+		return assembler.toResource(scheduleTaskFacade.update(scheduleTaskBean,scheduleId ));
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteTask(@PathVariable(value = "id") String taskId) {
-		scheduleFacade.delete(taskId);
+		scheduleTaskFacade.delete(taskId);
 		return ResponseEntity.noContent().build();	
 	}
 

@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="PPM_MM_TEMPLATE_PSET", schema="CELPPM")
-public class TemplatePSetEntity implements Serializable {
+public class TemplateParameterEntity implements Serializable {
 	/**
 	 * 
 	 */

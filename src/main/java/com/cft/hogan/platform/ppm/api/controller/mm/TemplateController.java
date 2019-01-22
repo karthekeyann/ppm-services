@@ -26,7 +26,7 @@ import com.cft.hogan.platform.ppm.api.bean.mm.TemplateBean;
 import com.cft.hogan.platform.ppm.api.facade.mm.TemplateFacade;
 
 @RestController
-@RequestMapping("/mass-maintenance/templates")
+@RequestMapping("/ppm/mass-maintenance/templates")
 public class TemplateController {
 
 	@Autowired
