@@ -181,7 +181,7 @@ public class Utils {
 				if(((BusinessException) e).processFurther) {
 					log.error("Business error occured. Error information logged and continue processing.");
 				}else{
-					throw new BusinessException(e.getMessage(), false);
+					throw new BadRequestException(e.getMessage());
 				}
 			}else if(e instanceof ItemNotFoundException || e instanceof NoResultException || e instanceof EmptyResultDataAccessException) {
 				throw new ItemNotFoundException();

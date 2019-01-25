@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.axis.message.MessageElement;
-import org.apache.axis.message.Text;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataValidationHelper;
@@ -29,6 +28,8 @@ import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.DataValidationHelper;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.bean.CompanyBean;
@@ -55,6 +56,7 @@ import com.cft.hogan.platform.ppm.api.util.excel.WorkbookStyle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 public class ExportTaskFacade {
 
 	private static final String MESSAGE_1 = "No PCD Selected For Export";
@@ -120,13 +122,10 @@ public class ExportTaskFacade {
 	private static final short EXTENDED_TIER_HEADER_DATA_COLUMN_FONT_COLOR = HSSFColor.INDIGO.index;
 	private static final short EXTENDED_TIER_HEADER_DATA_COLUMN_CELL_COLOR = HSSFColor.LAVENDER.index;
 
-	private HSSFCellStyle titleCellStyle = null;
-	private HSSFCellStyle headerKeyNonReqCellStyle = null;
-	private HSSFCellStyle headerKeyReqCellStyle = null;
-	private HSSFCellStyle headerDataColumnCellStyle = null;
-	private HSSFCellStyle oddRowColumnCellStyle = null;
-	private HSSFCellStyle evenRowColumnCellStyle = null;
-	private HSSFCellStyle extendedTierheaderKeyColumnCellStyle = null;
+
+
+	@Autowired
+	private ParameterFacade parameterFacade;
 
 	public byte[] save(ExportTaskBean exportTaskBean) {
 		byte[] response =null;
@@ -138,13 +137,16 @@ public class ExportTaskFacade {
 						.append("--").append(pset.getApplicationID())
 						.append("--").append(pset.getCompanyID())
 						.append("--").append(pset.getEffectiveDate()).toString());
+				if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())){
+					throw new BusinessException("Invalid Parameter Effective date: #"+pset.getNumber(), false);
+				}
 			}
 			HSSFWorkbook workbook = null;
 			ByteArrayOutputStream outputStream = null;
 			try {
 				outputStream = new ByteArrayOutputStream();
 				exportTaskBean.setPsets(handleAllCompany(exportTaskBean.getPsets()));
-				workbook = createPsetWorkBook(exportTaskBean.getPsets(),exportTaskBean.getExcelSettings(),exportTaskBean.getSingleTab());
+				workbook = createPsetWorkBook(exportTaskBean.getPsets(), exportTaskBean.getExcelSettings(), exportTaskBean.getSingleTab());
 				workbook.write(outputStream);
 				response = outputStream.toByteArray();
 			} finally {
@@ -166,8 +168,8 @@ public class ExportTaskFacade {
 		PCDService service = new PCDService();
 		if (!isEmptySelectedExportList(selectedExportList)) {
 			ExcelStyle excelStyle = getExcelStyleVar(excelStyleSetting);
-			WorkbookStyle WorkbookStyle = new WorkbookStyle(excelStyle);
-			loadWorkbookStyle(WorkbookStyle, workBook);
+			WorkbookStyle workbookStyle = new WorkbookStyle(excelStyle);
+			loadWorkbookStyle(workbookStyle, workBook);
 			Map<String, String> samePCDs = new HashMap<String, String>();
 			int rowNumber = 0;
 			for (ParameterBean parameterBean : selectedExportList) {
@@ -203,26 +205,26 @@ public class ExportTaskFacade {
 							{
 								String workSheetName = getWorkSheetName(parameterBean, rowNumber, true);
 								samePCDs.put(pSetNum, workSheetName);
-								Object worksheet = createSheet(workSheetName, workBook);
-								pupulatePsetWorksheet(workSheetData.getXStatus(), workSheetData.getPcdItemList(), worksheet, aPsetElementsInfo, false, false);
+								HSSFSheet worksheet = createSheet(workSheetName, workBook);
+								pupulatePsetWorksheet(workSheetData.getXStatus(), workSheetData.getPcdItemList(), worksheet, aPsetElementsInfo, false, false, workbookStyle, workBook);
 							}
 							else
 							{
-								Object worksheet = getSheet(samePCDs.get(pSetNum), workBook);
-								pupulatePsetWorksheet(workSheetData.getXStatus(), workSheetData.getPcdItemList(), worksheet, aPsetElementsInfo, true, false);
+								HSSFSheet worksheet = getSheet(samePCDs.get(pSetNum), workBook);
+								pupulatePsetWorksheet(workSheetData.getXStatus(), workSheetData.getPcdItemList(), worksheet, aPsetElementsInfo, true, false, workbookStyle, workBook);
 							}
 						}
 						else
 						{
-							Object worksheet = createSheet(getWorkSheetName(parameterBean, rowNumber, false), workBook);
-							pupulatePsetWorksheet(workSheetData.getXStatus(), workSheetData.getPcdItemList(), worksheet, aPsetElementsInfo, false, true);
+							HSSFSheet worksheet = createSheet(getWorkSheetName(parameterBean, rowNumber, false), workBook);
+							pupulatePsetWorksheet(workSheetData.getXStatus(), workSheetData.getPcdItemList(), worksheet, aPsetElementsInfo, false, true, workbookStyle, workBook);
 						}
 
 
 					} else {
 						// Pass error data and create new sheet with error
-						Object worksheet = createSheet(getWorkSheetName(parameterBean, rowNumber, false), workBook);
-						pupulatePsetWorksheet(template.getXStatus(), template.getPcdItemList(), worksheet, aPsetElementsInfo, false, false);
+						HSSFSheet worksheet = createSheet(getWorkSheetName(parameterBean, rowNumber, false), workBook);
+						pupulatePsetWorksheet(template.getXStatus(), template.getPcdItemList(), worksheet, aPsetElementsInfo, false, false, workbookStyle, workBook);
 					}
 				}
 			}
@@ -232,108 +234,146 @@ public class ExportTaskFacade {
 		return workBook;
 	}
 
-	private void loadWorkbookStyle(WorkbookStyle aWorkbookStyle, HSSFWorkbook workBook) {
+	private void loadWorkbookStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
 		if (workBook != null) {
 			HSSFPalette palette = workBook.getCustomPalette();
-			palette.setColorAtIndex(TITLE_FONT_COLOR, aWorkbookStyle.getPcdNameandNumberStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getPcdNameandNumberStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getPcdNameandNumberStyle().getFontColorRGB()[2]);
-			palette.setColorAtIndex(TITLE_CELL_COLOR, aWorkbookStyle.getPcdNameandNumberStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getPcdNameandNumberStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getPcdNameandNumberStyle().getCellColorRGB()[2]);
+			palette.setColorAtIndex(TITLE_FONT_COLOR, workbookStyle.getPcdNameandNumberStyle().getFontColorRGB()[0],
+					workbookStyle.getPcdNameandNumberStyle().getFontColorRGB()[1],
+					workbookStyle.getPcdNameandNumberStyle().getFontColorRGB()[2]);
+			palette.setColorAtIndex(TITLE_CELL_COLOR, workbookStyle.getPcdNameandNumberStyle().getCellColorRGB()[0],
+					workbookStyle.getPcdNameandNumberStyle().getCellColorRGB()[1],
+					workbookStyle.getPcdNameandNumberStyle().getCellColorRGB()[2]);
 			palette.setColorAtIndex(HEADER_KEY_COLUMN_FONT_COLOR,
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getFontColorRGB()[2]);
+					workbookStyle.getHeaderRowReqFieldsStyle().getFontColorRGB()[0],
+					workbookStyle.getHeaderRowReqFieldsStyle().getFontColorRGB()[1],
+					workbookStyle.getHeaderRowReqFieldsStyle().getFontColorRGB()[2]);
 			palette.setColorAtIndex(HEADER_KEY_COLUMN_CELL_COLOR,
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getCellColorRGB()[2]);
+					workbookStyle.getHeaderRowReqFieldsStyle().getCellColorRGB()[0],
+					workbookStyle.getHeaderRowReqFieldsStyle().getCellColorRGB()[1],
+					workbookStyle.getHeaderRowReqFieldsStyle().getCellColorRGB()[2]);
 			palette.setColorAtIndex(HEADER_NON_REQ_KEY_COLUMN_FONT_COLOR,
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getFontColorRGB()[2]);
+					workbookStyle.getHeaderRowNonReqFieldsStyle().getFontColorRGB()[0],
+					workbookStyle.getHeaderRowNonReqFieldsStyle().getFontColorRGB()[1],
+					workbookStyle.getHeaderRowNonReqFieldsStyle().getFontColorRGB()[2]);
 			palette.setColorAtIndex(HEADER_NON_REQ_KEY_COLUMN_CELL_COLOR,
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getCellColorRGB()[2]);
+					workbookStyle.getHeaderRowNonReqFieldsStyle().getCellColorRGB()[0],
+					workbookStyle.getHeaderRowNonReqFieldsStyle().getCellColorRGB()[1],
+					workbookStyle.getHeaderRowNonReqFieldsStyle().getCellColorRGB()[2]);
 			palette.setColorAtIndex(HEADER_DATA_COLUMN_FONT_COLOR,
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getFontColorRGB()[2]);
+					workbookStyle.getHeaderRowDataFieldsStyle().getFontColorRGB()[0],
+					workbookStyle.getHeaderRowDataFieldsStyle().getFontColorRGB()[1],
+					workbookStyle.getHeaderRowDataFieldsStyle().getFontColorRGB()[2]);
 			palette.setColorAtIndex(HEADER_DATA_COLUMN_CELL_COLOR,
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getCellColorRGB()[2]);
+					workbookStyle.getHeaderRowDataFieldsStyle().getCellColorRGB()[0],
+					workbookStyle.getHeaderRowDataFieldsStyle().getCellColorRGB()[1],
+					workbookStyle.getHeaderRowDataFieldsStyle().getCellColorRGB()[2]);
 			palette.setColorAtIndex(ODD_ROW_COLUMN_FONT_COLOR,
-					aWorkbookStyle.getDataRowOddFieldsStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getDataRowOddFieldsStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getDataRowOddFieldsStyle().getFontColorRGB()[2]);
+					workbookStyle.getDataRowOddFieldsStyle().getFontColorRGB()[0],
+					workbookStyle.getDataRowOddFieldsStyle().getFontColorRGB()[1],
+					workbookStyle.getDataRowOddFieldsStyle().getFontColorRGB()[2]);
 			palette.setColorAtIndex(ODD_ROW_COLUMN_CELL_COLOR,
-					aWorkbookStyle.getDataRowOddFieldsStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getDataRowOddFieldsStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getDataRowOddFieldsStyle().getCellColorRGB()[2]);
+					workbookStyle.getDataRowOddFieldsStyle().getCellColorRGB()[0],
+					workbookStyle.getDataRowOddFieldsStyle().getCellColorRGB()[1],
+					workbookStyle.getDataRowOddFieldsStyle().getCellColorRGB()[2]);
 			palette.setColorAtIndex(EVEN_ROW_COLUMN_FONT_COLOR,
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getFontColorRGB()[2]);
+					workbookStyle.getDataRowEvenFieldsStyle().getFontColorRGB()[0],
+					workbookStyle.getDataRowEvenFieldsStyle().getFontColorRGB()[1],
+					workbookStyle.getDataRowEvenFieldsStyle().getFontColorRGB()[2]);
 			palette.setColorAtIndex(EVEN_ROW_COLUMN_CELL_COLOR,
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getCellColorRGB()[2]);
+					workbookStyle.getDataRowEvenFieldsStyle().getCellColorRGB()[0],
+					workbookStyle.getDataRowEvenFieldsStyle().getCellColorRGB()[1],
+					workbookStyle.getDataRowEvenFieldsStyle().getCellColorRGB()[2]);
 			palette.setColorAtIndex(EXTENDED_TIER_HEADER_DATA_COLUMN_FONT_COLOR,
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getFontColorRGB()[0],
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getFontColorRGB()[1],
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getFontColorRGB()[2]);
+					workbookStyle.getIntRateMtrxExtndTierStyle().getFontColorRGB()[0],
+					workbookStyle.getIntRateMtrxExtndTierStyle().getFontColorRGB()[1],
+					workbookStyle.getIntRateMtrxExtndTierStyle().getFontColorRGB()[2]);
 			palette.setColorAtIndex(EXTENDED_TIER_HEADER_DATA_COLUMN_CELL_COLOR,
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getCellColorRGB()[0],
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getCellColorRGB()[1],
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getCellColorRGB()[2]);
+					workbookStyle.getIntRateMtrxExtndTierStyle().getCellColorRGB()[0],
+					workbookStyle.getIntRateMtrxExtndTierStyle().getCellColorRGB()[1],
+					workbookStyle.getIntRateMtrxExtndTierStyle().getCellColorRGB()[2]);
 
 		}
-		if (this.titleCellStyle == null) {
-			this.titleCellStyle = getCellStyle(aWorkbookStyle.getPcdNameandNumberStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getPcdNameandNumberStyle().getFontStyle()),
-					aWorkbookStyle.getPcdNameandNumberStyle().getFontSize(), TITLE_FONT_COLOR, TITLE_CELL_COLOR, workBook);
-		}
-		if (this.headerKeyReqCellStyle == null) {
-			this.headerKeyReqCellStyle = getCellStyle(aWorkbookStyle.getHeaderRowReqFieldsStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getHeaderRowReqFieldsStyle().getFontStyle()),
-					aWorkbookStyle.getHeaderRowReqFieldsStyle().getFontSize(), HEADER_KEY_COLUMN_FONT_COLOR,
-					HEADER_KEY_COLUMN_CELL_COLOR, workBook);
-		}
-		if (this.headerKeyNonReqCellStyle == null) {
-			this.headerKeyNonReqCellStyle = getCellStyle(aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getFontStyle()),
-					aWorkbookStyle.getHeaderRowNonReqFieldsStyle().getFontSize(), HEADER_NON_REQ_KEY_COLUMN_FONT_COLOR,
-					HEADER_NON_REQ_KEY_COLUMN_CELL_COLOR, workBook);
-		}
-		if (this.headerDataColumnCellStyle == null) {
-			this.headerDataColumnCellStyle = getCellStyle(aWorkbookStyle.getHeaderRowDataFieldsStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getHeaderRowDataFieldsStyle().getFontStyle()),
-					aWorkbookStyle.getHeaderRowDataFieldsStyle().getFontSize(), HEADER_DATA_COLUMN_FONT_COLOR,
-					HEADER_DATA_COLUMN_CELL_COLOR, workBook);
-		}
-		if (this.oddRowColumnCellStyle == null) {
-			this.oddRowColumnCellStyle = getCellStyle(aWorkbookStyle.getDataRowOddFieldsStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getDataRowOddFieldsStyle().getFontStyle()),
-					aWorkbookStyle.getDataRowOddFieldsStyle().getFontSize(), ODD_ROW_COLUMN_FONT_COLOR,
-					ODD_ROW_COLUMN_CELL_COLOR, workBook);
-		}
-		if (this.evenRowColumnCellStyle == null) {
-			this.evenRowColumnCellStyle = getCellStyle(aWorkbookStyle.getDataRowEvenFieldsStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getDataRowEvenFieldsStyle().getFontStyle()),
-					aWorkbookStyle.getDataRowEvenFieldsStyle().getFontSize(), EVEN_ROW_COLUMN_FONT_COLOR,
-					EVEN_ROW_COLUMN_CELL_COLOR, workBook);
-		}
-		if (this.extendedTierheaderKeyColumnCellStyle == null) {
-			this.extendedTierheaderKeyColumnCellStyle = getCellStyle(
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getFontType(),
-					Integer.parseInt(aWorkbookStyle.getIntRateMtrxExtndTierStyle().getFontStyle()),
-					aWorkbookStyle.getIntRateMtrxExtndTierStyle().getFontSize(),
-					EXTENDED_TIER_HEADER_DATA_COLUMN_FONT_COLOR, EXTENDED_TIER_HEADER_DATA_COLUMN_CELL_COLOR, workBook);
-		}
 	}
+
+	private HSSFCellStyle getTitleCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle titleCellStyle = null;
+		titleCellStyle = getCellStyle(workbookStyle.getPcdNameandNumberStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getPcdNameandNumberStyle().getFontStyle()),
+				workbookStyle.getPcdNameandNumberStyle().getFontSize(), TITLE_FONT_COLOR, TITLE_CELL_COLOR, workBook);
+		return titleCellStyle;
+	}
+
+
+	private HSSFCellStyle getHeaderKeyNonReqCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle headerKeyNonReqCellStyle = null;
+
+		headerKeyNonReqCellStyle = getCellStyle(workbookStyle.getHeaderRowNonReqFieldsStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getHeaderRowNonReqFieldsStyle().getFontStyle()),
+				workbookStyle.getHeaderRowNonReqFieldsStyle().getFontSize(), HEADER_NON_REQ_KEY_COLUMN_FONT_COLOR,
+				HEADER_NON_REQ_KEY_COLUMN_CELL_COLOR, workBook);
+
+		return headerKeyNonReqCellStyle;
+	}
+
+
+	private HSSFCellStyle getHeaderKeyReqCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle headerKeyReqCellStyle = null;
+
+		headerKeyReqCellStyle = getCellStyle(workbookStyle.getHeaderRowReqFieldsStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getHeaderRowReqFieldsStyle().getFontStyle()),
+				workbookStyle.getHeaderRowReqFieldsStyle().getFontSize(), HEADER_KEY_COLUMN_FONT_COLOR,
+				HEADER_KEY_COLUMN_CELL_COLOR, workBook);
+
+		return headerKeyReqCellStyle;
+	}
+
+
+	private HSSFCellStyle getHeaderDataColumnCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle headerDataColumnCellStyle = null;
+
+		headerDataColumnCellStyle = getCellStyle(workbookStyle.getHeaderRowDataFieldsStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getHeaderRowDataFieldsStyle().getFontStyle()),
+				workbookStyle.getHeaderRowDataFieldsStyle().getFontSize(), HEADER_DATA_COLUMN_FONT_COLOR,
+				HEADER_DATA_COLUMN_CELL_COLOR, workBook);
+
+		return headerDataColumnCellStyle;
+	}
+
+	private HSSFCellStyle getOddRowColumnCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle oddRowColumnCellStyle = null;
+
+		oddRowColumnCellStyle = getCellStyle(workbookStyle.getDataRowOddFieldsStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getDataRowOddFieldsStyle().getFontStyle()),
+				workbookStyle.getDataRowOddFieldsStyle().getFontSize(), ODD_ROW_COLUMN_FONT_COLOR,
+				ODD_ROW_COLUMN_CELL_COLOR, workBook);
+
+		return oddRowColumnCellStyle;
+	}
+
+	private HSSFCellStyle getEvenRowColumnCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle evenRowColumnCellStyle = null;
+
+		evenRowColumnCellStyle = getCellStyle(workbookStyle.getDataRowEvenFieldsStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getDataRowEvenFieldsStyle().getFontStyle()),
+				workbookStyle.getDataRowEvenFieldsStyle().getFontSize(), EVEN_ROW_COLUMN_FONT_COLOR,
+				EVEN_ROW_COLUMN_CELL_COLOR, workBook);
+
+		return evenRowColumnCellStyle;
+	}
+
+
+	private HSSFCellStyle getExtendedTierheaderKeyColumnCellStyle(WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		HSSFCellStyle extendedTierheaderKeyColumnCellStyle = null;
+
+		extendedTierheaderKeyColumnCellStyle = getCellStyle(
+				workbookStyle.getIntRateMtrxExtndTierStyle().getFontType(),
+				Integer.parseInt(workbookStyle.getIntRateMtrxExtndTierStyle().getFontStyle()),
+				workbookStyle.getIntRateMtrxExtndTierStyle().getFontSize(),
+				EXTENDED_TIER_HEADER_DATA_COLUMN_FONT_COLOR, EXTENDED_TIER_HEADER_DATA_COLUMN_CELL_COLOR, workBook);
+
+		return extendedTierheaderKeyColumnCellStyle;
+	}
+
 
 	private ExcelStyle getExcelStyleVar(ExcelStyle customSettings) {
 		ExcelStyle finalSettings = new ExcelStyle();
@@ -586,45 +626,27 @@ public class ExportTaskFacade {
 		return workBook.getSheet(name);
 	}
 
-	private void pupulatePsetWorksheet(Status_Type status, PcdItemList_Type pcdItemList_Type, Object worksheetObj, PsetElementsInfo aPsetElementsInfo, boolean singleTab, boolean noRecordsFlag) throws Exception {
+	private void pupulatePsetWorksheet(Status_Type status, PcdItemList_Type pcdItemList_Type, HSSFSheet worksheet, PsetElementsInfo pSetElementsInfo, boolean singleTab, boolean noRecordsFlag, WorkbookStyle workbookStyle, HSSFWorkbook workBook) throws Exception {
 		final int sheetTitleRow = 0;
 		int elementRow = 1;
 		final int labelRow = 2;
 		int dataRowStartIndex = 2;
-		HSSFSheet worksheet = (HSSFSheet) worksheetObj;
 
 		if(singleTab) {
 			dataRowStartIndex = worksheet.getLastRowNum();
 		}
 		if ("0".equals(String.valueOf(status.getStatusCode()))) {
-			PcdItemList_TypePcdItem[] pcdItemList = pcdItemList_Type.getPcdItem();
-			if(!singleTab) {
-				// Write element names
-				createHeaderRow(elementRow, worksheet, aPsetElementsInfo, false);
-				// Write label names
-				createHeaderRow(labelRow, worksheet, aPsetElementsInfo, true);
-			}
-			if (PCD_2598.equals(aPsetElementsInfo.getParameterNumber())) {
-				setExtendedViewHeaderStyle(worksheet, 2, aPsetElementsInfo);
-			}
-			// Data row Start
-			int styleIndex = 0;
-			for (PcdItemList_TypePcdItem pcdItem : pcdItemList) {
-				HSSFCellStyle style = null;
-				if (styleIndex % 2 == 0) {
-					style = oddRowColumnCellStyle;
-				} else {
-					style = evenRowColumnCellStyle;
-				}
-				if (PCD_2598.equals(aPsetElementsInfo.getParameterNumber())) {
-					dataRowStartIndex = createInterestRateDataRow(worksheet, pcdItem, ++dataRowStartIndex,
-							aPsetElementsInfo, style);
-				} else {
-					dataRowStartIndex = createDataRow(worksheet, pcdItem, ++dataRowStartIndex, aPsetElementsInfo,
-							style);
-				}
-				styleIndex++;
-			}
+
+			/*
+			 * add Header rows
+			 */
+			addHeaderRows(singleTab, elementRow, labelRow, worksheet, pSetElementsInfo, workbookStyle, workBook);
+
+			/*
+			 * add Data rows
+			 */
+			addDataRows(pcdItemList_Type, pSetElementsInfo, dataRowStartIndex, workbookStyle, worksheet, workBook);
+
 
 			// Set the width of woksheet column width based on the worksheet cells data
 			HSSFRow headerRow = worksheet.getRow(1);
@@ -632,35 +654,34 @@ public class ExportTaskFacade {
 			if(!singleTab) {
 				// Write the title
 				createTitleRow(sheetTitleRow, worksheet, 0, columnCount,
-						aPsetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(aPsetElementsInfo.getAppName(), aPsetElementsInfo.getParameterNumber()));
+						pSetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(pSetElementsInfo.getAppName(), pSetElementsInfo.getParameterNumber()), workbookStyle, workBook);
 			}
 			for (int column = 0; column < columnCount; column++) {
 				worksheet.autoSizeColumn(column);
 			}
 
-			if(noRecordsFlag && pcdItemList.length==0) {
-				createTitleRow(4, worksheet, 0, columnCount,"No records");
+			if(noRecordsFlag && pcdItemList_Type.getPcdItem().length==0) {
+				createTitleRow(4, worksheet, 0, columnCount,"No records", workbookStyle, workBook);
 			}
 
 		} else {
 			// write title
 			createTitleRow(sheetTitleRow, worksheet, 0, 10,
-					aPsetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(aPsetElementsInfo.getAppName(), aPsetElementsInfo.getParameterNumber()));
+					pSetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(pSetElementsInfo.getAppName(), pSetElementsInfo.getParameterNumber()), workbookStyle, workBook);
 			// Write the error caught in service
 			HSSFRow headerRow = worksheet.createRow(labelRow);
-			createCell(headerRow, 0, status.getStatusDesc(), titleCellStyle);
+			createCell(headerRow, 0, status.getStatusDesc(), getTitleCellStyle(workbookStyle, workBook));
 		}
 		// Create action coulmn
-		createActionDropDown(worksheet, aPsetElementsInfo.getParameterNumber(), labelRow,
+		createActionDropDown(worksheet, pSetElementsInfo.getParameterNumber(), labelRow,
 				worksheet.getPhysicalNumberOfRows());
 		// Set Action header with required style
-		worksheet.getRow(labelRow).getCell(0).setCellStyle(headerKeyReqCellStyle);
+		worksheet.getRow(labelRow).getCell(0).setCellStyle(getHeaderKeyReqCellStyle(workbookStyle, workBook));
 	}
-
+	
 
 	private String getParameterName(String applicationID, String parameterNum) {
-		ParameterFacade service = new ParameterFacade();
-		List<ParameterBean> parametersList = service.getParameters(applicationID);
+		List<ParameterBean> parametersList = parameterFacade.getParameters(applicationID);
 		for(ParameterBean bean: parametersList) {
 			if(parameterNum.equalsIgnoreCase(bean.getNumber())){
 				return bean.getName();
@@ -669,6 +690,46 @@ public class ExportTaskFacade {
 		return Constants.EMPTY;
 	}
 
+
+	private void addHeaderRows(boolean singleTab, int elementRow, int labelRow, HSSFSheet worksheet, PsetElementsInfo pSetElementsInfo, WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
+		if(!singleTab) {
+			// Write element names
+			createHeaderRow(elementRow, worksheet, pSetElementsInfo, false, workbookStyle, workBook);
+			// Write label names
+			createHeaderRow(labelRow, worksheet, pSetElementsInfo, true, workbookStyle, workBook);
+		}
+		if (PCD_2598.equals(pSetElementsInfo.getParameterNumber())) {
+			setExtendedViewHeaderStyle(worksheet, 2, pSetElementsInfo, workbookStyle, workBook);
+		}
+	}
+
+
+	private void addDataRows(PcdItemList_Type pcdItemList_Type, PsetElementsInfo pSetElementsInfo, int dataRowStartIndex, WorkbookStyle workbookStyle, HSSFSheet worksheet, HSSFWorkbook workBook) throws Exception {
+		int styleIndex = 0;
+		PcdItemList_TypePcdItem[] pcdItemList = pcdItemList_Type.getPcdItem();
+
+		HSSFCellStyle oddRowColumnCellStyle = getOddRowColumnCellStyle(workbookStyle, workBook);
+		HSSFCellStyle evenRowColumnCellStyle = getEvenRowColumnCellStyle(workbookStyle, workBook);
+
+		for (PcdItemList_TypePcdItem pcdItem : pcdItemList) {
+			HSSFCellStyle style = null;
+			if (styleIndex % 2 == 0) {
+				style = oddRowColumnCellStyle;
+			} else {
+				style = evenRowColumnCellStyle;
+			}
+			if (PCD_2598.equals(pSetElementsInfo.getParameterNumber())) {
+				dataRowStartIndex = createInterestRateDataRow(worksheet, pcdItem, ++dataRowStartIndex,
+						pSetElementsInfo, style);
+			} else {
+				dataRowStartIndex = createDataRow(worksheet, pcdItem, ++dataRowStartIndex, pSetElementsInfo,
+						style);
+			}
+			styleIndex++;
+		}
+	}
+
+
 	/**
 	 * @param titleRowIndex
 	 * @param worksheet
@@ -676,9 +737,9 @@ public class ExportTaskFacade {
 	 * @param endColumn
 	 * @param title
 	 */
-	private void createTitleRow(int titleRowIndex, HSSFSheet worksheet, int startColumn, int endColumn, String title) {
+	private void createTitleRow(int titleRowIndex, HSSFSheet worksheet, int startColumn, int endColumn, String title, WorkbookStyle aWorkbookStyle, HSSFWorkbook workBook) {
 		HSSFRow headerRow = worksheet.createRow(titleRowIndex);
-		createCell(headerRow, 0, title, titleCellStyle);
+		createCell(headerRow, 0, title, getTitleCellStyle(aWorkbookStyle, workBook));
 		// selecting the region in Worksheet for merging data
 		CellRangeAddress region = new CellRangeAddress(titleRowIndex, titleRowIndex, startColumn, endColumn - 1);
 		// merging the region
@@ -694,7 +755,7 @@ public class ExportTaskFacade {
 	 * @param isLabelRow
 	 */
 	private void createHeaderRow(int rowIndex, HSSFSheet worksheet, PsetElementsInfo aPsetElementsInfo,
-			boolean isLabelRow) {
+			boolean isLabelRow, WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
 		HSSFRow headerRow = worksheet.createRow(rowIndex);
 		if (!isLabelRow) {
@@ -705,7 +766,7 @@ public class ExportTaskFacade {
 			cards = true;
 		}
 		for (Map.Entry<String, Integer> entry : headerToColumnMap.entrySet()) {
-			short columnNumber = (short) ((int) entry.getValue());
+			int columnNumber = entry.getValue();
 			if (isLabelRow) {
 				String label = getLabel(aPsetElementsInfo, entry.getKey());
 				// override
@@ -717,12 +778,12 @@ public class ExportTaskFacade {
 							|| Constants.CDMF_OWNER_APP.equals(entry.getKey())
 							|| Constants.CDMF_CC_NUM.equals(entry.getKey())
 							|| aPsetElementsInfo.getPcdKeyElements().contains(entry.getKey())) {
-						createCell(headerRow, columnNumber, label, headerKeyReqCellStyle);
+						createCell(headerRow, columnNumber, label, getHeaderKeyReqCellStyle(workbookStyle, workBook));
 					} else {
-						createCell(headerRow, columnNumber, label, headerKeyNonReqCellStyle);
+						createCell(headerRow, columnNumber, label, getHeaderKeyNonReqCellStyle(workbookStyle, workBook));
 					}
 				} else {
-					createCell(headerRow, columnNumber, label, headerDataColumnCellStyle);
+					createCell(headerRow, columnNumber, label, getHeaderDataColumnCellStyle(workbookStyle, workBook));
 				}
 			} else {
 				HSSFCellUtil.createCell(headerRow, columnNumber, entry.getKey());
@@ -791,90 +852,63 @@ public class ExportTaskFacade {
 	private int createDataRow(HSSFSheet worksheet, PcdItemList_TypePcdItem pcdItem, int rowIndex, PsetElementsInfo aPsetElementsInfo,
 			HSSFCellStyle style) throws Exception {
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
-		int changedRowIndex = rowIndex;
-		HSSFRow dataRow = worksheet.createRow((short) rowIndex);
-		MessageElement[] elements = null;
+		HSSFRow dataRow = worksheet.createRow(rowIndex);
 
 		// update common key data in excel sheet
 		if(pcdItem.getPcdItemKey()!=null && pcdItem.getPcdItemKey().length > 0) {
-			populateKeyElements(pcdItem, worksheet, headerToColumnMap, dataRow, style);
-			elements = getKeyElements(pcdItem.getPcdItemKey(0));
-		}
+			//standard keys
+			populateKeyElements(pcdItem, headerToColumnMap, dataRow, style);
 
-		// update PCD key field data to worksheet column
-		if(elements != null) {
-			for (MessageElement node : elements) {
-				populateCell(worksheet, headerToColumnMap, dataRow, node, style, null);
+			//PCD Keys
+			MessageElement[] elements = getKeyElements(pcdItem.getPcdItemKey(0));
+			// update PCD key field data to worksheet column
+			if(elements != null) {
+				for (MessageElement node : elements) {
+					populateCell(headerToColumnMap, dataRow, node, style, null);
+				}
 			}
 		}
 
 		// Process all non repeating Elements
-		populateNonRepeatingElements(pcdItem, aPsetElementsInfo, changedRowIndex, dataRow, rowIndex, worksheet, style);
-
+		populateNonRepeatingElements(pcdItem, aPsetElementsInfo, dataRow, style);
 
 		// Process all repeating Elements
-		populateRepeatingElements(pcdItem, aPsetElementsInfo, changedRowIndex, dataRow, rowIndex, worksheet, style);
+		rowIndex = populateRepeatingElements(pcdItem, aPsetElementsInfo, rowIndex, worksheet, style);
 
-		HSSFRow row = null;
-		int columnCount = worksheet.getRow(1).getPhysicalNumberOfCells();
-		for (int index = rowIndex; index <= changedRowIndex; index++) {
-			row = worksheet.getRow(index);
-			for (int column = 0; column < columnCount; column++) {
-				if (row.getCell(column) == null) {
-					createCell(row, column, "", style);
-				}
-			}
-		}
-		return changedRowIndex;
+		return rowIndex;
 	}
 
 
 	/**
 	 * @param pcdItem
 	 * @param aPsetElementsInfo
-	 * @param changedRowIndex
 	 * @param dataRow
-	 * @param rowIndex
-	 * @param worksheet
 	 * @param style
 	 */
-	@SuppressWarnings("unchecked")
-	private void populateNonRepeatingElements(PcdItemList_TypePcdItem pcdItem, PsetElementsInfo aPsetElementsInfo, int changedRowIndex, HSSFRow dataRow, int rowIndex, HSSFSheet worksheet, HSSFCellStyle style) {
+	private void populateNonRepeatingElements(PcdItemList_TypePcdItem pcdItem, PsetElementsInfo aPsetElementsInfo, HSSFRow dataRow, HSSFCellStyle style) {
 
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
 		List<String> nonRepeatingElements = aPsetElementsInfo.getNonRepeatingElements();
 
 		// Process pcd data and create cells in Excel
-		MessageElement[] pcdDataXml = null;
+		MessageElement[] pcdData = null;
 		if(pcdItem.getPcdData()!=null) {
-			pcdDataXml = pcdItem.getPcdData().get_any();
+			pcdData = pcdItem.getPcdData().get_any();
 		}else{
-			pcdDataXml = pcdItem.getPcdEntry().get_any();
+			pcdData = pcdItem.getPcdEntry().get_any();
 		}
 
 		// Process all non repeating Elements
-		if(pcdDataXml!=null) {
-			for (String nodeName : nonRepeatingElements) {
-				short columnNumber = (short) (int) headerToColumnMap.get(nodeName);
-				for (MessageElement node : pcdDataXml) {
-					List<MessageElement> childs = node.getChildren();
-					if (childs != null && !childs.isEmpty() && childs.get(0) instanceof MessageElement) {
-						for (MessageElement child : childs) {
-							if(nodeName.equalsIgnoreCase(child.getName())) {
-								createCell(dataRow, columnNumber, child.getValue(), style);
-								break;
-							}
-						}
-					} else {
-						if(nodeName.equalsIgnoreCase(node.getName())) {
-							createCell(dataRow, columnNumber, node.getValue(), style);
-							break;
-						}
+		if(pcdData!=null) {
+			for (String elementName : nonRepeatingElements) {
+				for (MessageElement node : pcdData) {
+					if(elementName.equalsIgnoreCase(node.getName())) {
+						createCell(dataRow, headerToColumnMap.get(elementName), node.getValue(), style);
+						break;
 					}
 				}
 			}
 		}
-
 	}
 
 
@@ -888,113 +922,132 @@ public class ExportTaskFacade {
 	 * @param style
 	 */
 	@SuppressWarnings("unchecked")
-	private void populateRepeatingElements(PcdItemList_TypePcdItem pcdItem, PsetElementsInfo aPsetElementsInfo, int changedRowIndex, HSSFRow dataRow, int rowIndex, HSSFSheet worksheet, HSSFCellStyle style) {
+	private int populateRepeatingElements(PcdItemList_TypePcdItem pcdItem, PsetElementsInfo aPsetElementsInfo, int rowIndex, HSSFSheet worksheet, HSSFCellStyle style) {
 
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
 		List<String> repeatingElements = aPsetElementsInfo.getRepeatingElements();
 
 		// Process pcd data and create cells in Excel
-		MessageElement[] pcdDataXml = null;
+		MessageElement[] pcdData = null;
 		if(pcdItem.getPcdData()!=null) {
-			pcdDataXml = pcdItem.getPcdData().get_any();
+			pcdData = pcdItem.getPcdData().get_any();
 		}else{
-			pcdDataXml = pcdItem.getPcdEntry().get_any();
+			pcdData = pcdItem.getPcdEntry().get_any();
 		}
 
 		// Process all repeating Elements
-		for (String repeatingElementName : repeatingElements) {
+		if(pcdData!=null) {
 			int repeatingRowIndex = rowIndex;
-			if (worksheet.getRow(rowIndex) == null) {
-				dataRow = worksheet.createRow(rowIndex);
-			} else {
-				dataRow = worksheet.getRow(rowIndex);
-			}
-
-			if(pcdDataXml!=null) {
-				for (MessageElement node : pcdDataXml) {
+			for (String repeatingElementName : repeatingElements) {
+				repeatingRowIndex = rowIndex;
+				boolean firstInstance = true;
+				for (MessageElement node : pcdData) {
 					if(repeatingElementName.equalsIgnoreCase(node.getName())) {
-						List<MessageElement> repeatingDataXml = node.getChildren();
-						if(repeatingDataXml!=null) {
-							Iterator<MessageElement> repDataIterator = repeatingDataXml.iterator();
-							while (repDataIterator.hasNext()) {
-								List<Text> childs = ((MessageElement) repDataIterator.next()).getChildren();
-								for (Text child : childs) {
-
-									MessageElement element = new MessageElement();
-									element.setName(child.getNodeName());
-									element.setValue(child.getData());
-									populateCell(worksheet, headerToColumnMap, dataRow, element, style, repeatingElementName);
-								}
-								if (repDataIterator.hasNext()) {
-									short aRow = (short) ++repeatingRowIndex;
-									if (worksheet.getRow(aRow) == null) {
-										dataRow = worksheet.createRow(aRow);
-									} else {
-										dataRow = worksheet.getRow(aRow);
-									}
-								}
-							}
+						if(!firstInstance) {
+							repeatingRowIndex++;
 						}
-						break;
+						HSSFRow dataRow = null;
+						if (worksheet.getRow(repeatingRowIndex) == null) {
+							dataRow = worksheet.createRow(repeatingRowIndex);
+						} else {
+							dataRow = worksheet.getRow(repeatingRowIndex);
+						}
+						List<MessageElement> repeatingDataElements = node.getChildren();
+						if(repeatingDataElements!=null) {
+							Iterator<MessageElement> repDataIterator = repeatingDataElements.iterator();
+							while (repDataIterator.hasNext()) {
+								populateCell(headerToColumnMap, dataRow, repDataIterator.next(), style, repeatingElementName);
+
+								//Fix for repeating elements(two dimension rows
+								/*
+								 * List<Text> childs = ((MessageElement) repDataIterator.next()).getChildren();
+								 * for (Text child : childs) {
+								 * 
+								 * MessageElement element = new MessageElement();
+								 * element.setName(child.getNodeName()); element.setValue(child.getData());
+								 * populateCell(worksheet, headerToColumnMap, dataRow, element, style,
+								 * repeatingElementName); }
+								 */
+								/*
+								 * if (repDataIterator.hasNext()) { short aRow = (short) ++repeatingRowIndex; if
+								 * (worksheet.getRow(aRow) == null) { dataRow = worksheet.createRow(aRow); }
+								 * else { dataRow = worksheet.getRow(aRow); } }
+								 */
+							}
+							firstInstance =false;
+						}
 					}
 				}
 			}
-			if (changedRowIndex < repeatingRowIndex) {
-				changedRowIndex = repeatingRowIndex;
+
+			HSSFRow row = null;
+			int columnCount = worksheet.getRow(1).getPhysicalNumberOfCells();
+			for (int index = rowIndex; index <= repeatingRowIndex; index++) {
+				row = worksheet.getRow(index);
+				if(row!=null) {
+					for (int column = 0; column < columnCount; column++) {
+						if (row.getCell(column) == null) {
+							createCell(row, column, "", style);
+						}
+					}
+				}
 			}
+			
+			rowIndex = repeatingRowIndex;
 		}
+		return rowIndex;
 	}
 
 
 
-	private void populateKeyElements(PcdItemList_TypePcdItem pcdItem, HSSFSheet worksheet, Map<String, Integer> headerToColumnMap, HSSFRow dataRow, HSSFCellStyle style) {
+	private void populateKeyElements(PcdItemList_TypePcdItem pcdItem, Map<String, Integer> headerToColumnMap, HSSFRow dataRow, HSSFCellStyle style) {
 
 		PcdItemList_TypePcdItemPcdItemKey pcdItemKey = pcdItem.getPcdItemKey(0);
 		if (null != pcdItemKey) {
-			MessageElement key = new MessageElement();
-			key.setName("CdmfFmtCoId"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfFmtCoId()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			MessageElement keyElement = new MessageElement();
+			keyElement.setName("CdmfFmtCoId"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfFmtCoId()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfFmtEffDt"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfFmtEffDt()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfFmtEffDt"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfFmtEffDt()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfFmtExpDt"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfFmtExpDt()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfFmtExpDt"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfFmtExpDt()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfOwnerApp"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfOwnerApp()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfOwnerApp"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfOwnerApp()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfFmtHighUse"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfFmtHighUse()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfFmtHighUse"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfFmtHighUse()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfCCNum"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfCCNum()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfCCNum"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfCCNum()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfChgDt"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfChgDt()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfChgDt"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfChgDt()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfChgTm"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfChgTm()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfChgTm"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfChgTm()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 
-			key = new MessageElement();
-			key.setName("CdmfChgBy"); 
-			key.setValue(String.valueOf(pcdItemKey.getCdmfChgBy()));
-			populateCell(worksheet, headerToColumnMap, dataRow, key, style, null);
+			keyElement = new MessageElement();
+			keyElement.setName("CdmfChgBy"); 
+			keyElement.setValue(String.valueOf(pcdItemKey.getCdmfChgBy()));
+			populateCell(headerToColumnMap, dataRow, keyElement, style, null);
 		}
 	}
 
@@ -1003,21 +1056,23 @@ public class ExportTaskFacade {
 	 * @param worksheet
 	 * @param headerToColumnMap
 	 * @param dataRow
-	 * @param dataFieldXml
+	 * @param dataElement
 	 * @param style
 	 * @param parent
 	 */
-	private void populateCell(HSSFSheet worksheet, Map<String, Integer> headerToColumnMap, HSSFRow dataRow,
-			MessageElement dataFieldXml, HSSFCellStyle style, String parent) {
-		if (dataFieldXml != null) {
-			String headerName = dataFieldXml.getName();
+	private void populateCell(Map<String, Integer> headerToColumnMap, HSSFRow dataRow,
+			MessageElement dataElement, HSSFCellStyle style, String parent) {
+		if (dataElement != null) {
+			String headerName = null;
 			if (!StringUtils.isEmpty(parent)) {
-				headerName = parent + UNDERSCORE + dataFieldXml.getName();
+				headerName = parent + UNDERSCORE + dataElement.getName();
+			}else {
+				headerName = dataElement.getName();
 			}
 			if (!StringUtils.isEmpty(headerName)) {
 				Integer columnNumber = headerToColumnMap.get(headerName);
 				if (columnNumber != null) {
-					createCell(dataRow, columnNumber, dataFieldXml.getValue(), style);
+					createCell(dataRow, columnNumber, dataElement.getValue(), style);
 				}
 			}
 		}
@@ -1028,14 +1083,14 @@ public class ExportTaskFacade {
 	 * @param rowIndex
 	 * @param aPsetElementsInfo
 	 */
-	private void setExtendedViewHeaderStyle(HSSFSheet worksheet, int rowIndex, PsetElementsInfo aPsetElementsInfo) {
+	private void setExtendedViewHeaderStyle(HSSFSheet worksheet, int rowIndex, PsetElementsInfo aPsetElementsInfo, WorkbookStyle aWorkbookStyle, HSSFWorkbook workBook) {
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
 		HSSFRow row = worksheet.getRow(2);
 		if (row != null) {
 			String[] nodes = { TIER_MIN_RATE, TIER_MAX_RATE, TIER_DATA_SEQ_NUM, TIER_DATA_TIER_BASIS_FACTOR,
 					TIER_DATA_TIER_POINTS, TIER_DATA_TIER_LIMIT, TIER_DATA_TIER_RATE };
 			for (String node : nodes) {
-				row.getCell(headerToColumnMap.get(node)).setCellStyle(extendedTierheaderKeyColumnCellStyle);
+				row.getCell(headerToColumnMap.get(node)).setCellStyle(getExtendedTierheaderKeyColumnCellStyle(aWorkbookStyle, workBook));
 			}
 		}
 
@@ -1064,19 +1119,19 @@ public class ExportTaskFacade {
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
 		List<String> nonRepeatingElements = aPsetElementsInfo.getNonRepeatingElements();
 		int changedRowIndex = rowIndex;
-		HSSFRow dataRow = worksheet.createRow((short) rowIndex);
+		HSSFRow dataRow = worksheet.createRow(rowIndex);
 		MessageElement[] elements = null;
 
 		// update common key data in excel sheet
 		if(pcdItem.getPcdItemKey()!=null && pcdItem.getPcdItemKey().length > 0) {
-			populateKeyElements(pcdItem, worksheet, headerToColumnMap, dataRow, style);
+			populateKeyElements(pcdItem, headerToColumnMap, dataRow, style);
 			elements = getKeyElements(pcdItem.getPcdItemKey(0));
 		}
 
 		// update PCD key field data to worksheet column
 		if(elements != null) {
 			for (MessageElement node : elements) {
-				populateCell(worksheet, headerToColumnMap, dataRow, node, style, null);
+				populateCell(headerToColumnMap, dataRow, node, style, null);
 			}
 		}
 
@@ -1090,7 +1145,7 @@ public class ExportTaskFacade {
 
 		// Process all non repeating Elements
 		for (String nodeName : nonRepeatingElements) {
-			short columnNumber = (short) (int) headerToColumnMap.get(nodeName);
+			int columnNumber = headerToColumnMap.get(nodeName);
 			for (MessageElement node : pcdDataXml) {
 				List<MessageElement> childs = node.getChildren();
 				if (childs != null && !childs.isEmpty() && childs.get(0) instanceof MessageElement) {
@@ -1121,7 +1176,7 @@ public class ExportTaskFacade {
 				}
 				List<MessageElement> termChildList = termChild.getChildren();
 				for (MessageElement child : termChildList) {
-					populateCell(worksheet, headerToColumnMap, dataRow, child, style, RATE_TERMS);
+					populateCell(headerToColumnMap, dataRow, child, style, RATE_TERMS);
 				}
 			}
 		}
@@ -1153,7 +1208,7 @@ public class ExportTaskFacade {
 										} else {
 											dataRow = worksheet.getRow(rowIndex);
 										}
-										populateCell(worksheet, headerToColumnMap, dataRow, child, style, BAL_DATA + strIndex);
+										populateCell(headerToColumnMap, dataRow, child, style, BAL_DATA + strIndex);
 									}
 								}else if(child.getName().startsWith(RATES2)) {
 									//List<IXml> balAmtList = balDataXml.getChildren(RATES2 + strIndex);
@@ -1166,7 +1221,7 @@ public class ExportTaskFacade {
 									}
 									List<MessageElement> rateChildList = child.getChildren();
 									for (MessageElement rateChild : rateChildList) {
-										populateCell(worksheet, headerToColumnMap, dataRow, rateChild, style,
+										populateCell(headerToColumnMap, dataRow, rateChild, style,
 												BAL_DATA + strIndex + RATES + strIndex);
 									}
 									//									}
@@ -1195,7 +1250,7 @@ public class ExportTaskFacade {
 				}
 				List<MessageElement> tierChildList = tierChild.getChildren();
 				for (MessageElement child : tierChildList) {
-					populateCell(worksheet, headerToColumnMap, dataRow, child, style, TIER_DATA);
+					populateCell(headerToColumnMap, dataRow, child, style, TIER_DATA);
 				}
 			}
 		}
@@ -1268,6 +1323,9 @@ public class ExportTaskFacade {
 		pSets.forEach(pSet->{
 			if("all".equalsIgnoreCase(pSet.getCompanyID())){
 				List<CompanyBean>  companies = companyFacade.getCompanyDetails(pSet.getNumber());
+				if(companies.size() == 0) {
+					throw new BusinessException("Invalid Parameter :"+pSet.getNumber(), false);
+				}
 				companies.forEach(company ->{
 					if(!"all".equalsIgnoreCase(company.getId())) {
 						ParameterBean parameterBean = new ParameterBean();

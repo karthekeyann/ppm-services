@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cft.hogan.platform.ppm.api.facade.mm.TokenFacade;
+import com.cft.hogan.platform.ppm.api.facade.TokenFacade;
 
 @RestController
 @RequestMapping("/ppm/user/token")

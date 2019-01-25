@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.facade.mm;
+package com.cft.hogan.platform.ppm.api.facade;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

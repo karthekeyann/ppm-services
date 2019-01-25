@@ -5,6 +5,7 @@ import java.util.Collections;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,17 @@ import com.cft.hogan.platform.ppm.api.facade.mm.ExportTaskFacade;
 @RequestMapping("/ppm/mass-maintenance/export-tasks")
 public class ExportTaskController {
 	
+	@Autowired
+	ExportTaskFacade facade;
+	
 	@PostMapping
 	public ResponseEntity<byte[]> getFile(@Valid @NotNull @RequestBody ExportTaskBean exportTaskBean) {
 		
-		ExportTaskFacade taskService = new ExportTaskFacade();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccessControlExposeHeaders(Collections.singletonList("Content-Disposition"));
 		headers.set("Content-Disposition", "attachment; filename=download.xls");
 		headers.setAccessControlExposeHeaders(Collections.singletonList("Content-Type"));
 		headers.set("Content-Type","application/vnd.ms-excel");
-		return new ResponseEntity<>(taskService.save(exportTaskBean), headers, HttpStatus.OK);
+		return new ResponseEntity<>(facade.save(exportTaskBean), headers, HttpStatus.OK);
 	}
 }
