@@ -104,4 +104,14 @@ public class ParameterFacade {
 		Collections.sort(parametersList);
 		return   parametersList;
 	}
+	
+	public 	String getParameterName(String applicationID, String parameterNum) {
+		List<ParameterBean> parametersList = getParameters(applicationID);
+		for(ParameterBean bean: parametersList) {
+			if(parameterNum.equalsIgnoreCase(bean.getNumber())){
+				return bean.getName();
+			}
+		}
+		return Constants.EMPTY;
+	}
 }

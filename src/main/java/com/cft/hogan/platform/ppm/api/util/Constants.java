@@ -5,7 +5,11 @@ public abstract class Constants {
 
 	public static final String EMPTY = "";
 	public static final String SPACE = " ";
+	public static final String UNDER_SCORE = "_";
+	
+	
 	public static final int PAD_LIMIT = 8192;
+	public static final String PCD_2598 = "2598";
 	
 	public static final String CDMF_FMT_COID = "CdmfFmtCoId";
 	public static final String PCD_EFF_DATE = "CdmfFmtEffDt";

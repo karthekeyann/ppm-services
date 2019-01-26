@@ -96,7 +96,6 @@ public class ExportTaskFacade {
 	private static final String UNDERSCORE = "_";
 	private static final String CO_GROUP = "CoGroup";
 	private static final String HYPHEN = "-";
-	private static final String PCD_2598 = "2598";
 	private static final String AMPERSHAND = "@";
 
 	// Title Settings
@@ -192,7 +191,7 @@ public class ExportTaskFacade {
 					if ("0".equals(String.valueOf(template.getXStatus().getStatusCode()))) {
 
 						// Process next service call only if get template passes
-						if (PCD_2598.equals(pSetNum)) {
+						if (Constants.PCD_2598.equals(pSetNum)) {
 							populateInterestRateMatrixPsetElementsInfo(pSetNum, aPsetElementsInfo);
 						} else {
 							populatePsetElementsInfo(pSetNum, template.getPcdItemList().getPcdItem(0), aPsetElementsInfo);
@@ -448,7 +447,7 @@ public class ExportTaskFacade {
 		// Add Balance Data To Map
 		for (int index = 1; index <= 25; index++) {
 			String colIndex = Utils.leftPad(index + Constants.EMPTY, 2, ZERO);
-			aPsetElementsInfo.addInHeaderToColumnMap(BAL_DATA + colIndex + BAL_AMT + colIndex, columnNumber++);
+			aPsetElementsInfo.addInHeaderToColumnMap(BAL_DATA + colIndex + "_"+BAL_AMT + colIndex, columnNumber++);
 			aPsetElementsInfo.addInHeaderToColumnMap(BAL_DATA + colIndex + RATES + colIndex + SEQ_NUM, columnNumber++);
 			aPsetElementsInfo.addInHeaderToColumnMap(BAL_DATA + colIndex + RATES + colIndex + RT + colIndex,
 					columnNumber++);
@@ -654,7 +653,7 @@ public class ExportTaskFacade {
 			if(!singleTab) {
 				// Write the title
 				createTitleRow(sheetTitleRow, worksheet, 0, columnCount,
-						pSetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(pSetElementsInfo.getAppName(), pSetElementsInfo.getParameterNumber()), workbookStyle, workBook);
+						pSetElementsInfo.getParameterNumber() + HYPHEN + parameterFacade.getParameterName(pSetElementsInfo.getAppName(), pSetElementsInfo.getParameterNumber()), workbookStyle, workBook);
 			}
 			for (int column = 0; column < columnCount; column++) {
 				worksheet.autoSizeColumn(column);
@@ -667,7 +666,7 @@ public class ExportTaskFacade {
 		} else {
 			// write title
 			createTitleRow(sheetTitleRow, worksheet, 0, 10,
-					pSetElementsInfo.getParameterNumber() + HYPHEN + getParameterName(pSetElementsInfo.getAppName(), pSetElementsInfo.getParameterNumber()), workbookStyle, workBook);
+					pSetElementsInfo.getParameterNumber() + HYPHEN + parameterFacade.getParameterName(pSetElementsInfo.getAppName(), pSetElementsInfo.getParameterNumber()), workbookStyle, workBook);
 			// Write the error caught in service
 			HSSFRow headerRow = worksheet.createRow(labelRow);
 			createCell(headerRow, 0, status.getStatusDesc(), getTitleCellStyle(workbookStyle, workBook));
@@ -680,17 +679,6 @@ public class ExportTaskFacade {
 	}
 	
 
-	private String getParameterName(String applicationID, String parameterNum) {
-		List<ParameterBean> parametersList = parameterFacade.getParameters(applicationID);
-		for(ParameterBean bean: parametersList) {
-			if(parameterNum.equalsIgnoreCase(bean.getNumber())){
-				return bean.getName();
-			}
-		}
-		return Constants.EMPTY;
-	}
-
-
 	private void addHeaderRows(boolean singleTab, int elementRow, int labelRow, HSSFSheet worksheet, PsetElementsInfo pSetElementsInfo, WorkbookStyle workbookStyle, HSSFWorkbook workBook) {
 		if(!singleTab) {
 			// Write element names
@@ -698,7 +686,7 @@ public class ExportTaskFacade {
 			// Write label names
 			createHeaderRow(labelRow, worksheet, pSetElementsInfo, true, workbookStyle, workBook);
 		}
-		if (PCD_2598.equals(pSetElementsInfo.getParameterNumber())) {
+		if (Constants.PCD_2598.equals(pSetElementsInfo.getParameterNumber())) {
 			setExtendedViewHeaderStyle(worksheet, 2, pSetElementsInfo, workbookStyle, workBook);
 		}
 	}
@@ -718,7 +706,7 @@ public class ExportTaskFacade {
 			} else {
 				style = evenRowColumnCellStyle;
 			}
-			if (PCD_2598.equals(pSetElementsInfo.getParameterNumber())) {
+			if (Constants.PCD_2598.equals(pSetElementsInfo.getParameterNumber())) {
 				dataRowStartIndex = createInterestRateDataRow(worksheet, pcdItem, ++dataRowStartIndex,
 						pSetElementsInfo, style);
 			} else {
@@ -814,7 +802,7 @@ public class ExportTaskFacade {
 		DataValidationHelper validationHelper = new HSSFDataValidationHelper(worksheet);
 
 		CellRangeAddressList addressList = new CellRangeAddressList(startRow, endRow, 0, 0);
-		if (PCD_2598.equals(psetNumber)) {
+		if (Constants.PCD_2598.equals(psetNumber)) {
 			constraint = validationHelper.createExplicitListConstraint(new String[] { Constants.EXCEL_ACTION_ADD, Constants.EXCEL_ACTION_DELETE });
 		} else {
 			constraint = validationHelper.createExplicitListConstraint(new String[] { Constants.EXCEL_ACTION_ADD, Constants.EXCEL_ACTION_CHANGE, Constants.EXCEL_ACTION_DELETE });
@@ -1117,7 +1105,6 @@ public class ExportTaskFacade {
 	@SuppressWarnings("unchecked")
 	private int createInterestRateDataRow(HSSFSheet worksheet, PcdItemList_TypePcdItem pcdItem, int rowIndex, PsetElementsInfo aPsetElementsInfo, HSSFCellStyle style) throws Exception {
 		Map<String, Integer> headerToColumnMap = aPsetElementsInfo.getHeaderToColumnMap();
-		List<String> nonRepeatingElements = aPsetElementsInfo.getNonRepeatingElements();
 		int changedRowIndex = rowIndex;
 		HSSFRow dataRow = worksheet.createRow(rowIndex);
 		MessageElement[] elements = null;
@@ -1136,37 +1123,19 @@ public class ExportTaskFacade {
 		}
 
 		// Process pcd data and create cells in Excel
-		MessageElement[] pcdDataXml = null;
+		MessageElement[] pcdDataElements = null;
 		if(pcdItem.getPcdData()!=null) {
-			pcdDataXml = pcdItem.getPcdData().get_any();
+			pcdDataElements = pcdItem.getPcdData().get_any();
 		}else{
-			pcdDataXml = pcdItem.getPcdEntry().get_any();
+			pcdDataElements = pcdItem.getPcdEntry().get_any();
 		}
 
 		// Process all non repeating Elements
-		for (String nodeName : nonRepeatingElements) {
-			int columnNumber = headerToColumnMap.get(nodeName);
-			for (MessageElement node : pcdDataXml) {
-				List<MessageElement> childs = node.getChildren();
-				if (childs != null && !childs.isEmpty() && childs.get(0) instanceof MessageElement) {
-					for (MessageElement child : childs) {
-						if(nodeName.equalsIgnoreCase(child.getName())) {
-							createCell(dataRow, columnNumber, child.getValue(), style);
-							break;
-						}
-					}
-				} else {
-					if(nodeName.equalsIgnoreCase(node.getName())) {
-						createCell(dataRow, columnNumber, node.getValue(), style);
-						break;
-					}
-				}
-			}
-		}
+		populateNonRepeatingElements(pcdItem, aPsetElementsInfo, dataRow, style);
 
 		// Process Terms and create cells in Excel
 		int termRowIndex = rowIndex;
-		for (MessageElement termChild : pcdDataXml) {
+		for (MessageElement termChild : pcdDataElements) {
 			if(RATE_TERMS.equalsIgnoreCase(termChild.getName())) {
 				termRowIndex++;
 				if (worksheet.getRow(termRowIndex) == null) {
@@ -1190,7 +1159,7 @@ public class ExportTaskFacade {
 		for (int balIndex = 1; balIndex <= 25; balIndex++) {
 			String strIndex = Utils.leftPad(balIndex + "", 2, "0");
 			int balRowIndex = rowIndex;
-			for (MessageElement termChild : pcdDataXml) {
+			for (MessageElement termChild : pcdDataElements) {
 
 				if(termChild.getName().startsWith(BAL_DATA)) {
 
@@ -1240,7 +1209,7 @@ public class ExportTaskFacade {
 		// Process Extended Tier Table and create cells in Excel
 		int tierRowIndex = rowIndex - 1;
 		//		List<IXml> tierList = pcdDataXml.getChildren(TIER_DATA);
-		for (MessageElement tierChild : pcdDataXml) {
+		for (MessageElement tierChild : pcdDataElements) {
 			if(tierChild.getName().startsWith(TIER_DATA)) {
 				tierRowIndex++;
 				if (worksheet.getRow(tierRowIndex) == null) {

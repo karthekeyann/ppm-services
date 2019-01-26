@@ -32,6 +32,7 @@ import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
 import com.cft.hogan.platform.ppm.api.exception.BusinessException;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
 import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.facade.ParameterFacade;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfCdkKey_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfKeyInfo_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfRegKey_Type;
@@ -67,6 +68,9 @@ public class ImportTaskFacade {
 	@Autowired
 	private ImportTaskDetailFacade importTaskDetailFacade;
 
+	@Autowired
+	private ParameterFacade parameterFacade;
+
 	private StringBuffer validationMessgae = null;
 	private int errorRow = 0; 
 
@@ -84,8 +88,7 @@ public class ImportTaskFacade {
 			bean.setStatus(Constants.INPROGRESS);
 			bean.setInputFileName(file.getOriginalFilename());
 
-			Map<String, String> pcdNameMap = new HashMap<>();
-			List<UpdPcdRecRq_Type> requestList = processWorkBook(file, null, false, pcdNameMap, service, logMsg);
+			List<UpdPcdRecRq_Type> requestList = processWorkBook(file, null, false, service, logMsg);
 			if(requestList.size()<1) {
 				throw new BadRequestException("NO valid PCD records present in the input file to process");
 			}
@@ -99,7 +102,7 @@ public class ImportTaskFacade {
 				if(endIndex > requestList.size()) {
 					endIndex = requestList.size();
 				}
-				savedItems += processUpdate(requestList.subList(index, endIndex), service, uuid ,pcdNameMap);
+				savedItems += processUpdate(requestList.subList(index, endIndex), service, uuid);
 				index = endIndex;
 			}
 			log.debug(logMsg+"Import task ID :"+uuid+" --Import Task Review Details updated records :"+savedItems);
@@ -171,7 +174,7 @@ public class ImportTaskFacade {
 				resultSet.forEach((result)->{
 					failedItems.add(result.getPSetKey());
 				});
-				List<UpdPcdRecRq_Type> requestList = processWorkBook(file, failedItems, true, null, service, logMsg); 
+				List<UpdPcdRecRq_Type> requestList = processWorkBook(file, failedItems, true, service, logMsg); 
 				int endIndex = 0;
 				int updatedItems = 0;
 				int batchSize = EnvironmentContext.getPCDServiceUpdateRecordSize();
@@ -250,7 +253,7 @@ public class ImportTaskFacade {
 	}
 
 
-	private int processUpdate(List<UpdPcdRecRq_Type> requestList, PCDService service, String uuid, Map<String, String> pcdNameMap) throws RemoteException, Exception {
+	private int processUpdate(List<UpdPcdRecRq_Type> requestList, PCDService service, String uuid) throws RemoteException, Exception {
 
 		UpdPcdRecRs_Type[] updPcdRecRs = service.updatePcd(requestList);
 		List<UpdPcdRecRs_Type> responseList = Arrays.asList(updPcdRecRs);
@@ -265,7 +268,7 @@ public class ImportTaskFacade {
 				input.setCompanyID(String.valueOf(response.getCdmfKeyInfo().getCdmfFmtCoId()));
 				input.setEffectiveDate(response.getCdmfKeyInfo().getCdmfFmtEffDt());
 				input.setExpiryDate(response.getCdmfKeyInfo().getCdmfFmtExpDt());
-				input.setPSetName(pcdNameMap.get(String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())));
+				input.setPSetName(parameterFacade.getParameterName(response.getCdmfKeyInfo().getCdmfOwnerApp(), String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())));
 				input.setPSetNumber(String.valueOf(response.getCdmfKeyInfo().getCdmfFmt()));
 				input.setResult(response.getXStatus().getStatusDesc());
 				input.setCreatedBy(Utils.getUserIdInRequestHeader());
@@ -329,7 +332,7 @@ public class ImportTaskFacade {
 	}
 
 
-	private List<UpdPcdRecRq_Type>  processWorkBook(MultipartFile file, List<String> failedItems, boolean reload, Map<String, String> pcdNameMap, PCDService service, String logMsg) throws Exception {
+	private List<UpdPcdRecRq_Type>  processWorkBook(MultipartFile file, List<String> failedItems, boolean reload, PCDService service, String logMsg) throws Exception {
 		List<UpdPcdRecRq_Type> requestList = new ArrayList<UpdPcdRecRq_Type>();
 		HSSFWorkbook psetWorkbook = new HSSFWorkbook(file.getInputStream());
 		try {
@@ -347,33 +350,49 @@ public class ImportTaskFacade {
 				HSSFRow header = hssfSheet.getRow(0);
 				String[] head = String.valueOf(header.getCell(0)).split("-");
 				String parameterNum = head[0];
-				if(pcdNameMap!=null) {
-					pcdNameMap.put(head[0], head[1]);
-				}
 
 				PcdXmlRs_Type template = null;
 				HSSFRow  labelRow = hssfSheet.getRow(1);
 				String[] laebls = new String[labelRow.getLastCellNum()];
+				boolean isRepeatingParameter = false;
 				for(int r =0; r<labelRow.getLastCellNum(); r++) {
 					laebls[r] = String.valueOf(labelRow.getCell(r));
+					if(laebls[r].contains(Constants.UNDER_SCORE)) {
+						isRepeatingParameter = true;
+					}
 				}
 				int changedRecords = 0;
+				UpdPcdRecRq_Type req = null;
 				for(int i=3; i<=hssfSheet.getLastRowNum(); i++) {
 					errorRow = i;
-					HashMap<String, String> data = new HashMap<>();
-					data.put("CdmfFmt", parameterNum);
+					HashMap<String, String> nonRepeatingDataMap = new HashMap<>();
+					List<HashMap<String, String>> repeatingDataList = new ArrayList<>();
+					nonRepeatingDataMap.put("CdmfFmt", parameterNum);
 					HSSFRow  row = hssfSheet.getRow(i);
 					if(validateRow(row)) {
-						for(int r =0; r<row.getLastCellNum();r++) {
-							HSSFCell val = row.getCell(r);
-							if(val != null && !String.valueOf(val).equalsIgnoreCase("null")) {
-								data.put(laebls[r], String.valueOf(val).trim());
+						HashMap<String, String> repeatingDataMap = new HashMap<>();
+						if(!Constants.PCD_2598.equalsIgnoreCase(parameterNum)) {
+							repeatingDataList.add(repeatingDataMap);
+						}
+						prepareDataMap(row, laebls, nonRepeatingDataMap, repeatingDataMap, false);
+
+						if(isRepeatingParameter) {
+							for(int j = i+1; isRepeatingRow(hssfSheet.getRow(j)) ; j++) {
+								repeatingDataMap = new HashMap<>();
+								if(Constants.PCD_2598.equalsIgnoreCase(parameterNum) && j ==i+1) {
+									prepareDataMap(row, laebls, nonRepeatingDataMap, repeatingDataMap, true);
+								}
+								i++;
+								errorRow = i;
+								repeatingDataList.add(repeatingDataMap);
+								prepareDataMap(hssfSheet.getRow(j), laebls, nonRepeatingDataMap, repeatingDataMap, true);
 							}
 						}
+
 						if(template == null) {
 							template = service.getParameterXmlTemplate(parameterNum);
 						}
-						UpdPcdRecRq_Type req = prepareUpdateRequest(data, template, failedItems, reload);
+						req = prepareUpdateRequest(nonRepeatingDataMap, repeatingDataList, template, failedItems, reload);
 						if(req.getCdmfKeyInfo()!=null) {
 							String key =parameterNum+ constructPCDKey(req.getCdmfKeyInfo());
 							if(pcdKeys.contains(key)) {
@@ -396,6 +415,21 @@ public class ImportTaskFacade {
 		return requestList;
 	}
 
+	private void prepareDataMap(HSSFRow row, String[] laebls, Map<String, String> nonRepeatingDataMap, Map<String, String> repeatingDataMap, boolean isRepeatingRow) {
+		for(int cellIndex =0; cellIndex<row.getLastCellNum();cellIndex++) {
+			HSSFCell val = row.getCell(cellIndex);
+			if(val != null && !String.valueOf(val).equalsIgnoreCase("null") && !StringUtils.isEmpty(String.valueOf(val))) {
+				if(laebls[cellIndex].contains(Constants.UNDER_SCORE))
+				{
+					repeatingDataMap.put(laebls[cellIndex], String.valueOf(val).trim());
+				}else if(!isRepeatingRow){
+					nonRepeatingDataMap.put(laebls[cellIndex], String.valueOf(val).trim());					
+				}
+			}
+		}
+	}
+
+
 	private boolean validateRow(HSSFRow  row) {
 		if(row!=null && row.getCell(0)!=null && !StringUtils.isEmpty(String.valueOf(row.getCell(0))) && 
 				(Constants.EXCEL_ACTION_ADD.equalsIgnoreCase(String.valueOf(row.getCell(0))) || 
@@ -407,13 +441,22 @@ public class ImportTaskFacade {
 		return false;
 	}
 
+	private boolean isRepeatingRow(HSSFRow  row) {
+		if(row!=null && StringUtils.isEmpty(String.valueOf(row.getCell(1))) &&
+				StringUtils.isEmpty(String.valueOf(row.getCell(2))) && StringUtils.isEmpty(String.valueOf(row.getCell(3)))) {
+			return true;
+		}
 
-	private UpdPcdRecRq_Type prepareUpdateRequest(HashMap<String, String> data , PcdXmlRs_Type template, List<String> failedItems, boolean reload) throws SOAPException{
+		return false;
+	}
+
+
+	private UpdPcdRecRq_Type prepareUpdateRequest(HashMap<String, String> nonRepeatingDataMap , List<HashMap<String, String>> repeatingDataList, PcdXmlRs_Type template, List<String> failedItems, boolean reload) throws SOAPException{
 		UpdPcdRecRq_Type req = new UpdPcdRecRq_Type();
-		CdmfKeyInfo_Type cdmfKeyInfo = setKeyElements(template.getPcdItemList().getPcdItem(0), data, failedItems, reload);
+		CdmfKeyInfo_Type cdmfKeyInfo = setKeyElements(template.getPcdItemList().getPcdItem(0), nonRepeatingDataMap, failedItems, reload);
 		if(cdmfKeyInfo!=null) {
 			req.setCdmfKeyInfo(cdmfKeyInfo);
-			req.setPcdEntry(setPcdEntry(template.getPcdItemList().getPcdItem(0), data));
+			req.setPcdEntry(setPcdEntry(template.getPcdItemList().getPcdItem(0), nonRepeatingDataMap, repeatingDataList));
 		}else {
 			req.setCdmfKeyInfo(null);
 			req.setPcdEntry(null);
@@ -421,33 +464,78 @@ public class ImportTaskFacade {
 		return req;
 	}
 
-
-	private PcdEntry setPcdEntry(PcdItemList_TypePcdItem pcdItemTemplate, HashMap<String, String> data) throws SOAPException {
+	@SuppressWarnings("unchecked")
+	private PcdEntry setPcdEntry(PcdItemList_TypePcdItem pcdItemTemplate, HashMap<String, String> nonRepeatingDataMap, List<HashMap<String, String>> repeatingDataList) throws SOAPException {
 		PcdEntry req = new PcdEntry();
 		PcdEntry template = pcdItemTemplate.getPcdEntry();
 		if (template != null) {
-			MessageElement[] entryElements = template.get_any();
-			MessageElement[]  rElements = new MessageElement[entryElements.length];
-			int r= 0;
-			for (MessageElement node : entryElements) {
-				@SuppressWarnings("unchecked")
-				List<MessageElement> childs = node.getChildren();
-				MessageElement rNode = new MessageElement();
-				rNode.setName(node.getName());
-				if (childs != null && !childs.isEmpty() && childs.get(0) instanceof MessageElement) {
-					for (MessageElement child : childs) {
-						MessageElement rChildNode = new MessageElement();
-						rChildNode.setName(child.getName());
-						rChildNode.setValue(data.get(child.getName()));
-						rNode.addChild(rChildNode);
+			MessageElement[] parentTemplateElements = template.get_any();
+			ArrayList<MessageElement> parentDataElementsList = new ArrayList<>();
+
+			for (MessageElement parentTemplateElement : parentTemplateElements) {
+				MessageElement parentDataElement = null;
+
+				List<MessageElement> childTemplateElements = parentTemplateElement.getChildren();
+				if (childTemplateElements != null && !childTemplateElements.isEmpty() && childTemplateElements.get(0) instanceof MessageElement) {
+					for(int i=0; i < repeatingDataList.size(); i++){
+						HashMap<String, String> repeatingDataMaplevel1 = repeatingDataList.get(i);
+
+						/*
+						 * to skip the duplicate elements of BalData
+						 */
+						if(parentTemplateElement.getName().startsWith("BalData")) {
+							i = repeatingDataList.size();
+						}
+						parentDataElement = new MessageElement();
+						parentDataElement.setName(parentTemplateElement.getName());
+						parentDataElementsList.add(parentDataElement);
+
+						for (MessageElement childTemplateElement : childTemplateElements) {
+							MessageElement childDataElement = null;
+
+							List<MessageElement> grandChildTemplateElements = childTemplateElement.getChildren();
+							if (grandChildTemplateElements != null && !grandChildTemplateElements.isEmpty() && grandChildTemplateElements.get(0) instanceof MessageElement) {
+								for(int i2= 0; i2 < repeatingDataList.size() ; i2++){
+									HashMap<String, String> repeatingDataMaplevel2 = repeatingDataList.get(i2);
+									childDataElement = new MessageElement();
+									childDataElement.setName(childTemplateElement.getName());
+									parentDataElement.addChild(childDataElement);
+
+									for (MessageElement grandChildTemplateElement : grandChildTemplateElements) {
+										MessageElement grandChildDataElement = new MessageElement();
+										String elementName = parentTemplateElement.getName()+Constants.UNDER_SCORE+childTemplateElement.getName()+Constants.UNDER_SCORE+grandChildTemplateElement.getName();
+										grandChildDataElement.setName(grandChildTemplateElement.getName());
+										if(!StringUtils.isEmpty(repeatingDataMaplevel2.get(elementName))) {
+											grandChildDataElement.setValue(repeatingDataMaplevel2.get(elementName));
+										}else {
+											grandChildDataElement.setValue(Constants.EMPTY);
+										}
+										childDataElement.addChild(grandChildDataElement);
+									}
+
+								}
+							} else {
+								String elementName = parentTemplateElement.getName()+Constants.UNDER_SCORE+childTemplateElement.getName();
+								if(!StringUtils.isEmpty(repeatingDataMaplevel1.get(elementName))) {
+									childDataElement = new MessageElement();
+									childDataElement.setName(childTemplateElement.getName());
+									childDataElement.setValue(repeatingDataMaplevel1.get(elementName));
+									parentDataElement.addChild(childDataElement);
+								}
+							}
+						}
+
 					}
 				} else {
-					rNode.setValue(data.get(node.getName()));
+					if(!StringUtils.isEmpty(nonRepeatingDataMap.get(parentTemplateElement.getName()))) {
+						parentDataElement = new MessageElement();
+						parentDataElement.setName(parentTemplateElement.getName());
+						parentDataElement.setValue(nonRepeatingDataMap.get(parentTemplateElement.getName()));
+						parentDataElementsList.add(parentDataElement);
+					}
 				}
-				rElements[r] = rNode;
-				r++;
 			}
-			req.set_any(rElements);
+			req.set_any(parentDataElementsList.toArray(new MessageElement[parentDataElementsList.size()]));
 		}
 		return req;
 	}
