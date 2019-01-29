@@ -926,6 +926,7 @@ public class ExportTaskFacade {
 		// Process all repeating Elements
 		if(pcdData!=null) {
 			int repeatingRowIndex = rowIndex;
+			int repeatingRowLastIndex = rowIndex;
 			for (String repeatingElementName : repeatingElements) {
 				repeatingRowIndex = rowIndex;
 				boolean firstInstance = true;
@@ -966,11 +967,15 @@ public class ExportTaskFacade {
 						}
 					}
 				}
+				
+				if(repeatingRowLastIndex < repeatingRowIndex) {
+					repeatingRowLastIndex = repeatingRowIndex;
+				}
 			}
 
 			HSSFRow row = null;
 			int columnCount = worksheet.getRow(1).getPhysicalNumberOfCells();
-			for (int index = rowIndex; index <= repeatingRowIndex; index++) {
+			for (int index = rowIndex; index <= repeatingRowLastIndex; index++) {
 				row = worksheet.getRow(index);
 				if(row!=null) {
 					for (int column = 0; column < columnCount; column++) {
@@ -981,7 +986,7 @@ public class ExportTaskFacade {
 				}
 			}
 			
-			rowIndex = repeatingRowIndex;
+			rowIndex = repeatingRowLastIndex;
 		}
 		return rowIndex;
 	}
