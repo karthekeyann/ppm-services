@@ -32,7 +32,7 @@ public class TemplateFacade {
 
 	@Autowired
 	private TemplateDAO_TDA daoTDA;
-	
+
 	@Autowired
 	private TemplateDAO_PASCOR daoPASCOR;
 
@@ -53,9 +53,6 @@ public class TemplateFacade {
 			uuid = getDAO().save(beanToEntity(input));
 			final String templateUUID = uuid;
 			input.getPsets().forEach((pset) -> {
-				if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())) {
-					throw new BadRequestException("Invalid Effective date. Parameter# -"+pset.getNumber());
-				}
 				pset.setTemplateUUID(templateUUID);
 				pset.setCreatedBy(Utils.getUserIdInRequestHeader());
 			});
@@ -93,20 +90,19 @@ public class TemplateFacade {
 
 	public TemplateBean update(String templateId, TemplateBean input) {
 		try {
-			checkOwner(templateId);
+			if(!checkOwner(templateId)) {
+				throw new BadRequestException("Template can be edited by template creator/owner");
+			}
 			validatePSets(input.getPsets());
 			input.setUuid(templateId);
 			input.setModifiedBy(Utils.getUserIdInRequestHeader());
 			input.getPsets().forEach((pset) -> {
-				if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())) {
-					throw new BadRequestException("Invalid Effective date. Parameter# -"+pset.getNumber());
-				}
 				pset.setTemplateUUID(templateId);
 				pset.setCreatedBy(Utils.getUserIdInRequestHeader());;
 			});
 			templateParameterFacade.deleteByTemplateUUID(input.getUuid());
 			templateParameterFacade.save(input.getPsets());
-			
+
 			//update template table
 			getDAO().update(beanToEntity(input));
 		} catch (Exception e) {
@@ -118,7 +114,9 @@ public class TemplateFacade {
 	public void delete(String uuid) {
 		try {
 			try {
-				checkOwner(uuid);
+				if(!checkOwner(uuid)) {
+					throw new BadRequestException("Template can be deleted by template creator/owner");
+				}
 				ScheduleTaskEntity schedule = scheduleTaskFacade.findByTemplateUUID(uuid);
 				if(schedule !=null) {
 					throw new BadRequestException("Template linked to Schedule task. Unlink and try again: Ref Schedule Task :"+schedule.getName());
@@ -132,21 +130,28 @@ public class TemplateFacade {
 			Utils.handleException(e);
 		}
 	}
-	
-	private void checkOwner(String uuid) {
+
+	private boolean checkOwner(String uuid) {
 		TemplateBean template = findByUUID(uuid);
 		if(template == null ) {
 			throw new ItemNotFoundException();
 		}
 		if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(template.getCreatedBy())) {
-			throw new BadRequestException("Template can be edited by template creator/owner");
+			return false;
 		}
+		return true;
 	}
-	
+
 	private void validatePSets(List<TemplateParameterEntity> psets) {
 		if(psets == null || psets.size()==0) {
 			throw new BadRequestException("Parameter not selected");
 		}
+
+		psets.forEach((pset) -> {
+			if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())) {
+				throw new BadRequestException("Invalid Effective date. Parameter# -"+pset.getNumber());
+			}
+		});
 	}
 
 	private TemplateBean entityToBean(TemplateEntity entity) {

@@ -47,18 +47,33 @@ public class Utils {
 	public static boolean isValidDate(String date) {
 		try {
 			try {
+				int day = Integer.parseInt(date.substring(8, 10));
+				int month = Integer.parseInt(date.substring(5, 7));
+				int year = Integer.parseInt(date.substring(0, 4));
+				boolean validDate = true;		
 				if(date.length() != 10) {
-					throw new BusinessException("Invalid date: "+date, true);
-				}else if(Integer.parseInt(date.substring(5, 7)) >12 || Integer.parseInt(date.substring(5, 7)) <1) {
-					throw new BusinessException("Invalid date: "+date, true);
-				}else if(Integer.parseInt(date.substring(8, 10)) >31 || Integer.parseInt(date.substring(8, 10)) <1) {
+					validDate = false;
+				}else if(month >12 || month <1) {
+					validDate = false;
+				}else if(day >31 || day < 1) {
+					validDate = false;
+				}else if(month == 2) {
+					if(year%4 == 0 && day >29) {
+						validDate = false;
+					}else if(year%4 != 0 && day >28) {
+						validDate = false;
+					}
+				}else if((month==4 || month==6 || month==9 || month==11 ) && day >30 ) {
+					validDate = false;
+				}
+
+				if(!validDate) {
 					throw new BusinessException("Invalid date: "+date, true);
 				}
 			}catch(Exception e) {
 				throw new BusinessException("Invalid date: "+date, true);
 			}
-		}
-		catch(Exception e) {
+		}catch(Exception e) {
 			Utils.handleException(e);
 			return false;
 		}

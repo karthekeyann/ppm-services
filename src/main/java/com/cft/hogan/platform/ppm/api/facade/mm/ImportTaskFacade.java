@@ -364,12 +364,13 @@ public class ImportTaskFacade {
 				int changedRecords = 0;
 				UpdPcdRecRq_Type req = null;
 				for(int i=3; i<=hssfSheet.getLastRowNum(); i++) {
-					errorRow = i;
+					errorRow = i+1;
 					HashMap<String, String> nonRepeatingDataMap = new HashMap<>();
 					List<HashMap<String, String>> repeatingDataList = new ArrayList<>();
 					nonRepeatingDataMap.put("CdmfFmt", parameterNum);
 					HSSFRow  row = hssfSheet.getRow(i);
-					if(validateRow(row)) {
+					if(isChangedRow(row)) {
+						validateKeyElements(row, parameterNum);
 						HashMap<String, String> repeatingDataMap = new HashMap<>();
 						if(!Constants.PCD_2598.equalsIgnoreCase(parameterNum)) {
 							repeatingDataList.add(repeatingDataMap);
@@ -383,7 +384,6 @@ public class ImportTaskFacade {
 									prepareDataMap(row, laebls, nonRepeatingDataMap, repeatingDataMap, true);
 								}
 								i++;
-								errorRow = i;
 								repeatingDataList.add(repeatingDataMap);
 								prepareDataMap(hssfSheet.getRow(j), laebls, nonRepeatingDataMap, repeatingDataMap, true);
 							}
@@ -430,7 +430,7 @@ public class ImportTaskFacade {
 	}
 
 
-	private boolean validateRow(HSSFRow  row) {
+	private boolean isChangedRow(HSSFRow  row) {
 		if(row!=null && row.getCell(0)!=null && !StringUtils.isEmpty(String.valueOf(row.getCell(0))) && 
 				(Constants.EXCEL_ACTION_ADD.equalsIgnoreCase(String.valueOf(row.getCell(0))) || 
 						Constants.EXCEL_ACTION_CHANGE.equalsIgnoreCase(String.valueOf(row.getCell(0))) ||
@@ -440,7 +440,32 @@ public class ImportTaskFacade {
 
 		return false;
 	}
+	
+	private void validateKeyElements(HSSFRow  row, String parameterNum) {
+		if(StringUtils.isEmpty(String.valueOf(row.getCell(1)))) {
+			throw new BadRequestException("Invalid CompanyId  -"+validationMessgae.append(", row#: ").append(errorRow));
+		}
+		
+		if(StringUtils.isEmpty(String.valueOf(row.getCell(2))) || !Utils.isValidDate(String.valueOf(row.getCell(2)))) {
+			throw new BadRequestException("Invalid Effective date - "+validationMessgae.append(", row#: ").append(errorRow));
+		}
 
+		if(!StringUtils.isEmpty(String.valueOf(row.getCell(3))) && !Utils.isValidDate(String.valueOf(row.getCell(3)))) {
+			throw new BadRequestException("Invalid Expiry date - "+validationMessgae.append(", row#: ").append(errorRow));
+		}
+
+		if(StringUtils.isEmpty(String.valueOf(row.getCell(4))) || String.valueOf(row.getCell(4)).length()<3) {
+			throw new BadRequestException("Invalid OwnerId - "+validationMessgae.append(", row#: ").append(errorRow));
+		}
+		
+		if(StringUtils.isEmpty(String.valueOf(row.getCell(6)))) {
+			throw new BadRequestException("Invalid CC Number  -"+validationMessgae.append(", row#: ").append(errorRow));
+		}
+		
+		//validate the presence of parameter in the application file
+		parameterFacade.getParameterName(String.valueOf(row.getCell(4)), parameterNum);
+	}
+	
 	private boolean isRepeatingRow(HSSFRow  row) {
 		if(row!=null && StringUtils.isEmpty(String.valueOf(row.getCell(1))) &&
 				StringUtils.isEmpty(String.valueOf(row.getCell(2))) && StringUtils.isEmpty(String.valueOf(row.getCell(3)))) {
@@ -543,9 +568,6 @@ public class ImportTaskFacade {
 
 	private CdmfKeyInfo_Type setKeyElements(PcdItemList_TypePcdItem pcdItemTemplate, HashMap<String, String> data, List<String> failedItems, boolean reload) {
 
-		//Validate and throw error
-		validateKeyElements(data);
-
 		CdmfKeyInfo_Type key = new CdmfKeyInfo_Type();
 		String action = Constants.EMPTY;
 		String keys = Constants.EMPTY;
@@ -599,28 +621,6 @@ public class ImportTaskFacade {
 			return null;
 		}
 		return key;
-	}
-
-	private void validateKeyElements(HashMap<String, String> data) {
-		if(StringUtils.isEmpty(data.get("CdmfCCNum"))) {
-			throw new BadRequestException("Invalid CC Number  -"+validationMessgae.append(", row#: ").append(errorRow));
-		}
-
-		if(StringUtils.isEmpty(data.get("CdmfFmt"))) {
-			throw new BadRequestException("Invalid PCD Number - "+validationMessgae.append(", row#: ").append(errorRow));
-		}
-
-		if(StringUtils.isEmpty(data.get("CdmfFmtEffDt")) || !Utils.isValidDate(data.get("CdmfFmtEffDt"))) {
-			throw new BadRequestException("Invalid Effective date - "+validationMessgae.append(", row#: ").append(errorRow));
-		}
-
-		if(!StringUtils.isEmpty(data.get("CdmfFmtExpDt")) && !Utils.isValidDate(data.get("CdmfFmtExpDt"))) {
-			throw new BadRequestException("Invalid Expiry date - "+validationMessgae.append(", row#: ").append(errorRow));
-		}
-
-		if(StringUtils.isEmpty(data.get("CdmfOwnerApp"))) {
-			throw new BadRequestException("Invalid Owner - "+validationMessgae.append(", row#: ").append(errorRow));
-		}
 	}
 
 	private String processKeyElements(MessageElement[] rElements, MessageElement[] elements, HashMap<String, String> data, boolean reload) {

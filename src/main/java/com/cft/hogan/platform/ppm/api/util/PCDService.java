@@ -68,7 +68,7 @@ public class PCDService {
 		pcdXmlRq.setMsgRqHdr(getMsgRqHdr());
 		PcdXmlRs_Type response = getPCDService().processPcd(pcdXmlRq);
 		if(!"0".equals(String.valueOf(response.getXStatus().getStatusCode()))) {
-			throw new SystemException("Error in PCD service- XML template not retrieved: PCD#"+parameterNum+" Error-"+response.getXStatus().getStatusDesc());
+			throw new SystemException("PCD service error- XML template not retrieved: PCD#"+parameterNum+" Error-"+response.getXStatus().getStatusDesc());
 		}
 		xmlTemplatesMap.put(key, response);
 		log.debug(logMsg+"PCD XML Template retrieved from service :"+key);
@@ -133,10 +133,10 @@ public class PCDService {
 					}
 				}
 			}else {
-				throw new SystemException("Error in PCD service- PCD details not retrieved: status-"+pcdXmlRs.getXStatus().getStatusDesc());
+				throw new SystemException("PCD service error - PCD details not retrieved: status-"+pcdXmlRs.getXStatus().getStatusDesc());
 			}
 		}else {
-			throw new SystemException("Error in PCD service- PCD details not retrieved: response is null-");
+			throw new SystemException("PCD service error - PCD details not retrieved: response is null-");
 		}
 		response.setPcdItemList(new PcdItemList_Type(allRecords.toArray(new PcdItemList_TypePcdItem[allRecords.size()]), "N", String.valueOf(allRecords.size())));
 		response.setXStatus(getSuccessStatus());

@@ -80,13 +80,13 @@ public class ScheduleTaskFacade {
 			entityList =  getDAO().findByType(type);
 			entityList.forEach((entity)->{
 				ScheduleTaskBean bean =  entityToBean(entity);
-				if(type.equalsIgnoreCase(Constants.EXPORT))	{
-					try {
-						setTemplateName(bean);
-					}catch(Exception e) {
-						Utils.handleException(e);
-					}
-				}
+				//				if(type.equalsIgnoreCase(Constants.EXPORT))	{
+				//					try {
+				//						setTemplateName(bean);
+				//					}catch(Exception e) {
+				//						Utils.handleException(e);
+				//					}
+				//				}
 				beanList.add(bean);
 			});
 		} catch (Exception e) {
@@ -110,9 +110,7 @@ public class ScheduleTaskFacade {
 
 	public ScheduleTaskBean update(ScheduleTaskBean bean, String scheduleId) {
 		try {
-			if(!Utils.isValidDate(bean.getEffectiveDate())) {
-				throw new BusinessException("Invalid Start date: "+bean.getEffectiveDate(), false);
-			}
+			validateEffectiveDateForUpdate(bean.getEffectiveDate(), scheduleId);
 			bean.setUuid(scheduleId);
 			bean.setModifiedBy(Utils.getUserIdInRequestHeader());
 			getDAO().update(beanToEntity(bean));
@@ -298,6 +296,22 @@ public class ScheduleTaskFacade {
 		return entity;
 	}
 
+	private void validateEffectiveDateForUpdate(String effectiveDate, String scheduleId) throws ParseException {
+		if(Utils.isValidDate(effectiveDate)) { 
+			ScheduleTaskBean schedule = findByUUID(scheduleId);
+			if(!schedule.getEffectiveDate().equalsIgnoreCase(effectiveDate)) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(Utils.convertStringToSQLDate(effectiveDate));
+				if(!effectiveDate.equalsIgnoreCase(Utils.convertDateToString(new java.util.Date())) && 
+						cal.compareTo(Calendar.getInstance()) < 0){
+					throw new BadRequestException("Start date should be current or future date.");
+				}
+			}
+		}else {
+			throw new BusinessException("Invalid Start date", false);
+		}
+	}
+
 
 	private void validateEffectiveDate(String effectiveDate) throws ParseException {
 		if(Utils.isValidDate(effectiveDate)) {
@@ -305,10 +319,10 @@ public class ScheduleTaskFacade {
 			cal.setTime(Utils.convertStringToSQLDate(effectiveDate));
 			if(!effectiveDate.equalsIgnoreCase(Utils.convertDateToString(new java.util.Date())) && 
 					cal.compareTo(Calendar.getInstance()) < 0){
-				throw new BadRequestException("Effective date should be current or future date.");
+				throw new BadRequestException("Start date should be current or future date.");
 			}
 		}else {
-			throw new BadRequestException("Invalid Effective date");
+			throw new BusinessException("Invalid Start date", false);
 		}
 	}
 
@@ -326,5 +340,4 @@ public class ScheduleTaskFacade {
 			throw new SystemException("Invalid region :"+region);
 		}
 	}
-
 }
