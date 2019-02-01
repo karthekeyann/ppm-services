@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateParameterEntity;
+import com.cft.hogan.platform.ppm.api.util.SqlQueries;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @SuppressWarnings("unchecked")
@@ -17,25 +18,21 @@ abstract public class TemplatePSetDAO  {
 
 	protected int save(List<TemplateParameterEntity> psets, EntityManager entityManager) {
 
-		final String sqlQuery = "INSERT INTO CELPPM.PPM_MM_TEMPLATE_PSET " +
-				"(UUID, TEMPLATE_UUID, NUMBER, NAME, COMPANY_ID, APPLICATION_ID, CREATED_BY, CREATED_TS, MODIFIED_BY, MODIFIED_TS, EFF_DATE) "+
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		final String sqlQuerywithEffDate = SqlQueries.PPM_MM_TEMPLATE_PSET_INSERT_WITH_EFF_DATE;
 
-		final String sqlQueryWithoutEffDate = "INSERT INTO CELPPM.PPM_MM_TEMPLATE_PSET " +
-				"(UUID, TEMPLATE_UUID, NUMBER, NAME, COMPANY_ID, APPLICATION_ID, CREATED_BY, CREATED_TS, MODIFIED_BY, MODIFIED_TS) "+
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		final String sqlQueryWithoutEffDate = SqlQueries.PPM_MM_TEMPLATE_PSET_INSERT_WITHOUT_EFF_DATE;
 
 		psets.forEach((entity)->{
 			if(StringUtils.isEmpty(entity.getEffectiveDate())) {
-				save(entity, sqlQueryWithoutEffDate, entityManager);
+				save(entity, sqlQueryWithoutEffDate, entityManager, false);
 			}else {
-				save(entity, sqlQuery, entityManager);
+				save(entity, sqlQuerywithEffDate, entityManager, true);
 			}
 		});
 		return psets.size();
 	}
 
-	private int save(TemplateParameterEntity entity, String sqlQuery, EntityManager entityManager) {
+	private int save(TemplateParameterEntity entity, String sqlQuery, EntityManager entityManager, boolean isEffDate) {
 
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateParameterEntity.class);
 		entity.setUuid(String.valueOf(UUID.randomUUID()));
@@ -50,7 +47,7 @@ abstract public class TemplatePSetDAO  {
 		query.setParameter(9, entity.getCreatedBy());
 		query.setParameter(10, Utils.getCurrentTimeStamp());
 
-		if(!StringUtils.isEmpty(entity.getEffectiveDate())) {
+		if(isEffDate) {
 			query.setParameter(11, entity.getEffectiveDate());
 		}
 		return query.executeUpdate();
@@ -59,16 +56,14 @@ abstract public class TemplatePSetDAO  {
 
 	protected List<TemplateParameterEntity> findByTemplateUUID(String templateUUID, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_TEMPLATE_PSET " +
-				"WHERE TEMPLATE_UUID = ?  ORDER BY NUMBER";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_PSET_FIND_BY_TEMPLATE_UUID;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateParameterEntity.class);
 		query.setParameter(1, templateUUID);
 		return query.getResultList();
 	}
 
 	protected int deleteByTemplateUUID(String templateUUID, EntityManager entityManager) {
-		String sqlQuery = "DELETE FROM CELPPM.PPM_MM_TEMPLATE_PSET " +
-				"WHERE TEMPLATE_UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_PSET_DELETE;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateEntity.class);
 		//WHERE
 		query.setParameter(1, templateUUID);

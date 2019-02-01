@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskReviewDetailEntity;
+import com.cft.hogan.platform.ppm.api.util.SqlQueries;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @SuppressWarnings("unchecked")
@@ -16,17 +17,16 @@ abstract public class ImportTaskReviewDetailsDAO {
 	
 	protected List<ImportTaskReviewDetailEntity> findByImportTaskUUID(String importTaskUUID, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_IMPORT_TASK_DETAILS " +
-				"WHERE IM_TASK_UUID = ?  ORDER BY MODIFIED_TS DESC";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_DETAILS_FIND_BY_UUID;
 		Query query = entityManager.createNativeQuery(sqlQuery, ImportTaskReviewDetailEntity.class);
 		query.setParameter(1, importTaskUUID);
 		return query.getResultList();
 	}
 
+	
 	protected List<ImportTaskReviewDetailEntity> findPsetKeyByImportTaskUUIDAndStatus(String importTaskUUID, String status, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_IMPORT_TASK_DETAILS " +
-				"WHERE IM_TASK_UUID = ? AND STATUS = ?  ORDER BY MODIFIED_TS DESC";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_DETAILS_FIND_BY_UUID_AND_STATUS;
 		Query query = entityManager.createNativeQuery(sqlQuery, ImportTaskReviewDetailEntity.class);
 		query.setParameter(1, importTaskUUID);
 		query.setParameter(2, status);
@@ -36,9 +36,7 @@ abstract public class ImportTaskReviewDetailsDAO {
 
 	protected int Update(ImportTaskReviewDetailEntity importTaskReviewDetail, EntityManager entityManager) {
 
-		String sqlQuery = "UPDATE CELPPM.PPM_MM_IMPORT_TASK_DETAILS SET "
-				+ "ACTION = ? , STATUS = ? , RESULT = ? , COMPANY_ID = ? , APPLICATION_ID = ? "
-				+ "WHERE IM_TASK_UUID = ? AND PSET_KEY = ?";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_DETAILS_UPDATE;
 		Query query = entityManager.createNativeQuery(sqlQuery);
 		//VALUES
 		query.setParameter(1, importTaskReviewDetail.getAction());
@@ -52,6 +50,7 @@ abstract public class ImportTaskReviewDetailsDAO {
 		return query.executeUpdate();
 	}
 
+	
 	protected int save(List<ImportTaskReviewDetailEntity> reviewList, EntityManager entityManager) {
 
 		int recordCount = 0;

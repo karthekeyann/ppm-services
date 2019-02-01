@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateEntity;
+import com.cft.hogan.platform.ppm.api.util.SqlQueries;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 
@@ -15,8 +16,7 @@ public abstract class TemplateDAO  {
 
 	protected TemplateEntity findByUUID(String uuid, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_TEMPLATE " +
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_FIND_BY_UUID;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateEntity.class);
 		query.setParameter(1, uuid);
 		return (TemplateEntity)query.getSingleResult();
@@ -24,16 +24,14 @@ public abstract class TemplateDAO  {
 
 	protected List<TemplateEntity> findAll(EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_TEMPLATE ORDER BY MODIFIED_TS DESC";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_FIND_ALL;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateEntity.class);
 		return query.getResultList();
 	}
 
 	protected String save(TemplateEntity entity, EntityManager entityManager)  {
 
-		String sqlQuery = "INSERT INTO CELPPM.PPM_MM_TEMPLATE " +
-				"(UUID, NAME, CREATED_BY, CREATED_TS, MODIFIED_BY, MODIFIED_TS) "+
-				"VALUES (?, ?, ?, ?, ?, ?)";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_INSERT;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateEntity.class);
 		entity.setUuid(String.valueOf(UUID.randomUUID()));
 		query.setParameter(1, entity.getUuid());
@@ -48,9 +46,7 @@ public abstract class TemplateDAO  {
 
 
 	protected int update(TemplateEntity entity, EntityManager entityManager)  {
-		String sqlQuery = "UPDATE CELPPM.PPM_MM_TEMPLATE SET " +
-				"MODIFIED_BY = ? , MODIFIED_TS = ? "+
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_UPDATE;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateEntity.class);
 		//VALUES
 		query.setParameter(1, entity.getModifiedBy());
@@ -62,8 +58,7 @@ public abstract class TemplateDAO  {
 
 
 	protected int delete(String uuid, EntityManager entityManager)  {
-		String sqlQuery = "DELETE FROM CELPPM.PPM_MM_TEMPLATE " +
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_TEMPLATE_DELETE;
 		Query query = entityManager.createNativeQuery(sqlQuery, TemplateEntity.class);
 		//WHERE
 		query.setParameter(1, uuid);

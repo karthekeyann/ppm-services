@@ -9,10 +9,6 @@ abstract public class DataSource_Base {
 	Environment env;
 	
 	protected Environment getProperties() throws Exception {
-//		if(prop==null) {
-//			EnvironmentContext.loadPropertyContext(env.getActiveProfiles()[0]);
-//			prop = EnvironmentContext.getDataSourceProperties();
-//		}
 		return env;
 	}
 	

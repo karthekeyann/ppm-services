@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
+import com.cft.hogan.platform.ppm.api.util.SqlQueries;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 
@@ -16,8 +17,7 @@ abstract public class ScheduleDAO {
 
 	protected ScheduleTaskEntity findByUUID(String uuid, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_SCHEDULED_TASK " +
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_FIND_BY_UUID;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		query.setParameter(1, uuid);
 		return (ScheduleTaskEntity) query.getSingleResult();
@@ -26,8 +26,7 @@ abstract public class ScheduleDAO {
 	
 	protected ScheduleTaskEntity findByTemplateUUID(String templateUUID, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_SCHEDULED_TASK " +
-				"WHERE TEMPLATE_UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_FIND_BY_TEMPLATE_UUID;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		query.setParameter(1, templateUUID);
 		return (ScheduleTaskEntity) query.getSingleResult();
@@ -36,8 +35,7 @@ abstract public class ScheduleDAO {
 
 	protected List<ScheduleTaskEntity> findByType(String type, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_SCHEDULED_TASK " +
-				"WHERE type = ?  ORDER BY MODIFIED_TS DESC";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_FIND_BY_TYPE;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		query.setParameter(1, type);
 		return query.getResultList();
@@ -45,8 +43,7 @@ abstract public class ScheduleDAO {
 	
 	protected List<ScheduleTaskEntity> findByStatus(String status, Date date, String type, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_SCHEDULED_TASK " +
-				"WHERE STATUS = ? AND EFF_DATE <= ? AND TYPE = ?  ORDER BY MODIFIED_TS DESC";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_FIND_BY_STATUS;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		query.setParameter(1, status);
 		query.setParameter(2, date);
@@ -56,9 +53,7 @@ abstract public class ScheduleDAO {
 
 	protected String save(ScheduleTaskEntity entity, EntityManager entityManager) {
 
-		String sqlQuery = "INSERT INTO CELPPM.PPM_MM_SCHEDULED_TASK " +
-				"(UUID, TEMPLATE_UUID, NAME, TYPE, EFF_DATE, FILE_PATH, FREQUENCY, FREQ_PATTERN, TASK_OPTIONS, STATUS, REMARKS, CREATED_BY, CREATED_TS, MODIFIED_BY, MODIFIED_TS) "+
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_INSERT;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		entity.setUuid(String.valueOf(UUID.randomUUID()));
 		query.setParameter(1, entity.getUuid());
@@ -82,9 +77,7 @@ abstract public class ScheduleDAO {
 
 
 	protected int update(ScheduleTaskEntity entity, EntityManager entityManager) {
-		String sqlQuery = "UPDATE CELPPM.PPM_MM_SCHEDULED_TASK SET " +
-				"TEMPLATE_UUID = ? , NAME = ? , EFF_DATE = ? , FILE_PATH = ? , FREQUENCY = ? , FREQ_PATTERN = ? , TASK_OPTIONS = ? , STATUS = ? , REMARKS = ? , MODIFIED_BY = ? , MODIFIED_TS = ? "+
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_UPDATE;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		//VALUES
 		query.setParameter(1, entity.getTemplateUUID());
@@ -105,8 +98,7 @@ abstract public class ScheduleDAO {
 
 
 	protected int delete(String uuid, EntityManager entityManager) {
-		String sqlQuery = "DELETE FROM CELPPM.PPM_MM_SCHEDULED_TASK " +
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_SCHEDULED_TASK_DELETE;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		//WHERE
 		query.setParameter(1, uuid);

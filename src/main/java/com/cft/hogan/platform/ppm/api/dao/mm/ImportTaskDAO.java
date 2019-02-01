@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
+import com.cft.hogan.platform.ppm.api.util.SqlQueries;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @SuppressWarnings("unchecked")
@@ -15,8 +16,7 @@ abstract public class ImportTaskDAO  {
 
 	protected ImportTaskEntity findByUUID(String uuid, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_IMPORT_TASK "
-				+ "WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_FIND_BY_UUID;
 		Query query = entityManager.createNativeQuery(sqlQuery, ImportTaskEntity.class);
 		query.setParameter(1, uuid);
 		return (ImportTaskEntity) query.getSingleResult();
@@ -24,8 +24,7 @@ abstract public class ImportTaskDAO  {
 
 	protected List<ImportTaskEntity> findByStatus(String status, EntityManager entityManager) {
 
-		String sqlQuery = "SELECT * FROM CELPPM.PPM_MM_IMPORT_TASK "
-				+ "WHERE STATUS = ?  ORDER BY MODIFIED_TS DESC";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_FIND_BY_STATUS;
 		Query query = entityManager.createNativeQuery(sqlQuery, ImportTaskEntity.class);
 		query.setParameter(1, status);
 		return query.getResultList();
@@ -33,9 +32,7 @@ abstract public class ImportTaskDAO  {
 
 	protected int UpdateStatus(ImportTaskEntity entity, EntityManager entityManager) {
 
-		String sqlQuery = "UPDATE CELPPM.PPM_MM_IMPORT_TASK SET "
-				+ "STATUS = ? , MODIFIED_BY = ? , MODIFIED_TS = ? "
-				+ "WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_UPDATE_BY_STATUS;
 		Query query = entityManager.createNativeQuery(sqlQuery, ImportTaskEntity.class);
 		//VALUES
 		query.setParameter(1, entity.getStatus());
@@ -48,9 +45,7 @@ abstract public class ImportTaskDAO  {
 
 	protected String save(ImportTaskEntity entity, EntityManager entityManager) {
 
-		String sqlQuery = "INSERT INTO CELPPM.PPM_MM_IMPORT_TASK " 
-				+ "(UUID, TYPE, NAME, STATUS, INPUT_FILE_NAME, CREATED_BY, CREATED_TS , MODIFIED_BY, MODIFIED_TS) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_SAVE;
 		Query query = entityManager.createNativeQuery(sqlQuery, ImportTaskEntity.class);
 		entity.setUuid(String.valueOf(UUID.randomUUID()));
 		query.setParameter(1, entity.getUuid());
@@ -68,8 +63,7 @@ abstract public class ImportTaskDAO  {
 
 	protected int delete(String uuid, EntityManager entityManager) {
 		
-		String sqlQuery = "DELETE FROM CELPPM.PPM_MM_IMPORT_TASK " +
-				"WHERE UUID = ?";
+		String sqlQuery = SqlQueries.PPM_MM_IMPORT_TASK_DELETE;
 		Query query = entityManager.createNativeQuery(sqlQuery, ScheduleTaskEntity.class);
 		//WHERE
 		query.setParameter(1, uuid);
