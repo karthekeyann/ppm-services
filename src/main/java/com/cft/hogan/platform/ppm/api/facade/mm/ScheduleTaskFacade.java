@@ -46,6 +46,7 @@ public class ScheduleTaskFacade {
 
 
 	public ScheduleTaskBean findByUUID(String scheduleId) {
+
 		ScheduleTaskBean bean = null;
 		try {
 			bean =  entityToBean(getDAO().findByUUID(scheduleId));
@@ -64,6 +65,7 @@ public class ScheduleTaskFacade {
 
 
 	public ScheduleTaskEntity findByTemplateUUID(String templateUUID) {
+
 		ScheduleTaskEntity entity = null;
 		try {
 			entity =  getDAO().findByTemplateUUID(templateUUID);
@@ -73,7 +75,9 @@ public class ScheduleTaskFacade {
 		return entity;
 	}
 
+
 	public List<ScheduleTaskBean> findByType(String type) {
+
 		List<ScheduleTaskBean> beanList = new ArrayList<ScheduleTaskBean>();
 		try {
 			List<ScheduleTaskEntity> entityList = null;
@@ -95,7 +99,9 @@ public class ScheduleTaskFacade {
 		return beanList;	
 	}
 
+
 	public ScheduleTaskBean save(ScheduleTaskBean bean) {
+
 		String uuid = null;
 		try {
 			validateEffectiveDate(bean.getEffectiveDate());
@@ -109,7 +115,11 @@ public class ScheduleTaskFacade {
 
 
 	public ScheduleTaskBean update(ScheduleTaskBean bean, String scheduleId) {
+
 		try {
+			if(!checkOwner(scheduleId)) {
+				throw new BadRequestException("Schedule Task can be edited by task creator/owner");
+			}
 			validateEffectiveDateForUpdate(bean.getEffectiveDate(), scheduleId);
 			bean.setUuid(scheduleId);
 			bean.setModifiedBy(Utils.getUserIdInRequestHeader());
@@ -122,12 +132,9 @@ public class ScheduleTaskFacade {
 
 
 	public void delete(String scheduleId) {
+
 		try {
-			ScheduleTaskBean schedule = findByUUID(scheduleId);
-			if(schedule == null ) {
-				throw new ItemNotFoundException();
-			}
-			if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(schedule.getCreatedBy())) {
+			if(!checkOwner(scheduleId)) {
 				throw new BadRequestException("Schedule Task can be deleted by task creator/owner");
 			}
 			getDAO().delete(scheduleId);
@@ -137,8 +144,8 @@ public class ScheduleTaskFacade {
 	}
 
 
-
 	public List<ScheduleBatchBean> schedulesForBatch(Date bpDate, String type){
+
 		List<ScheduleBatchBean> beanList = new ArrayList<ScheduleBatchBean>();
 		try {
 			List<ScheduleTaskEntity> entityList = null;
@@ -167,7 +174,21 @@ public class ScheduleTaskFacade {
 	}
 
 
+	private boolean checkOwner(String uuid) {
+
+		ScheduleTaskBean schedule = findByUUID(uuid);
+		if(schedule == null ) {
+			throw new ItemNotFoundException();
+		}
+		if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(schedule.getCreatedBy())) {
+			return false;
+		}
+		return true;
+	}
+
+
 	private boolean evaluateBatchCriteria(Date bpDate, ScheduleTaskEntity entity) {
+
 		//ONLY ONCE
 		if("ONLY ONCE".equalsIgnoreCase(entity.getFrequency())){
 			return true;
@@ -201,6 +222,7 @@ public class ScheduleTaskFacade {
 
 
 	private void setTemplateName(ScheduleTaskBean bean) {
+
 		TemplateBean templateBean;
 		try {
 			templateBean = templateFacade.findByUUID(bean.getTemplateUUID());
@@ -214,6 +236,7 @@ public class ScheduleTaskFacade {
 
 
 	private void setTemplate(ScheduleBatchBean bean) {
+
 		TemplateBean templateBean;
 		try {
 			templateBean = templateFacade.findByUUID(bean.getTemplateUUID());
@@ -227,6 +250,7 @@ public class ScheduleTaskFacade {
 
 
 	private ScheduleTaskBean entityToBean(ScheduleTaskEntity entity) {
+
 		ScheduleTaskBean bean = new ScheduleTaskBean();
 		bean.setCreatedBy(entity.getCreatedBy());
 		bean.setCreatedOn(entity.getCreatedOn());
@@ -250,7 +274,9 @@ public class ScheduleTaskFacade {
 		return bean;
 	}
 
+
 	private ScheduleBatchBean entityToBeanBatch(ScheduleTaskEntity entity) {
+
 		ScheduleBatchBean bean = new ScheduleBatchBean();
 		bean.setCreatedBy(entity.getCreatedBy());
 		bean.setCreatedOn(entity.getCreatedOn());
@@ -274,7 +300,9 @@ public class ScheduleTaskFacade {
 		return bean;
 	}
 
+
 	private ScheduleTaskEntity beanToEntity(ScheduleTaskBean bean) {
+
 		ScheduleTaskEntity entity = new ScheduleTaskEntity();
 		entity.setCreatedBy(bean.getCreatedBy());
 		entity.setCreatedOn(bean.getCreatedOn());
@@ -296,7 +324,9 @@ public class ScheduleTaskFacade {
 		return entity;
 	}
 
+
 	private void validateEffectiveDateForUpdate(String effectiveDate, String scheduleId) throws ParseException {
+
 		if(Utils.isValidDate(effectiveDate)) { 
 			ScheduleTaskBean schedule = findByUUID(scheduleId);
 			if(!schedule.getEffectiveDate().equalsIgnoreCase(effectiveDate)) {
@@ -314,6 +344,7 @@ public class ScheduleTaskFacade {
 
 
 	private void validateEffectiveDate(String effectiveDate) throws ParseException {
+
 		if(Utils.isValidDate(effectiveDate)) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(Utils.convertStringToSQLDate(effectiveDate));
@@ -326,7 +357,9 @@ public class ScheduleTaskFacade {
 		}
 	}
 
+
 	private ScheduleDAO_I getDAO(){
+
 		String region = Utils.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;

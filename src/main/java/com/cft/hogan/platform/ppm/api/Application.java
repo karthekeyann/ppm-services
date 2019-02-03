@@ -25,24 +25,27 @@ import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
      DataSourceTransactionManagerAutoConfiguration.class,
      HibernateJpaAutoConfiguration.class })
 public class Application extends SpringBootServletInitializer implements ApplicationRunner {
-	
+
 	@Autowired
-    private Environment env;  
-	
+	private Environment env;  
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+
 		return application.sources(Application.class);
 	}
 
+
 	public static void main(String[] args) {
-		
-			SpringApplication.run(Application.class, args);
-			EnvironmentContext.logDetails();
+
+		SpringApplication.run(Application.class, args);
+		EnvironmentContext.logDetails();
 	}
+
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		 EnvironmentContext.setEnvironment(env);
-		
+
+		EnvironmentContext.setEnvironment(env);
 	}
 }

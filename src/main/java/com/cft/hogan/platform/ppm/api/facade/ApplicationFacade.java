@@ -64,7 +64,7 @@ public class ApplicationFacade {
 		StringBuffer fileName = new StringBuffer()
 				.append(env.getProperty(Constants.PARMETER_CONFIG_PATH))
 				.append(region)
-				.append("/pcd-applications.properties");
+				.append("/parameter-applications.properties");
 
 		file = new File(fileName.toString());
 
@@ -79,7 +79,7 @@ public class ApplicationFacade {
 				}
 			}
 		}else {
-			throw new SystemException("Applications properties file does not exists: "+file.getAbsolutePath());
+			throw new SystemException("Parameter applications properties file does not exists: "+file.getAbsolutePath());
 		}
 		return applications;
 	}

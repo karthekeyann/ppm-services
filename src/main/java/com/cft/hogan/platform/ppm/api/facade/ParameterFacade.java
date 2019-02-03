@@ -13,7 +13,9 @@ import java.util.Properties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.cft.hogan.platform.ppm.api.bean.ApplicationBean;
 import com.cft.hogan.platform.ppm.api.bean.ParameterBean;
 import com.cft.hogan.platform.ppm.api.cache.SystemCache;
 import com.cft.hogan.platform.ppm.api.exception.SystemException;
@@ -26,7 +28,11 @@ public class ParameterFacade {
 	@Autowired
 	Environment env;
 
+	@Autowired
+	ApplicationFacade applicationFacade;
+
 	public List<ParameterBean> getParameters(String applicationID) {
+		
 		String region = Utils.getRegion();
 		List<ParameterBean> parametersList = null;
 		try {
@@ -66,8 +72,36 @@ public class ParameterFacade {
 		}
 		return parametersList;
 	}
+	
 
+	public 	String getParameterName(String applicationID, String parameterNum) {
+		
+		List<ParameterBean> parametersList = getParameters(applicationID);
+		for(ParameterBean bean: parametersList) {
+			if(parameterNum.equalsIgnoreCase(bean.getNumber())){
+				return bean.getName();
+			}
+		}
+		return Constants.EMPTY;
+	}
+	
+
+	public 	String findApplication(String parameterNum) {
+		
+		String applicationID = Constants.EMPTY;
+		List<ApplicationBean> applications = applicationFacade.getApplications();
+		for(ApplicationBean application: applications) {
+			if(!StringUtils.isEmpty(getParameterName(application.getId(), parameterNum))){
+				applicationID = application.getId();
+				break;
+			}
+		}
+		return applicationID;
+	}
+
+	
 	private Properties readParameters(String region, String applicationID) throws IOException {
+		
 		Properties applications = new Properties();
 		File file = null;
 		String fileName = "/"+applicationID+"-parameters.properties";
@@ -86,12 +120,14 @@ public class ParameterFacade {
 				}
 			}
 		}else {
-			throw new SystemException("Parameters properties file does not exists: "+file.getAbsolutePath());
+			throw new SystemException("Parameters config file does not exists: "+file.getAbsolutePath());
 		}
 		return applications;
 	}
+	
 
 	private List<ParameterBean> createList(Properties parameters){
+		
 		ArrayList<ParameterBean> parametersList = new ArrayList<ParameterBean>();
 		if(parameters!=null) {
 			parameters.forEach((key, value)->{
@@ -103,15 +139,5 @@ public class ParameterFacade {
 		}
 		Collections.sort(parametersList);
 		return   parametersList;
-	}
-	
-	public 	String getParameterName(String applicationID, String parameterNum) {
-		List<ParameterBean> parametersList = getParameters(applicationID);
-		for(ParameterBean bean: parametersList) {
-			if(parameterNum.equalsIgnoreCase(bean.getNumber())){
-				return bean.getName();
-			}
-		}
-		return Constants.EMPTY;
 	}
 }

@@ -230,7 +230,6 @@ public class ImportTaskFacade {
 					importTaskReviewDetail.setStatus(status);			
 					importTaskReviewDetail.setAction(response.getCdmfKeyInfo().getCdmfAction());
 					importTaskReviewDetail.setCompanyID(String.valueOf(response.getCdmfKeyInfo().getCdmfFmtCoId()));
-					importTaskReviewDetail.setApplicationID(String.valueOf(response.getCdmfKeyInfo().getCdmfOwnerApp()));
 					importTaskReviewDetail.setEffectiveDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtEffDt())));
 					importTaskReviewDetail.setExpiryDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtExpDt())));
 					importTaskReviewDetail.setModifiedBy(Utils.getUserIdInRequestHeader());
@@ -258,11 +257,14 @@ public class ImportTaskFacade {
 		UpdPcdRecRs_Type[] updPcdRecRs = service.updatePcd(requestList);
 		List<UpdPcdRecRs_Type> responseList = Arrays.asList(updPcdRecRs);
 		List<ImportTaskReviewDetailEntity> reviewList = new ArrayList<>();
-		responseList.forEach((response) -> {
+		responseList.forEach(response -> {
 			try {
 				String key = Constants.EMPTY;
 				ImportTaskReviewDetailEntity input = new ImportTaskReviewDetailEntity();
 				input.setImportTaskUUID(uuid);
+				if(StringUtils.isEmpty(response.getCdmfKeyInfo().getCdmfOwnerApp().trim())) {
+					response.getCdmfKeyInfo().setCdmfOwnerApp(parameterFacade.findApplication(String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())));
+				}
 				input.setApplicationID(response.getCdmfKeyInfo().getCdmfOwnerApp());
 				input.setAction(response.getCdmfKeyInfo().getCdmfAction());
 				input.setCompanyID(String.valueOf(response.getCdmfKeyInfo().getCdmfFmtCoId()));
@@ -371,6 +373,13 @@ public class ImportTaskFacade {
 					HSSFRow  row = hssfSheet.getRow(i);
 					if(isChangedRow(row)) {
 						validateKeyElements(row, parameterNum);
+						
+						/*
+						 * validate the presence of parameter in the application-parameter mapping file
+						 */
+						if(changedRecords==0) {
+							parameterFacade.getParameterName(String.valueOf(row.getCell(4)), parameterNum);
+						}
 						HashMap<String, String> repeatingDataMap = new HashMap<>();
 						if(!Constants.PCD_2598.equalsIgnoreCase(parameterNum)) {
 							repeatingDataList.add(repeatingDataMap);
@@ -415,7 +424,9 @@ public class ImportTaskFacade {
 		return requestList;
 	}
 
+
 	private void prepareDataMap(HSSFRow row, String[] laebls, Map<String, String> nonRepeatingDataMap, Map<String, String> repeatingDataMap, boolean isRepeatingRow) {
+
 		for(int cellIndex =0; cellIndex<row.getLastCellNum();cellIndex++) {
 			HSSFCell val = row.getCell(cellIndex);
 			if(val != null && !String.valueOf(val).equalsIgnoreCase("null") && !StringUtils.isEmpty(String.valueOf(val))) {
@@ -431,6 +442,7 @@ public class ImportTaskFacade {
 
 
 	private boolean isChangedRow(HSSFRow  row) {
+
 		if(row!=null && row.getCell(0)!=null && !StringUtils.isEmpty(String.valueOf(row.getCell(0))) && 
 				(Constants.EXCEL_ACTION_ADD.equalsIgnoreCase(String.valueOf(row.getCell(0))) || 
 						Constants.EXCEL_ACTION_CHANGE.equalsIgnoreCase(String.valueOf(row.getCell(0))) ||
@@ -440,12 +452,14 @@ public class ImportTaskFacade {
 
 		return false;
 	}
-	
+
+
 	private void validateKeyElements(HSSFRow  row, String parameterNum) {
+
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(1)))) {
 			throw new BadRequestException("Invalid CompanyId  -"+validationMessgae.append(", row#: ").append(errorRow));
 		}
-		
+
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(2))) || !Utils.isValidDate(String.valueOf(row.getCell(2)))) {
 			throw new BadRequestException("Invalid Effective date - "+validationMessgae.append(", row#: ").append(errorRow));
 		}
@@ -457,15 +471,13 @@ public class ImportTaskFacade {
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(4))) || String.valueOf(row.getCell(4)).length()<3) {
 			throw new BadRequestException("Invalid OwnerId - "+validationMessgae.append(", row#: ").append(errorRow));
 		}
-		
+
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(6)))) {
 			throw new BadRequestException("Invalid CC Number  -"+validationMessgae.append(", row#: ").append(errorRow));
 		}
-		
-		//validate the presence of parameter in the application file
-		parameterFacade.getParameterName(String.valueOf(row.getCell(4)), parameterNum);
 	}
-	
+
+
 	private boolean isRepeatingRow(HSSFRow  row) {
 		if(row!=null && StringUtils.isEmpty(String.valueOf(row.getCell(1))) &&
 				StringUtils.isEmpty(String.valueOf(row.getCell(2))) && StringUtils.isEmpty(String.valueOf(row.getCell(3)))) {
@@ -477,6 +489,7 @@ public class ImportTaskFacade {
 
 
 	private UpdPcdRecRq_Type prepareUpdateRequest(HashMap<String, String> nonRepeatingDataMap , List<HashMap<String, String>> repeatingDataList, PcdXmlRs_Type template, List<String> failedItems, boolean reload) throws SOAPException{
+
 		UpdPcdRecRq_Type req = new UpdPcdRecRq_Type();
 		CdmfKeyInfo_Type cdmfKeyInfo = setKeyElements(template.getPcdItemList().getPcdItem(0), nonRepeatingDataMap, failedItems, reload);
 		if(cdmfKeyInfo!=null) {

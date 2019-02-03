@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>com.unboundid</groupId>
 			<artifactId>unboundid-ldapsdk</artifactId>
-		</dependency> 
+		</dependency>
 		<!-- ends -->
 		
 		<dependency>
