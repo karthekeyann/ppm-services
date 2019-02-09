@@ -21,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
 import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
 import com.cft.hogan.platform.ppm.api.exception.BusinessException;
+import com.cft.hogan.platform.ppm.api.exception.ForbiddenException;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
 import com.cft.hogan.platform.ppm.api.exception.SystemException;
 
@@ -182,6 +183,11 @@ public class Utils {
 		}
 		return Constants.EMPTY;
 	}
+	
+	public static HttpSession getSession() {
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(false);
+		return session;
+	}
 
 	public static String getLoggedInUser() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
@@ -202,6 +208,8 @@ public class Utils {
 				throw new ItemNotFoundException();
 			}else if(e instanceof BadRequestException) {
 				throw new BadRequestException(e.getMessage());
+			}else if(e instanceof ForbiddenException) {
+				throw new ForbiddenException(e.getMessage());
 			}else if(e instanceof SystemException) {
 				throw new SystemException(e.getMessage());
 			}else {

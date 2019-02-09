@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.config;
+package com.cft.hogan.platform.ppm.api.cofig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

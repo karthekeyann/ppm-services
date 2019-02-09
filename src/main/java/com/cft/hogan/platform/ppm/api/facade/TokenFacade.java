@@ -3,6 +3,8 @@ package com.cft.hogan.platform.ppm.api.facade;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -15,6 +17,9 @@ import com.cft.hogan.platform.ppm.api.util.Utils;
 @Service
 public class TokenFacade {
 
+	@Autowired
+	Environment env;
+	
 	public String getUser() {
 		return Utils.getLoggedInUser();
 	}

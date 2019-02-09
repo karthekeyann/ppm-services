@@ -42,6 +42,14 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		return ex.getMessage();
 	}
 	
+	
+	@ResponseBody
+	@ExceptionHandler(ForbiddenException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	String ForbiddenExceptionHandler(Exception ex) {
+		return ex.getMessage();
+	}
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
