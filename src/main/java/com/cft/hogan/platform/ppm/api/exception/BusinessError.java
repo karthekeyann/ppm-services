@@ -1,6 +1,6 @@
 package com.cft.hogan.platform.ppm.api.exception;
 
-public class BusinessException extends RuntimeException {
+public class BusinessError extends RuntimeException {
 
 	/**
 	 * 
@@ -9,7 +9,7 @@ public class BusinessException extends RuntimeException {
 	
 	public boolean processFurther = false;
 
-	public BusinessException(String message, boolean processFurther) {
+	public BusinessError(String message, boolean processFurther) {
 		super(message);
 		this.processFurther = processFurther;
 	}

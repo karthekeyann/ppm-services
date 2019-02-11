@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @SuppressWarnings("deprecation")
 @Configuration
-public class WebMvcConfig {
+public class CorsConfig {
 	
 	@Autowired
 	Environment env;

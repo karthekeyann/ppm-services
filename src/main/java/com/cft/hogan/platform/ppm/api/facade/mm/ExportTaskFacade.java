@@ -35,11 +35,13 @@ import org.springframework.util.StringUtils;
 import com.cft.hogan.platform.ppm.api.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.api.bean.ParameterBean;
 import com.cft.hogan.platform.ppm.api.bean.mm.ExportTaskBean;
-import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
-import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
-import com.cft.hogan.platform.ppm.api.exception.BusinessException;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
+import com.cft.hogan.platform.ppm.api.exception.BadRequest;
+import com.cft.hogan.platform.ppm.api.exception.BusinessError;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
 import com.cft.hogan.platform.ppm.api.facade.CompanyFacade;
 import com.cft.hogan.platform.ppm.api.facade.ParameterFacade;
+import com.cft.hogan.platform.ppm.api.pcd.service.PCDService;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdEntry;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdItemList_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdItemList_TypePcdItem;
@@ -47,7 +49,6 @@ import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdItemList_TypePcdItem
 import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdXmlRs_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.Status_Type;
 import com.cft.hogan.platform.ppm.api.util.Constants;
-import com.cft.hogan.platform.ppm.api.util.PCDService;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 import com.cft.hogan.platform.ppm.api.util.excel.ExcelStyle;
 import com.cft.hogan.platform.ppm.api.util.excel.PsetElementsInfo;
@@ -137,7 +138,7 @@ public class ExportTaskFacade {
 						.append("--").append(pset.getCompanyID())
 						.append("--").append(pset.getEffectiveDate()).toString());
 				if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())){
-					throw new BusinessException("Invalid Parameter Effective date: #"+pset.getNumber(), false);
+					throw new BusinessError("Invalid Parameter Effective date: #"+pset.getNumber(), false);
 				}
 			}
 			HSSFWorkbook workbook = null;
@@ -157,7 +158,7 @@ public class ExportTaskFacade {
 				}
 			}
 		}catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return response;
 	}
@@ -228,7 +229,7 @@ public class ExportTaskFacade {
 				}
 			}
 		}else {
-			throw new BadRequestException(MESSAGE_1);
+			throw new BadRequest(MESSAGE_1);
 		}
 		return workBook;
 	}
@@ -469,7 +470,7 @@ public class ExportTaskFacade {
 			// Set Resource reader
 			aPsetElementsInfo.setLables(getLabelsProperties(pset));
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 	}
 
@@ -543,7 +544,7 @@ public class ExportTaskFacade {
 			// Set Resource reader
 			aPsetElementsInfo.setLables(getLabelsProperties(pset));
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 	}
 
@@ -1248,8 +1249,8 @@ public class ExportTaskFacade {
 	private Properties getLabelsProperties(String pcdNumber) {
 		Properties labels = new Properties();
 		try {
-			StringBuffer path = new StringBuffer(EnvironmentContext.getLabelsBasePath());
-			path.append(Utils.getRegion().toLowerCase()).append("/");
+			StringBuffer path = new StringBuffer(ApplicationContext.getLabelsBasePath());
+			path.append(ApplicationContext.getRegion().toLowerCase()).append("/");
 			String fileName = "ParameterKeyLabels.properties";
 			File file = new File(path.toString() + fileName);
 
@@ -1259,10 +1260,10 @@ public class ExportTaskFacade {
 					inputStream = new BufferedReader(new FileReader(file));
 					labels.load(inputStream);
 				}else {
-					throw new BusinessException("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
+					throw new BusinessError("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
 				}
 			}catch(Exception e) {
-				Utils.handleException(e);
+				ExceptionHanlder.handleException(e);
 			}finally {
 				if (inputStream != null) {
 					inputStream.close();
@@ -1276,17 +1277,17 @@ public class ExportTaskFacade {
 					inputStream = new BufferedReader(new FileReader(file));
 					labels.load(inputStream);
 				}else {
-					throw new BusinessException("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
+					throw new BusinessError("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
 				}
 			}catch(Exception e) {
-				Utils.handleException(e);
+				ExceptionHanlder.handleException(e);
 			}finally {
 				if (inputStream != null) {
 					inputStream.close();
 				}
 			}
 		} catch (Exception e) {
-			throw new BusinessException("Error reading Label properties file in Export Service: "+e.getMessage(), true);
+			throw new BusinessError("Error reading Label properties file in Export Service: "+e.getMessage(), true);
 		}	
 		return labels;
 	}
@@ -1298,7 +1299,7 @@ public class ExportTaskFacade {
 			if("all".equalsIgnoreCase(pSet.getCompanyID())){
 				List<CompanyBean>  companies = companyFacade.getCompanyDetails(pSet.getNumber());
 				if(companies.size() == 0) {
-					throw new BusinessException("Invalid Parameter :"+pSet.getNumber(), false);
+					throw new BusinessError("Invalid Parameter :"+pSet.getNumber(), false);
 				}
 				companies.forEach(company ->{
 					if(!"all".equalsIgnoreCase(company.getId())) {

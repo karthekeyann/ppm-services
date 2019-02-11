@@ -8,9 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cft.hogan.platform.ppm.api.bean.CompanyBean;
-import com.cft.hogan.platform.ppm.api.cache.SystemCache;
-import com.cft.hogan.platform.ppm.api.util.PCDService;
-import com.cft.hogan.platform.ppm.api.util.Utils;
+import com.cft.hogan.platform.ppm.api.cache.ApplicationCache;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.pcd.service.PCDService;
 
 @Service
 public class CompanyFacade {
@@ -19,8 +20,8 @@ public class CompanyFacade {
 		List<CompanyBean> companies = null;
 		try {
 
-			HashMap<String, HashMap<String, List<CompanyBean>>> companiesMap = SystemCache.getCompaniesMap();
-			String region = Utils.getRegion();
+			HashMap<String, HashMap<String, List<CompanyBean>>> companiesMap = ApplicationCache.getCompaniesMap();
+			String region = ApplicationContext.getRegion();
 			if(!companiesMap.containsKey(region)) {
 				PCDService service = new PCDService();
 				companiesMap.put(region, service.getCompanyDetails());
@@ -34,7 +35,7 @@ public class CompanyFacade {
 				Collections.sort(companies);
 			}
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return companies;
 	}

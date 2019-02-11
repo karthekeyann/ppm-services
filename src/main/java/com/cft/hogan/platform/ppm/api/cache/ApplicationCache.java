@@ -8,7 +8,7 @@ import com.cft.hogan.platform.ppm.api.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.api.bean.ParameterBean;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdXmlRs_Type;
 
-public class SystemCache {
+public class ApplicationCache {
 	
 	private static HashMap<String, List<ApplicationBean>> applicationsMap = new HashMap<>();
 	private static HashMap<String, List<ParameterBean>> parametersMap = new HashMap<>();
@@ -16,19 +16,19 @@ public class SystemCache {
 	private static HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = new HashMap<>();
 
 	public static HashMap<String, PcdXmlRs_Type> getXMLTemplatesMap(){
-		return SystemCache.xmlTemplatesMap;
+		return ApplicationCache.xmlTemplatesMap;
 	}
 
 	public static HashMap<String, HashMap<String, List<CompanyBean>>> getCompaniesMap(){
-		return SystemCache.companiesMap;
+		return ApplicationCache.companiesMap;
 	}
 
 	public static HashMap<String, List<ApplicationBean>> getApplicationssMap(){
-		return SystemCache.applicationsMap;
+		return ApplicationCache.applicationsMap;
 	}
 
 	public static HashMap<String, List<ParameterBean>> getParametersMap(){
-		return SystemCache.parametersMap;
+		return ApplicationCache.parametersMap;
 	}
 
 }

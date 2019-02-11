@@ -14,10 +14,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import com.cft.hogan.platform.ppm.api.bean.ApplicationBean;
-import com.cft.hogan.platform.ppm.api.cache.SystemCache;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.cache.ApplicationCache;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
-import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @Service
 public class ApplicationFacade {
@@ -26,10 +27,10 @@ public class ApplicationFacade {
 	Environment env;
 
 	public List<ApplicationBean> getApplications() {
-		String region = Utils.getRegion();
+		String region = ApplicationContext.getRegion();
 		List<ApplicationBean> applicationsList = null;
 		try {
-			HashMap<String, List<ApplicationBean>> applicationsMap = SystemCache.getApplicationssMap();
+			HashMap<String, List<ApplicationBean>> applicationsMap = ApplicationCache.getApplicationssMap();
 			if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 				if(!applicationsMap.containsKey(Constants.REGION_COR)) {
 					applicationsMap.put(Constants.REGION_COR, createList(readApplications(region)));
@@ -52,7 +53,7 @@ public class ApplicationFacade {
 				applicationsList = applicationsMap.get(Constants.REGION_PASTDA);
 			}
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return applicationsList;
 	}
@@ -79,7 +80,7 @@ public class ApplicationFacade {
 				}
 			}
 		}else {
-			throw new SystemException("Parameter applications properties file does not exists: "+file.getAbsolutePath());
+			throw new SystemError("Parameter applications properties file does not exists: "+file.getAbsolutePath());
 		}
 		return applications;
 	}

@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cft.hogan.platform.ppm.api.bean.mm.ImportTaskBean;
-import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 import com.cft.hogan.platform.ppm.api.dao.mm.ImportTaskDAO_I;
 import com.cft.hogan.platform.ppm.api.dao.mm.cor.ImportTaskDAO_COR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pascor.ImportTaskDAO_PASCOR;
@@ -28,11 +28,13 @@ import com.cft.hogan.platform.ppm.api.dao.mm.pastda.ImportTaskDAO_PASTDA;
 import com.cft.hogan.platform.ppm.api.dao.mm.tda.ImportTaskDAO_TDA;
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskReviewDetailEntity;
-import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
-import com.cft.hogan.platform.ppm.api.exception.BusinessException;
-import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.exception.BadRequest;
+import com.cft.hogan.platform.ppm.api.exception.BusinessError;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ItemNotFound;
+import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.facade.ParameterFacade;
+import com.cft.hogan.platform.ppm.api.pcd.service.PCDService;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfCdkKey_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfKeyInfo_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfRegKey_Type;
@@ -43,7 +45,6 @@ import com.cft.hogan.platform.ppm.api.pcd.service.client.PcdXmlRs_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.UpdPcdRecRq_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.UpdPcdRecRs_Type;
 import com.cft.hogan.platform.ppm.api.util.Constants;
-import com.cft.hogan.platform.ppm.api.util.PCDService;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -83,20 +84,20 @@ public class ImportTaskFacade {
 			ImportTaskBean bean = new ImportTaskBean();
 			bean.setName(taskName);
 			bean.setType(taskType);
-			bean.setCreatedBy(Utils.getUserIdInRequestHeader());		
-			bean.setModifiedBy(Utils.getUserIdInRequestHeader());	
+			bean.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());		
+			bean.setModifiedBy(ApplicationContext.getUserIdInRequestHeader());	
 			bean.setStatus(Constants.INPROGRESS);
 			bean.setInputFileName(file.getOriginalFilename());
 
 			List<UpdPcdRecRq_Type> requestList = processWorkBook(file, null, false, service, logMsg);
 			if(requestList.size()<1) {
-				throw new BadRequestException("NO valid PCD records present in the input file to process");
+				throw new BadRequest("NO valid PCD records present in the input file to process");
 			}
 			uuid = getDAO().save(beanToEntity(bean));
 			log.debug(logMsg+"Import task created :"+uuid+" --Total num of records to be udpated :"+requestList.size());
 			int endIndex = 0;
 			int savedItems = 0;
-			int batchSize = EnvironmentContext.getPCDServiceUpdateRecordSize();
+			int batchSize = ApplicationContext.getPCDServiceUpdateRecordSize();
 			for(int index=0; index < requestList.size();){
 				endIndex  = index+batchSize;
 				if(endIndex > requestList.size()) {
@@ -108,7 +109,7 @@ public class ImportTaskFacade {
 			log.debug(logMsg+"Import task ID :"+uuid+" --Import Task Review Details updated records :"+savedItems);
 			updateImportTaskStatus(uuid, logMsg);
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return findByUUID(uuid);
 	}
@@ -120,7 +121,7 @@ public class ImportTaskFacade {
 			bean = entityToBean(getDAO().findByUUID(taskId));
 			bean.setImportTaskReviewDetails(importTaskDetailFacade.findByImportTaskUUID(taskId));
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return bean;
 	}
@@ -130,20 +131,20 @@ public class ImportTaskFacade {
 		try {
 			ImportTaskBean importTask = findByUUID(taskId);
 			if(importTask == null ) {
-				throw new ItemNotFoundException();
+				throw new ItemNotFound();
 			}
-			if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(importTask.getCreatedBy())) {
-				throw new BadRequestException("Import task can be deleted by task creator/owner");
+			if(!ApplicationContext.getUserIdInRequestHeader().equalsIgnoreCase(importTask.getCreatedBy())) {
+				throw new BadRequest("Import task can be deleted by task creator/owner");
 			}
 
 			List<ImportTaskReviewDetailEntity> taskDetailsList = importTaskDetailFacade.findPsetKeyByImportTaskUUIDAndStatus(taskId, Constants.SUCCESS);
 			if(taskDetailsList !=null && taskDetailsList.size() > 0) {
-				throw new BadRequestException("Delete not allowed when items updated by the task. Please review the updated items and submit the failed records.");
+				throw new BadRequest("Delete not allowed when items updated by the task. Please review the updated items and submit the failed records.");
 			}
 
 			getDAO().delete(taskId);
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 	}
 
@@ -157,7 +158,7 @@ public class ImportTaskFacade {
 				beanList.add(entityToBean(entity));
 			});
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return  beanList;
 	}
@@ -177,7 +178,7 @@ public class ImportTaskFacade {
 				List<UpdPcdRecRq_Type> requestList = processWorkBook(file, failedItems, true, service, logMsg); 
 				int endIndex = 0;
 				int updatedItems = 0;
-				int batchSize = EnvironmentContext.getPCDServiceUpdateRecordSize();
+				int batchSize = ApplicationContext.getPCDServiceUpdateRecordSize();
 				for(int index=0; index < requestList.size();){
 					endIndex  = index+batchSize;
 					if(endIndex > requestList.size()) {
@@ -190,7 +191,7 @@ public class ImportTaskFacade {
 			}
 			updateImportTaskStatus(taskUUID, logMsg);
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return findByUUID(taskUUID);
 	}
@@ -232,7 +233,7 @@ public class ImportTaskFacade {
 					importTaskReviewDetail.setCompanyID(String.valueOf(response.getCdmfKeyInfo().getCdmfFmtCoId()));
 					importTaskReviewDetail.setEffectiveDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtEffDt())));
 					importTaskReviewDetail.setExpiryDate((String.valueOf(response.getCdmfKeyInfo().getCdmfFmtExpDt())));
-					importTaskReviewDetail.setModifiedBy(Utils.getUserIdInRequestHeader());
+					importTaskReviewDetail.setModifiedBy(ApplicationContext.getUserIdInRequestHeader());
 					try {
 						importTaskDetailFacade.Update(importTaskReviewDetail);
 					} catch (Exception e) {
@@ -241,10 +242,10 @@ public class ImportTaskFacade {
 						message.append(" --Error in update Import task review details --Key :").append(key);
 						message.append(" StatusDesc :").append(response.getXStatus().getStatusDesc());
 						message.append(" StatusCode :").append(response.getXStatus().getStatusCode());
-						throw new BusinessException(message.toString(), true); 
+						throw new BusinessError(message.toString(), true); 
 					}
 				}catch(Exception e) {
-					Utils.handleException(e);
+					ExceptionHanlder.handleException(e);
 				}
 			}
 		});
@@ -273,7 +274,7 @@ public class ImportTaskFacade {
 				input.setPSetName(parameterFacade.getParameterName(response.getCdmfKeyInfo().getCdmfOwnerApp(), String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())));
 				input.setPSetNumber(String.valueOf(response.getCdmfKeyInfo().getCdmfFmt()));
 				input.setResult(response.getXStatus().getStatusDesc());
-				input.setCreatedBy(Utils.getUserIdInRequestHeader());
+				input.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());
 				if(response.getXStatus().getStatusCode() != 0){
 					input.setStatus(Constants.FAILED);	
 				}else {
@@ -285,10 +286,10 @@ public class ImportTaskFacade {
 					input.setPSetKey(key);
 					reviewList.add(input);
 				}catch(Exception e) {
-					throw new BusinessException("Import task ID :"+uuid+" --Error occured prepare ImportTaskReviewDetailEntity PCD#/KEY :"+String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())+"/"+key, true);
+					throw new BusinessError("Import task ID :"+uuid+" --Error occured prepare ImportTaskReviewDetailEntity PCD#/KEY :"+String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())+"/"+key, true);
 				}
 			}catch(Exception e) {
-				Utils.handleException(e);
+				ExceptionHanlder.handleException(e);
 			}
 		});
 		return importTaskDetailFacade.save(reviewList);
@@ -317,7 +318,7 @@ public class ImportTaskFacade {
 			if(validationMessgae!=null) {
 				msg = validationMessgae.append(", row#: ").append(errorRow).toString();
 			}
-			throw new BadRequestException("Invalid PCD Key. "+msg);
+			throw new BadRequest("Invalid PCD Key. "+msg);
 		}
 		return key;
 	}
@@ -405,7 +406,7 @@ public class ImportTaskFacade {
 						if(req.getCdmfKeyInfo()!=null) {
 							String key =parameterNum+ constructPCDKey(req.getCdmfKeyInfo());
 							if(pcdKeys.contains(key)) {
-								throw new BadRequestException("Invalid Action - can not perform multiple actions on the same PCD key. "+validationMessgae.append(", row#: ").append(errorRow).append(", key:").append(key));
+								throw new BadRequest("Invalid Action - can not perform multiple actions on the same PCD key. "+validationMessgae.append(", row#: ").append(errorRow).append(", key:").append(key));
 							}else {
 								pcdKeys.add(key);
 							}
@@ -457,23 +458,23 @@ public class ImportTaskFacade {
 	private void validateKeyElements(HSSFRow  row, String parameterNum) {
 
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(1)))) {
-			throw new BadRequestException("Invalid CompanyId  -"+validationMessgae.append(", row#: ").append(errorRow));
+			throw new BadRequest("Invalid CompanyId  -"+validationMessgae.append(", row#: ").append(errorRow));
 		}
 
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(2))) || !Utils.isValidDate(String.valueOf(row.getCell(2)))) {
-			throw new BadRequestException("Invalid Effective date - "+validationMessgae.append(", row#: ").append(errorRow));
+			throw new BadRequest("Invalid Effective date - "+validationMessgae.append(", row#: ").append(errorRow));
 		}
 
 		if(!StringUtils.isEmpty(String.valueOf(row.getCell(3))) && !Utils.isValidDate(String.valueOf(row.getCell(3)))) {
-			throw new BadRequestException("Invalid Expiry date - "+validationMessgae.append(", row#: ").append(errorRow));
+			throw new BadRequest("Invalid Expiry date - "+validationMessgae.append(", row#: ").append(errorRow));
 		}
 
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(4))) || String.valueOf(row.getCell(4)).length()<3) {
-			throw new BadRequestException("Invalid OwnerId - "+validationMessgae.append(", row#: ").append(errorRow));
+			throw new BadRequest("Invalid OwnerId - "+validationMessgae.append(", row#: ").append(errorRow));
 		}
 
 		if(StringUtils.isEmpty(String.valueOf(row.getCell(6)))) {
-			throw new BadRequestException("Invalid CC Number  -"+validationMessgae.append(", row#: ").append(errorRow));
+			throw new BadRequest("Invalid CC Number  -"+validationMessgae.append(", row#: ").append(errorRow));
 		}
 	}
 
@@ -670,7 +671,7 @@ public class ImportTaskFacade {
 			ImportTaskEntity entity = new ImportTaskEntity();
 			entity.setUuid(taskID);
 			entity.setStatus(Constants.COMPLETE);
-			entity.setModifiedBy(Utils.getUserIdInRequestHeader());
+			entity.setModifiedBy(ApplicationContext.getUserIdInRequestHeader());
 			getDAO().UpdateStatus(entity);
 			log.debug(logMsg+"Import task Id :"+taskID+"--Status set to Complete: "+taskID);
 		}
@@ -706,7 +707,7 @@ public class ImportTaskFacade {
 	}
 
 	private ImportTaskDAO_I getDAO(){
-		String region = Utils.getRegion();
+		String region = ApplicationContext.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
@@ -716,7 +717,7 @@ public class ImportTaskFacade {
 		}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
 			return daoPASTDA;
 		}{
-			throw new SystemException("Invalid region :"+region);
+			throw new SystemError("Invalid region :"+region);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.cft.hogan.platform.ppm.api.util;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,26 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.NoResultException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
-import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
-import com.cft.hogan.platform.ppm.api.exception.BusinessException;
-import com.cft.hogan.platform.ppm.api.exception.ForbiddenException;
-import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
+import com.cft.hogan.platform.ppm.api.exception.BusinessError;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Utils {
 
 	public static java.sql.Date convertStringToSQLDate(String str_date) throws ParseException {
@@ -69,13 +55,13 @@ public class Utils {
 				}
 
 				if(!validDate) {
-					throw new BusinessException("Invalid date: "+date, true);
+					throw new BusinessError("Invalid date: "+date, true);
 				}
 			}catch(Exception e) {
-				throw new BusinessException("Invalid date: "+date, true);
+				throw new BusinessError("Invalid date: "+date, true);
 			}
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 			return false;
 		}
 		return true;
@@ -149,74 +135,9 @@ public class Utils {
 
 	public static String getLogMsg() {
 		StringBuffer msg = new StringBuffer()
-				.append("SessionID:").append(getSessionID())
-				.append(" -User:").append(getLoggedInUser())
-//				.append(" -Environment:").append(EnvironmentContext.getEnvironment())
-				.append(" -Region:").append(Utils.getRegion());
+				.append("SessionID:").append(ApplicationContext.getSessionID())
+				.append(" -User:").append(ApplicationContext.getLoggedInUser())
+				.append(" -Region:").append(ApplicationContext.getRegion());
 		return msg.toString();
-	}
-
-	public static String getRegion() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		String region = request.getHeader("X-region");
-		if(region==null || StringUtils.isEmpty(region) || 
-				!(region.equalsIgnoreCase(Constants.REGION_COR) || region.equalsIgnoreCase(Constants.REGION_TDA) || 
-						region.equalsIgnoreCase(Constants.REGION_PASCOR) || region.equalsIgnoreCase(Constants.REGION_PASTDA))) {
-			throw new SystemException("Invalid request header - X-region :"+region);
-		}
-		return region;
-	}
-
-	public static String getUserIdInRequestHeader() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		String user = request.getHeader("X-user");
-		if(user==null || StringUtils.isEmpty(user)) {
-			throw new SystemException("Invalid request header - X-user missing");
-		}
-		return user;
-	}
-
-	public static String getSessionID() {
-		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(false);
-		if(session!=null) {
-			return session.getId();
-		}
-		return Constants.EMPTY;
-	}
-	
-	public static HttpSession getSession() {
-		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(false);
-		return session;
-	}
-
-	public static String getLoggedInUser() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}
-
-	public static void handleException(Exception e) {
-		try {
-			log.error(getLogMsg());
-			log.error("Service Endpoint:"+EnvironmentContext.getEndPoint());
-			log.error(e.getMessage(),e );
-			if(e instanceof BusinessException) {
-				if(((BusinessException) e).processFurther) {
-					log.error("Business error occured. Error information logged and continue processing.");
-				}else{
-					throw new BadRequestException(e.getMessage());
-				}
-			}else if(e instanceof ItemNotFoundException || e instanceof NoResultException || e instanceof EmptyResultDataAccessException) {
-				throw new ItemNotFoundException();
-			}else if(e instanceof BadRequestException) {
-				throw new BadRequestException(e.getMessage());
-			}else if(e instanceof ForbiddenException) {
-				throw new ForbiddenException(e.getMessage());
-			}else if(e instanceof SystemException) {
-				throw new SystemException(e.getMessage());
-			}else {
-				throw new SystemException();
-			}
-		} catch (IOException ex) {
-			handleException(ex);
-		}
 	}
 }

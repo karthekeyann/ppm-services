@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.bean.mm.TemplateBean;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 import com.cft.hogan.platform.ppm.api.dao.mm.TemplateDAO_I;
 import com.cft.hogan.platform.ppm.api.dao.mm.cor.TemplateDAO_COR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pascor.TemplateDAO_PASCOR;
@@ -17,9 +18,10 @@ import com.cft.hogan.platform.ppm.api.dao.mm.tda.TemplateDAO_TDA;
 import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateParameterEntity;
-import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
-import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.exception.BadRequest;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ItemNotFound;
+import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 import com.cft.hogan.platform.ppm.api.util.Utils;
 
@@ -49,16 +51,16 @@ public class TemplateFacade {
 		String uuid = null;
 		try {
 			validatePSets(input.getPsets());
-			input.setCreatedBy(Utils.getUserIdInRequestHeader());
+			input.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());
 			uuid = getDAO().save(beanToEntity(input));
 			final String templateUUID = uuid;
 			input.getPsets().forEach((pset) -> {
 				pset.setTemplateUUID(templateUUID);
-				pset.setCreatedBy(Utils.getUserIdInRequestHeader());
+				pset.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());
 			});
 			templateParameterFacade.save(input.getPsets());
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return findByUUID(uuid);
 	}
@@ -72,7 +74,7 @@ public class TemplateFacade {
 				beanList.add(entityToBean(entity));
 			});
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return beanList;
 	}
@@ -83,7 +85,7 @@ public class TemplateFacade {
 			bean = entityToBean(getDAO().findByUUID(templateId));
 			bean.setPsets(templateParameterFacade.findByTemplateUUID(templateId));
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return bean;
 	}
@@ -91,14 +93,14 @@ public class TemplateFacade {
 	public TemplateBean update(String templateId, TemplateBean input) {
 		try {
 			if(!checkOwner(templateId)) {
-				throw new BadRequestException("Template can be edited by template creator/owner");
+				throw new BadRequest("Template can be edited by template creator/owner");
 			}
 			validatePSets(input.getPsets());
 			input.setUuid(templateId);
-			input.setModifiedBy(Utils.getUserIdInRequestHeader());
+			input.setModifiedBy(ApplicationContext.getUserIdInRequestHeader());
 			input.getPsets().forEach((pset) -> {
 				pset.setTemplateUUID(templateId);
-				pset.setCreatedBy(Utils.getUserIdInRequestHeader());;
+				pset.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());;
 			});
 			templateParameterFacade.deleteByTemplateUUID(input.getUuid());
 			templateParameterFacade.save(input.getPsets());
@@ -106,7 +108,7 @@ public class TemplateFacade {
 			//update template table
 			getDAO().update(beanToEntity(input));
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}		
 		return findByUUID(input.getUuid());
 	}
@@ -115,28 +117,28 @@ public class TemplateFacade {
 		try {
 			try {
 				if(!checkOwner(uuid)) {
-					throw new BadRequestException("Template can be deleted by template creator/owner");
+					throw new BadRequest("Template can be deleted by template creator/owner");
 				}
 				ScheduleTaskEntity schedule = scheduleTaskFacade.findByTemplateUUID(uuid);
 				if(schedule !=null) {
-					throw new BadRequestException("Template linked to Schedule task. Unlink and try again: Ref Schedule Task :"+schedule.getName());
+					throw new BadRequest("Template linked to Schedule task. Unlink and try again: Ref Schedule Task :"+schedule.getName());
 				}
-			}catch(EmptyResultDataAccessException | ItemNotFoundException e) {
+			}catch(EmptyResultDataAccessException | ItemNotFound e) {
 				//Delete template when no ref in Schedule Task
 				templateParameterFacade.deleteByTemplateUUID(uuid);
 				getDAO().delete(uuid);
 			}
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 	}
 
 	private boolean checkOwner(String uuid) {
 		TemplateBean template = findByUUID(uuid);
 		if(template == null ) {
-			throw new ItemNotFoundException();
+			throw new ItemNotFound();
 		}
-		if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(template.getCreatedBy())) {
+		if(!ApplicationContext.getUserIdInRequestHeader().equalsIgnoreCase(template.getCreatedBy())) {
 			return false;
 		}
 		return true;
@@ -144,12 +146,12 @@ public class TemplateFacade {
 
 	private void validatePSets(List<TemplateParameterEntity> psets) {
 		if(psets == null || psets.size()==0) {
-			throw new BadRequestException("Parameter not selected");
+			throw new BadRequest("Parameter not selected");
 		}
 
 		psets.forEach((pset) -> {
 			if(!StringUtils.isEmpty(pset.getEffectiveDate()) && !Utils.isValidDate(pset.getEffectiveDate())) {
-				throw new BadRequestException("Invalid Effective date. Parameter# -"+pset.getNumber());
+				throw new BadRequest("Invalid Effective date. Parameter# -"+pset.getNumber());
 			}
 		});
 	}
@@ -177,7 +179,7 @@ public class TemplateFacade {
 	}
 
 	private TemplateDAO_I getDAO(){
-		String region = Utils.getRegion();
+		String region = ApplicationContext.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
@@ -187,7 +189,7 @@ public class TemplateFacade {
 		}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
 			return daoPASTDA;
 		}{
-			throw new SystemException("Invalid region :"+region);
+			throw new SystemError("Invalid region :"+region);
 		}
 	}
 }

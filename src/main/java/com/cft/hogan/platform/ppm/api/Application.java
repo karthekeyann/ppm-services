@@ -15,7 +15,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
-import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 
 @SpringBootApplication
 @ComponentScan(basePackages="com.cft.hogan.platform.ppm")
@@ -39,13 +39,13 @@ public class Application extends SpringBootServletInitializer implements Applica
 	public static void main(String[] args) {
 
 		SpringApplication.run(Application.class, args);
-		EnvironmentContext.logDetails();
+		ApplicationContext.logDetails();
 	}
 
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
-		EnvironmentContext.setEnvironment(env);
+		ApplicationContext.setEnvironment(env);
 	}
 }

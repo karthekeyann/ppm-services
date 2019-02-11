@@ -12,16 +12,18 @@ import org.springframework.stereotype.Service;
 import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleBatchBean;
 import com.cft.hogan.platform.ppm.api.bean.mm.ScheduleTaskBean;
 import com.cft.hogan.platform.ppm.api.bean.mm.TemplateBean;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 import com.cft.hogan.platform.ppm.api.dao.mm.ScheduleDAO_I;
 import com.cft.hogan.platform.ppm.api.dao.mm.cor.ScheduleDAO_COR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pascor.ScheduleDAO_PASCOR;
 import com.cft.hogan.platform.ppm.api.dao.mm.pastda.ScheduleDAO_PASTDA;
 import com.cft.hogan.platform.ppm.api.dao.mm.tda.ScheduleDAO_TDA;
 import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
-import com.cft.hogan.platform.ppm.api.exception.BadRequestException;
-import com.cft.hogan.platform.ppm.api.exception.BusinessException;
-import com.cft.hogan.platform.ppm.api.exception.ItemNotFoundException;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.exception.BadRequest;
+import com.cft.hogan.platform.ppm.api.exception.BusinessError;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ItemNotFound;
+import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 import com.cft.hogan.platform.ppm.api.util.DAY;
 import com.cft.hogan.platform.ppm.api.util.Utils;
@@ -54,11 +56,11 @@ public class ScheduleTaskFacade {
 				try {
 					setTemplateName(bean);
 				}catch(Exception e) {
-					Utils.handleException(e);
+					ExceptionHanlder.handleException(e);
 				}
 			}
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return bean;
 	}
@@ -70,7 +72,7 @@ public class ScheduleTaskFacade {
 		try {
 			entity =  getDAO().findByTemplateUUID(templateUUID);
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return entity;
 	}
@@ -94,7 +96,7 @@ public class ScheduleTaskFacade {
 				beanList.add(bean);
 			});
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return beanList;	
 	}
@@ -105,10 +107,10 @@ public class ScheduleTaskFacade {
 		String uuid = null;
 		try {
 			validateEffectiveDate(bean.getEffectiveDate());
-			bean.setCreatedBy(Utils.getUserIdInRequestHeader());
+			bean.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());
 			uuid =  getDAO().save(beanToEntity(bean));
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return findByUUID(uuid);
 	}
@@ -118,14 +120,14 @@ public class ScheduleTaskFacade {
 
 		try {
 			if(!checkOwner(scheduleId)) {
-				throw new BadRequestException("Schedule Task can be edited by task creator/owner");
+				throw new BadRequest("Schedule Task can be edited by task creator/owner");
 			}
 			validateEffectiveDateForUpdate(bean.getEffectiveDate(), scheduleId);
 			bean.setUuid(scheduleId);
-			bean.setModifiedBy(Utils.getUserIdInRequestHeader());
+			bean.setModifiedBy(ApplicationContext.getUserIdInRequestHeader());
 			getDAO().update(beanToEntity(bean));
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return findByUUID(bean.getUuid());
 	}
@@ -135,11 +137,11 @@ public class ScheduleTaskFacade {
 
 		try {
 			if(!checkOwner(scheduleId)) {
-				throw new BadRequestException("Schedule Task can be deleted by task creator/owner");
+				throw new BadRequest("Schedule Task can be deleted by task creator/owner");
 			}
 			getDAO().delete(scheduleId);
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 	}
 
@@ -161,14 +163,14 @@ public class ScheduleTaskFacade {
 						try {
 							setTemplate(bean);
 						}catch(Exception e) {
-							Utils.handleException(e);
+							ExceptionHanlder.handleException(e);
 						}
 					}
 					beanList.add(bean);
 				}
 			});
 		} catch (Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return beanList;	
 	}
@@ -178,9 +180,9 @@ public class ScheduleTaskFacade {
 
 		ScheduleTaskBean schedule = findByUUID(uuid);
 		if(schedule == null ) {
-			throw new ItemNotFoundException();
+			throw new ItemNotFound();
 		}
-		if(!Utils.getUserIdInRequestHeader().equalsIgnoreCase(schedule.getCreatedBy())) {
+		if(!ApplicationContext.getUserIdInRequestHeader().equalsIgnoreCase(schedule.getCreatedBy())) {
 			return false;
 		}
 		return true;
@@ -230,7 +232,7 @@ public class ScheduleTaskFacade {
 				bean.setTemplateName(templateBean.getName());
 			}
 		} catch (Exception e) {
-			throw new BusinessException("Error setting Template Name in Schedule Task :"+bean.getName(), false);
+			throw new BusinessError("Error setting Template Name in Schedule Task :"+bean.getName(), false);
 		}
 	}
 
@@ -244,7 +246,7 @@ public class ScheduleTaskFacade {
 				bean.setTemplate(templateBean);
 			}
 		} catch (Exception e) {
-			throw new BusinessException("Error setting Template in Schedule Batch response :"+bean.getName(), true);
+			throw new BusinessError("Error setting Template in Schedule Batch response :"+bean.getName(), true);
 		}
 	}
 
@@ -334,11 +336,11 @@ public class ScheduleTaskFacade {
 				cal.setTime(Utils.convertStringToSQLDate(effectiveDate));
 				if(!effectiveDate.equalsIgnoreCase(Utils.convertDateToString(new java.util.Date())) && 
 						cal.compareTo(Calendar.getInstance()) < 0){
-					throw new BadRequestException("Start date should be current or future date.");
+					throw new BadRequest("Start date should be current or future date.");
 				}
 			}
 		}else {
-			throw new BusinessException("Invalid Start date", false);
+			throw new BusinessError("Invalid Start date", false);
 		}
 	}
 
@@ -350,17 +352,17 @@ public class ScheduleTaskFacade {
 			cal.setTime(Utils.convertStringToSQLDate(effectiveDate));
 			if(!effectiveDate.equalsIgnoreCase(Utils.convertDateToString(new java.util.Date())) && 
 					cal.compareTo(Calendar.getInstance()) < 0){
-				throw new BadRequestException("Start date should be current or future date.");
+				throw new BadRequest("Start date should be current or future date.");
 			}
 		}else {
-			throw new BusinessException("Invalid Start date", false);
+			throw new BusinessError("Invalid Start date", false);
 		}
 	}
 
 
 	private ScheduleDAO_I getDAO(){
 
-		String region = Utils.getRegion();
+		String region = ApplicationContext.getRegion();
 		if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 			return daoCOR;
 		}else if(region.equalsIgnoreCase(Constants.REGION_TDA)) {
@@ -370,7 +372,7 @@ public class ScheduleTaskFacade {
 		}else if(region.equalsIgnoreCase(Constants.REGION_PASTDA)) {
 			return daoPASTDA;
 		}{
-			throw new SystemException("Invalid region :"+region);
+			throw new SystemError("Invalid region :"+region);
 		}
 	}
 }

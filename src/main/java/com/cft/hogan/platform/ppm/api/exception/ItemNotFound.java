@@ -1,13 +1,13 @@
 package com.cft.hogan.platform.ppm.api.exception;
 
-public class ItemNotFoundException extends RuntimeException {
+public class ItemNotFound extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ItemNotFoundException() {
+	public ItemNotFound() {
 		super("Item Not Found");
 	}
 }

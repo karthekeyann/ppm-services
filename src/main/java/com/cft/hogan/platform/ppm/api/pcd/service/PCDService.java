@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.util;
+package com.cft.hogan.platform.ppm.api.pcd.service;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,9 +14,9 @@ import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.api.bean.ParameterBean;
-import com.cft.hogan.platform.ppm.api.cache.SystemCache;
-import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.cache.ApplicationCache;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
+import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfCdkKey_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfKeyInfo_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.CdmfRegKey_Type;
@@ -34,6 +34,8 @@ import com.cft.hogan.platform.ppm.api.pcd.service.client.Status_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.UpdPcdRecRq_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.UpdPcdRecRs_Type;
 import com.cft.hogan.platform.ppm.api.pcd.service.client.UpdatePcdRq_Type;
+import com.cft.hogan.platform.ppm.api.util.Constants;
+import com.cft.hogan.platform.ppm.api.util.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,8 +47,8 @@ public class PCDService {
 	private String logMsg =Utils.getLogMsg()+"--";
 
 	public PcdXmlRs_Type getParameterXmlTemplate(String parameterNum) throws Exception {
-		String key = Utils.getRegion()+parameterNum;
-		HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = SystemCache.getXMLTemplatesMap();
+		String key = ApplicationContext.getRegion()+parameterNum;
+		HashMap<String, PcdXmlRs_Type> xmlTemplatesMap = ApplicationCache.getXMLTemplatesMap();
 		if(xmlTemplatesMap.containsKey(key)) {
 			log.debug(logMsg+"PCD XML Template retrieved from cache :"+key);
 			return xmlTemplatesMap.get(key);
@@ -68,7 +70,7 @@ public class PCDService {
 		pcdXmlRq.setMsgRqHdr(getMsgRqHdr());
 		PcdXmlRs_Type response = getPCDService().processPcd(pcdXmlRq);
 		if(!"0".equals(String.valueOf(response.getXStatus().getStatusCode()))) {
-			throw new SystemException("PCD service error- XML template not retrieved: PCD#"+parameterNum+" Error-"+response.getXStatus().getStatusDesc());
+			throw new SystemError("PCD service error- XML template not retrieved: PCD#"+parameterNum+" Error-"+response.getXStatus().getStatusDesc());
 		}
 		xmlTemplatesMap.put(key, response);
 		log.debug(logMsg+"PCD XML Template retrieved from service :"+key);
@@ -133,10 +135,10 @@ public class PCDService {
 					}
 				}
 			}else {
-				throw new SystemException("PCD service error - PCD details not retrieved: status-"+pcdXmlRs.getXStatus().getStatusDesc());
+				throw new SystemError("PCD service error - PCD details not retrieved: status-"+pcdXmlRs.getXStatus().getStatusDesc());
 			}
 		}else {
-			throw new SystemException("PCD service error - PCD details not retrieved: response is null-");
+			throw new SystemError("PCD service error - PCD details not retrieved: response is null-");
 		}
 		response.setPcdItemList(new PcdItemList_Type(allRecords.toArray(new PcdItemList_TypePcdItem[allRecords.size()]), "N", String.valueOf(allRecords.size())));
 		response.setXStatus(getSuccessStatus());
@@ -231,7 +233,7 @@ public class PCDService {
 
 	private CeleritiPcd_PortType getPCDService() throws IOException, ServiceException {
 		if(port==null) {
-			URL portAddress = new URL(EnvironmentContext.getEndPoint());
+			URL portAddress = new URL(ApplicationContext.getEndPoint());
 			CeleritiPcd_ServiceLocator service = new CeleritiPcd_ServiceLocator();
 			port = service.getCeleritiPcd(portAddress);
 		}
@@ -243,7 +245,7 @@ public class PCDService {
 		CredentialsRqHdr_Type credentialsRqHdr = new CredentialsRqHdr_Type();
 		PartyRef_Type partyRef = new PartyRef_Type();
 		LoginIdent_Type loginIdent = new LoginIdent_Type();
-		String loginName = Utils.getUserIdInRequestHeader();
+		String loginName = ApplicationContext.getUserIdInRequestHeader();
 
 		loginIdent.setLoginName(loginName);
 		partyRef.setLoginIdent(loginIdent);

@@ -1,13 +1,13 @@
 package com.cft.hogan.platform.ppm.api.exception;
 
-public class BadRequestException extends RuntimeException {
+public class Forbidden extends RuntimeException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public BadRequestException(String message) {
+	public Forbidden(String message) {
 		super(message);
 	}
 

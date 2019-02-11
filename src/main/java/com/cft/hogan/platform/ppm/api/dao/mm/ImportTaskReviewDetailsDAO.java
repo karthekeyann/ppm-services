@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.Query;
 
-import com.cft.hogan.platform.ppm.api.config.context.EnvironmentContext;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskReviewDetailEntity;
 import com.cft.hogan.platform.ppm.api.util.SqlQueries;
 import com.cft.hogan.platform.ppm.api.util.Utils;
@@ -60,7 +60,7 @@ abstract public class ImportTaskReviewDetailsDAO {
 				entity.setUuid(String.valueOf(UUID.randomUUID()));
 				entity.setCreatedOn(String.valueOf(Utils.getCurrentTimeStamp()));
 				entityManager.persist(entity);
-				if(recordCount % EnvironmentContext.getDataBaseBatchUpdateSize() == 0) {
+				if(recordCount % ApplicationContext.getDataBaseBatchUpdateSize() == 0) {
 					entityManager.flush();
 					entityManager.clear();
 				}

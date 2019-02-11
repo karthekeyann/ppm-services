@@ -95,8 +95,6 @@ sn: Sharma
 uid: arun
 userPassword: sharma
 
-//admin roles
-
 dn: uid=karthia,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
@@ -166,6 +164,16 @@ cn: batch
 sn: batch
 uid: batch
 userPassword: ppmbatch
+
+dn: uid=test,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: test test
+sn: test
+uid: test
+userPassword: test
 
 
 dn: cn=users,ou=groups,dc=springframework,dc=org

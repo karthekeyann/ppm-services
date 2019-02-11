@@ -29,8 +29,8 @@ public class TokenController {
 
 
 	@DeleteMapping
-	public ResponseEntity<Object> logOut(){
-		service.logout();
+	public ResponseEntity<Object> delete(){
+		service.delete();
 		return ResponseEntity.noContent().build();
 	}
 }

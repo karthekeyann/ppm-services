@@ -15,23 +15,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 	@ResponseBody
-	@ExceptionHandler(ItemNotFoundException.class)
+	@ExceptionHandler(ItemNotFound.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String itemNotFoundHandler(ItemNotFoundException ex) {
+	String itemNotFoundHandler(ItemNotFound ex) {
 		return ex.getMessage();
 	}
 
 	@ResponseBody
-	@ExceptionHandler(BadRequestException.class)
+	@ExceptionHandler(BadRequest.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	String badRequestHandler(BadRequestException ex) {
+	String badRequestHandler(BadRequest ex) {
 		return ex.getMessage();
 	}
 
 	@ResponseBody
-	@ExceptionHandler(SystemException.class)
+	@ExceptionHandler(SystemError.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	String systemErrorHandler(SystemException ex) {
+	String systemErrorHandler(SystemError ex) {
 		return ex.getMessage();
 	}
 
@@ -41,15 +41,15 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 	String exceptionHandler(Exception ex) {
 		return ex.getMessage();
 	}
-	
-	
+
+
 	@ResponseBody
-	@ExceptionHandler(ForbiddenException.class)
+	@ExceptionHandler(Forbidden.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
-	String ForbiddenExceptionHandler(Exception ex) {
+	String ForbiddenExceptionHandler(Forbidden ex) {
 		return ex.getMessage();
 	}
-	
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {

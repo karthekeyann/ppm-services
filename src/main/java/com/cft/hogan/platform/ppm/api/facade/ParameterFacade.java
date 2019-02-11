@@ -17,10 +17,11 @@ import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.bean.ApplicationBean;
 import com.cft.hogan.platform.ppm.api.bean.ParameterBean;
-import com.cft.hogan.platform.ppm.api.cache.SystemCache;
-import com.cft.hogan.platform.ppm.api.exception.SystemException;
+import com.cft.hogan.platform.ppm.api.cache.ApplicationCache;
+import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
-import com.cft.hogan.platform.ppm.api.util.Utils;
 
 @Service
 public class ParameterFacade {
@@ -33,10 +34,10 @@ public class ParameterFacade {
 
 	public List<ParameterBean> getParameters(String applicationID) {
 		
-		String region = Utils.getRegion();
+		String region = ApplicationContext.getRegion();
 		List<ParameterBean> parametersList = null;
 		try {
-			HashMap<String, List<ParameterBean>> parametersMap = SystemCache.getParametersMap();
+			HashMap<String, List<ParameterBean>> parametersMap = ApplicationCache.getParametersMap();
 			String key = null;
 			if(region.equalsIgnoreCase(Constants.REGION_COR)) {
 				key = Constants.REGION_COR+applicationID;
@@ -68,7 +69,7 @@ public class ParameterFacade {
 				parametersList = parametersMap.get(key);
 			}
 		}catch(Exception e) {
-			Utils.handleException(e);
+			ExceptionHanlder.handleException(e);
 		}
 		return parametersList;
 	}
@@ -120,7 +121,7 @@ public class ParameterFacade {
 				}
 			}
 		}else {
-			throw new SystemException("Parameters config file does not exists: "+file.getAbsolutePath());
+			throw new SystemError("Parameters config file does not exists: "+file.getAbsolutePath());
 		}
 		return applications;
 	}
