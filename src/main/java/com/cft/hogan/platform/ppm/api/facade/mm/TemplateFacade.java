@@ -19,7 +19,7 @@ import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.TemplateParameterEntity;
 import com.cft.hogan.platform.ppm.api.exception.BadRequest;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFound;
 import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
@@ -60,7 +60,7 @@ public class TemplateFacade {
 			});
 			templateParameterFacade.save(input.getPsets());
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return findByUUID(uuid);
 	}
@@ -74,7 +74,7 @@ public class TemplateFacade {
 				beanList.add(entityToBean(entity));
 			});
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return beanList;
 	}
@@ -85,7 +85,7 @@ public class TemplateFacade {
 			bean = entityToBean(getDAO().findByUUID(templateId));
 			bean.setPsets(templateParameterFacade.findByTemplateUUID(templateId));
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return bean;
 	}
@@ -108,7 +108,7 @@ public class TemplateFacade {
 			//update template table
 			getDAO().update(beanToEntity(input));
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}		
 		return findByUUID(input.getUuid());
 	}
@@ -129,7 +129,7 @@ public class TemplateFacade {
 				getDAO().delete(uuid);
 			}
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 	}
 

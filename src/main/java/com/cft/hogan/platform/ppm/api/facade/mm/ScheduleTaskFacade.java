@@ -21,7 +21,7 @@ import com.cft.hogan.platform.ppm.api.dao.mm.tda.ScheduleDAO_TDA;
 import com.cft.hogan.platform.ppm.api.entity.mm.ScheduleTaskEntity;
 import com.cft.hogan.platform.ppm.api.exception.BadRequest;
 import com.cft.hogan.platform.ppm.api.exception.BusinessError;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFound;
 import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
@@ -56,11 +56,11 @@ public class ScheduleTaskFacade {
 				try {
 					setTemplateName(bean);
 				}catch(Exception e) {
-					ExceptionHanlder.handleException(e);
+					ExceptionHandler.handleException(e);
 				}
 			}
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return bean;
 	}
@@ -72,7 +72,7 @@ public class ScheduleTaskFacade {
 		try {
 			entity =  getDAO().findByTemplateUUID(templateUUID);
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return entity;
 	}
@@ -96,7 +96,7 @@ public class ScheduleTaskFacade {
 				beanList.add(bean);
 			});
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return beanList;	
 	}
@@ -110,7 +110,7 @@ public class ScheduleTaskFacade {
 			bean.setCreatedBy(ApplicationContext.getUserIdInRequestHeader());
 			uuid =  getDAO().save(beanToEntity(bean));
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return findByUUID(uuid);
 	}
@@ -127,7 +127,7 @@ public class ScheduleTaskFacade {
 			bean.setModifiedBy(ApplicationContext.getUserIdInRequestHeader());
 			getDAO().update(beanToEntity(bean));
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return findByUUID(bean.getUuid());
 	}
@@ -141,7 +141,7 @@ public class ScheduleTaskFacade {
 			}
 			getDAO().delete(scheduleId);
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 	}
 
@@ -163,14 +163,14 @@ public class ScheduleTaskFacade {
 						try {
 							setTemplate(bean);
 						}catch(Exception e) {
-							ExceptionHanlder.handleException(e);
+							ExceptionHandler.handleException(e);
 						}
 					}
 					beanList.add(bean);
 				}
 			});
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return beanList;	
 	}

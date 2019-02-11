@@ -12,7 +12,7 @@ import com.cft.hogan.platform.ppm.api.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExceptionHanlder {
+public class ExceptionHandler {
 
 	public static void handleException(Exception e) {
 		try {

@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 
@@ -86,7 +86,7 @@ public class ApplicationContext {
 			HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 	}
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.cft.hogan.platform.ppm.api.bean.CompanyBean;
 import com.cft.hogan.platform.ppm.api.cache.ApplicationCache;
 import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.pcd.service.PCDService;
 
 @Service
@@ -35,7 +35,7 @@ public class CompanyFacade {
 				Collections.sort(companies);
 			}
 		} catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return companies;
 	}

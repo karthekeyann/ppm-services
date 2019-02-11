@@ -8,7 +8,6 @@
 	<artifactId>ppm-apis</artifactId>
 	<version>1.0</version>
 	<!-- <packaging>war</packaging> -->
-
 	<name>ppm-apis</name>
 
 	<parent>

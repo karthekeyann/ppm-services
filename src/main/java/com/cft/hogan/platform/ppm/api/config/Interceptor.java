@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.cofig;
+package com.cft.hogan.platform.ppm.api.config;
 
 import java.util.Collection;
 

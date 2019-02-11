@@ -1,4 +1,4 @@
-package com.cft.hogan.platform.ppm.api.cofig;
+package com.cft.hogan.platform.ppm.api.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

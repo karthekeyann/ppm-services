@@ -38,7 +38,7 @@ import com.cft.hogan.platform.ppm.api.bean.mm.ExportTaskBean;
 import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 import com.cft.hogan.platform.ppm.api.exception.BadRequest;
 import com.cft.hogan.platform.ppm.api.exception.BusinessError;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.facade.CompanyFacade;
 import com.cft.hogan.platform.ppm.api.facade.ParameterFacade;
 import com.cft.hogan.platform.ppm.api.pcd.service.PCDService;
@@ -158,7 +158,7 @@ public class ExportTaskFacade {
 				}
 			}
 		}catch (Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return response;
 	}
@@ -470,7 +470,7 @@ public class ExportTaskFacade {
 			// Set Resource reader
 			aPsetElementsInfo.setLables(getLabelsProperties(pset));
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 	}
 
@@ -544,7 +544,7 @@ public class ExportTaskFacade {
 			// Set Resource reader
 			aPsetElementsInfo.setLables(getLabelsProperties(pset));
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 	}
 
@@ -1263,7 +1263,7 @@ public class ExportTaskFacade {
 					throw new BusinessError("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
 				}
 			}catch(Exception e) {
-				ExceptionHanlder.handleException(e);
+				ExceptionHandler.handleException(e);
 			}finally {
 				if (inputStream != null) {
 					inputStream.close();
@@ -1280,7 +1280,7 @@ public class ExportTaskFacade {
 					throw new BusinessError("Error reading Label properties file in Export Service: "+file.getAbsolutePath(), true);
 				}
 			}catch(Exception e) {
-				ExceptionHanlder.handleException(e);
+				ExceptionHandler.handleException(e);
 			}finally {
 				if (inputStream != null) {
 					inputStream.close();

@@ -30,7 +30,7 @@ import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskEntity;
 import com.cft.hogan.platform.ppm.api.entity.mm.ImportTaskReviewDetailEntity;
 import com.cft.hogan.platform.ppm.api.exception.BadRequest;
 import com.cft.hogan.platform.ppm.api.exception.BusinessError;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.exception.ItemNotFound;
 import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.facade.ParameterFacade;
@@ -109,7 +109,7 @@ public class ImportTaskFacade {
 			log.debug(logMsg+"Import task ID :"+uuid+" --Import Task Review Details updated records :"+savedItems);
 			updateImportTaskStatus(uuid, logMsg);
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return findByUUID(uuid);
 	}
@@ -121,7 +121,7 @@ public class ImportTaskFacade {
 			bean = entityToBean(getDAO().findByUUID(taskId));
 			bean.setImportTaskReviewDetails(importTaskDetailFacade.findByImportTaskUUID(taskId));
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return bean;
 	}
@@ -144,7 +144,7 @@ public class ImportTaskFacade {
 
 			getDAO().delete(taskId);
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 	}
 
@@ -158,7 +158,7 @@ public class ImportTaskFacade {
 				beanList.add(entityToBean(entity));
 			});
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return  beanList;
 	}
@@ -191,7 +191,7 @@ public class ImportTaskFacade {
 			}
 			updateImportTaskStatus(taskUUID, logMsg);
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return findByUUID(taskUUID);
 	}
@@ -245,7 +245,7 @@ public class ImportTaskFacade {
 						throw new BusinessError(message.toString(), true); 
 					}
 				}catch(Exception e) {
-					ExceptionHanlder.handleException(e);
+					ExceptionHandler.handleException(e);
 				}
 			}
 		});
@@ -289,7 +289,7 @@ public class ImportTaskFacade {
 					throw new BusinessError("Import task ID :"+uuid+" --Error occured prepare ImportTaskReviewDetailEntity PCD#/KEY :"+String.valueOf(response.getCdmfKeyInfo().getCdmfFmt())+"/"+key, true);
 				}
 			}catch(Exception e) {
-				ExceptionHanlder.handleException(e);
+				ExceptionHandler.handleException(e);
 			}
 		});
 		return importTaskDetailFacade.save(reviewList);

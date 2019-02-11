@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.cft.hogan.platform.ppm.api.bean.ApplicationBean;
 import com.cft.hogan.platform.ppm.api.cache.ApplicationCache;
 import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 import com.cft.hogan.platform.ppm.api.exception.SystemError;
 import com.cft.hogan.platform.ppm.api.util.Constants;
 
@@ -53,7 +53,7 @@ public class ApplicationFacade {
 				applicationsList = applicationsMap.get(Constants.REGION_PASTDA);
 			}
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 		}
 		return applicationsList;
 	}

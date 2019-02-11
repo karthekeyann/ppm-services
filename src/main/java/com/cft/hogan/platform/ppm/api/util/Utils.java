@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 
 import com.cft.hogan.platform.ppm.api.config.context.ApplicationContext;
 import com.cft.hogan.platform.ppm.api.exception.BusinessError;
-import com.cft.hogan.platform.ppm.api.exception.ExceptionHanlder;
+import com.cft.hogan.platform.ppm.api.exception.ExceptionHandler;
 
 
 public class Utils {
@@ -61,7 +61,7 @@ public class Utils {
 				throw new BusinessError("Invalid date: "+date, true);
 			}
 		}catch(Exception e) {
-			ExceptionHanlder.handleException(e);
+			ExceptionHandler.handleException(e);
 			return false;
 		}
 		return true;
