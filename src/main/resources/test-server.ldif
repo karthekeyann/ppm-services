@@ -34,25 +34,6 @@ objectclass: top
 objectclass: organizationalUnit
 ou: otherpeople
 
-dn: uid=ben,ou=people,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: Ben Alex
-sn: Alex
-uid: ben
-userPassword: {SHA}nFCebWjxfaLbHHG1Qk5UU4trbvQ=
-
-dn: uid=bob,ou=people,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: Bob Hamilton
-sn: Hamilton
-uid: bob
-userPassword: bobspassword
 
 dn: uid=karthi,ou=people,dc=springframework,dc=org
 objectclass: top
@@ -114,15 +95,67 @@ sn: Sharma
 uid: arun
 userPassword: sharma
 
-dn: uid=bilsay,ou=people,dc=springframework,dc=org
+//admin roles
+
+dn: uid=karthia,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
-cn: Bilsay Ercan
-sn: Ercan
-uid: bilsay
-userPassword: ercan
+cn: Karthikeyan Natarajan
+sn: Natarajan
+uid: karthia
+userPassword: natarajan
+
+dn: uid=balajea,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Balaje Palanichamy
+sn: Palanichamy
+uid: balajea
+userPassword: palanichamy
+
+dn: uid=sivaa,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Sivakumar Manickam
+sn: Manickam
+uid: sivaa
+userPassword: manickam
+
+dn: uid=anshikaa,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Anshika Gupta
+sn: Gupta
+uid: anshikaa
+userPassword: gupta
+
+dn: uid=pulaka,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Pulak Sah
+sn: Sah
+uid: pulaka
+userPassword: sah
+
+dn: uid=aruna,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Arunkumar Sharma
+sn: Sharma
+uid: aruna
+userPassword: sharma
 
 dn: uid=batch,ou=people,dc=springframework,dc=org
 objectclass: top
@@ -134,77 +167,29 @@ sn: batch
 uid: batch
 userPassword: ppmbatch
 
-dn: uid=joe,ou=otherpeople,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: Joe Smeth
-sn: Smeth
-uid: joe
-userPassword: joespassword
 
-dn: cn=mouse\, jerry,ou=people,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: Mouse, Jerry
-sn: Mouse
-uid: jerry
-userPassword: jerryspassword
-
-dn: cn=slash/guy,ou=people,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: slash/guy
-sn: Slash
-uid: slashguy
-userPassword: slashguyspassword
-
-dn: cn=quote\"guy,ou=\"quoted people\",dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: quote\"guy
-sn: Quote
-uid: quoteguy
-userPassword: quoteguyspassword
-
-dn: uid=space cadet,ou=space cadets,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: Space Cadet
-sn: Cadet
-uid: space cadet
-userPassword: spacecadetspassword
-
-
-
-dn: cn=developers,ou=groups,dc=springframework,dc=org
+dn: cn=users,ou=groups,dc=springframework,dc=org
 objectclass: top
 objectclass: groupOfNames
-cn: developers
-ou: developer
-member: uid=ben,ou=people,dc=springframework,dc=org
-member: uid=bob,ou=people,dc=springframework,dc=org
+cn: users
+ou: user
+member: uid=karthi,ou=people,dc=springframework,dc=org
+member: uid=balaje,ou=people,dc=springframework,dc=org
+member: uid=siva,ou=people,dc=springframework,dc=org
+member: uid=pulak,ou=people,dc=springframework,dc=org
+member: uid=anshika,ou=people,dc=springframework,dc=org
+member: uid=arun,ou=people,dc=springframework,dc=org
+member: uid=batch,ou=people,dc=springframework,dc=org
 
-dn: cn=managers,ou=groups,dc=springframework,dc=org
+
+dn: cn=admins,ou=groups,dc=springframework,dc=org
 objectclass: top
 objectclass: groupOfNames
-cn: managers
-ou: manager
-member: uid=ben,ou=people,dc=springframework,dc=org
-member: cn=mouse\, jerry,ou=people,dc=springframework,dc=org
-
-dn: cn=submanagers,ou=subgroups,ou=groups,dc=springframework,dc=org
-objectclass: top
-objectclass: groupOfUniqueNames
-cn: submanagers
-ou: submanager
-uniqueMember: uid=ben,ou=people,dc=springframework,dc=org
+cn: admins
+ou: admin
+member: uid=karthia,ou=people,dc=springframework,dc=org
+member: uid=balajea,ou=people,dc=springframework,dc=org
+member: uid=sivaa,ou=people,dc=springframework,dc=org
+member: uid=pulaka,ou=people,dc=springframework,dc=org
+member: uid=anshikaa,ou=people,dc=springframework,dc=org
+member: uid=aruna,ou=people,dc=springframework,dc=org
