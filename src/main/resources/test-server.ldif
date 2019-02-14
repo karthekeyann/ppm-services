@@ -34,6 +34,16 @@ objectclass: top
 objectclass: organizationalUnit
 ou: otherpeople
 
+dn: uid=ppm,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: ppm ppm
+sn: ppm
+uid: ppm
+userPassword: celeriti
+
 
 dn: uid=karthi,ou=people,dc=springframework,dc=org
 objectclass: top

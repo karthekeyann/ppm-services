@@ -5,7 +5,7 @@
 
 	<appender name="ROLLINGFILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOGS}/ppm-services.log</file>
+		<file>${LOGS}/ppm-apis.log</file>
 		<encoder
 			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern> %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
@@ -14,7 +14,7 @@
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- rollover daily and when the file reaches 10 MegaBytes -->
-			<fileNamePattern>${LOGS}/archived/ppm-services-%d{yyyy-MM-dd}.%i.log
+			<fileNamePattern>${LOGS}/archived/ppm-apis-%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
 			<timeBasedFileNamingAndTriggeringPolicy
 				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
