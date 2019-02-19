@@ -22,7 +22,7 @@ import com.cft.hogan.platform.ppm.api.util.Constants;
 public class DataSource_PASCOR extends DataSource_Base{
 
 	@Bean
-	public DataSource corDatasource() throws Exception {
+	public DataSource pascorDatasource() throws Exception {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(getProperties().getProperty("spring.datasource.driverClassName"));
@@ -34,9 +34,9 @@ public class DataSource_PASCOR extends DataSource_Base{
 	}
 
 	@Bean(name = "entityManagerFactoryPASCOR")
-	public LocalContainerEntityManagerFactoryBean corEntityManager() throws Exception {
+	public LocalContainerEntityManagerFactoryBean pascorEntityManager() throws Exception {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(corDatasource());
+		em.setDataSource(pascorDatasource());
 		em.setPackagesToScan(new String[] { Constants.PACKAGE_ENTITIES});
 		em.setPersistenceUnitName(Constants.DATASOURCE_PASCOR); 
 
@@ -58,7 +58,7 @@ public class DataSource_PASCOR extends DataSource_Base{
 	}
 
 	@Bean(name = "transactionManagerPASCOR")
-	public PlatformTransactionManager corTransactionManager( @Qualifier("entityManagerFactoryPASCOR" ) EntityManagerFactory emf ) {
+	public PlatformTransactionManager pascorTransactionManager( @Qualifier("entityManagerFactoryPASCOR" ) EntityManagerFactory emf ) {
 
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);

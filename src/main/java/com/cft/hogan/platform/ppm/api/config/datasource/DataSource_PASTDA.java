@@ -22,7 +22,7 @@ import com.cft.hogan.platform.ppm.api.util.Constants;
 public class DataSource_PASTDA extends DataSource_Base{
 
 	@Bean
-	public DataSource tdaDatasource() throws Exception {
+	public DataSource pastdaDatasource() throws Exception {
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(getProperties().getProperty("spring.datasource.driverClassName"));
@@ -34,9 +34,9 @@ public class DataSource_PASTDA extends DataSource_Base{
 	}
 
 	@Bean(name = "entityManagerFactoryPASTDA")
-	public LocalContainerEntityManagerFactoryBean tdaEntityManager() throws Exception {
+	public LocalContainerEntityManagerFactoryBean pastdaEntityManager() throws Exception {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(tdaDatasource());
+		em.setDataSource(pastdaDatasource());
 		em.setPackagesToScan(new String[] { Constants.PACKAGE_ENTITIES});
 		em.setPersistenceUnitName(Constants.DATASOURCE_PASTDA); 
 
@@ -58,7 +58,7 @@ public class DataSource_PASTDA extends DataSource_Base{
 	}
 
 	@Bean(name = "transactionManagerPASTDA")
-	public PlatformTransactionManager tdaTransactionManager( @Qualifier("entityManagerFactoryPASTDA") EntityManagerFactory emf) {
+	public PlatformTransactionManager pastdaTransactionManager( @Qualifier("entityManagerFactoryPASTDA") EntityManagerFactory emf) {
 
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(emf);

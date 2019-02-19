@@ -19,6 +19,11 @@ objectclass: top
 objectclass: organizationalUnit
 ou: people
 
+dn: ou=application,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: application
+
 dn: ou=space cadets,dc=springframework,dc=org
 objectclass: top
 objectclass: organizationalUnit
@@ -33,6 +38,16 @@ dn: ou=otherpeople,dc=springframework,dc=org
 objectclass: top
 objectclass: organizationalUnit
 ou: otherpeople
+
+dn: uid=batch,ou=application,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: batch
+sn: batch
+uid: batch
+userPassword: ppmbatch
 
 dn: uid=ppm,ou=people,dc=springframework,dc=org
 objectclass: top
@@ -165,16 +180,6 @@ sn: Sharma
 uid: aruna
 userPassword: sharma
 
-dn: uid=batch,ou=people,dc=springframework,dc=org
-objectclass: top
-objectclass: person
-objectclass: organizationalPerson
-objectclass: inetOrgPerson
-cn: batch
-sn: batch
-uid: batch
-userPassword: ppmbatch
-
 dn: uid=test,ou=people,dc=springframework,dc=org
 objectclass: top
 objectclass: person
@@ -197,7 +202,7 @@ member: uid=siva,ou=people,dc=springframework,dc=org
 member: uid=pulak,ou=people,dc=springframework,dc=org
 member: uid=anshika,ou=people,dc=springframework,dc=org
 member: uid=arun,ou=people,dc=springframework,dc=org
-member: uid=batch,ou=people,dc=springframework,dc=org
+member: uid=batch,ou=application,dc=springframework,dc=org
 
 
 dn: cn=admins,ou=groups,dc=springframework,dc=org

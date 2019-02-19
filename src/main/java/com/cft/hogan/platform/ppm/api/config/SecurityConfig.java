@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 		.ldapAuthentication()
-		.userDnPatterns(env.getProperty("spring.ldap.dn"))	//ex: uid={0},ou=people
+		.userSearchFilter(env.getProperty("spring.ldap.userSearchFilter"))
 		.contextSource(getContextSource())
 		.ldapAuthoritiesPopulator(getLdapAuthoritiesPopulator());
 	}

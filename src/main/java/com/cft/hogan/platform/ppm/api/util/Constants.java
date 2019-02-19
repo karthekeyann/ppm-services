@@ -70,10 +70,10 @@ public abstract class Constants {
 	public static final String ENV_QA = "QA";
 	public static final String ENV_PROD = "PROD";
 	
-	public static final String REGION_COR = "COR";
-	public static final String REGION_TDA = "TDA";
-	public static final String REGION_PASCOR = "PASCOR";
-	public static final String REGION_PASTDA = "PASTDA";
+	public static final String REGION_COR = "cor";
+	public static final String REGION_TDA = "tda";
+	public static final String REGION_PASCOR = "pascor";
+	public static final String REGION_PASTDA = "pastda";
 	
 	public static final String ACTIVE = "ACTIVE";
 	public static final String IN_PROGRESS = "IN PROGRESS";

@@ -34,7 +34,7 @@ public class ExceptionHandler {
 			}else if(e instanceof SystemError) {
 				throw new SystemError(e.getMessage());
 			}else {
-				throw new SystemError();
+				throw new SystemError(e.getMessage());
 			}
 		} catch (IOException ex) {
 			handleException(ex);

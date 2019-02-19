@@ -127,7 +127,7 @@ public class ApplicationContext {
 						region.equalsIgnoreCase(Constants.REGION_PASCOR) || region.equalsIgnoreCase(Constants.REGION_PASTDA))) {
 			throw new SystemError("Invalid request header - X-region :"+region);
 		}
-		return region;
+		return region.toLowerCase();
 	}
 
 }
